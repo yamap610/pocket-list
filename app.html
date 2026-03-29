@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFFDF9">
+<title>口袋名單</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗺️</text></svg>">
+<link rel="stylesheet" href="../css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- 載入中 -->
+<div id="loading-screen" class="loading-screen">
+  <div class="spinner"></div>
+  <p style="font-size:13px;color:var(--muted)">載入口袋名單中...</p>
+</div>
+
+<div id="app" class="app-layout" style="display:none">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-top">
+      <div>
+        <div class="app-title-small">🗺️ 口袋名單</div>
+        <div class="sync-dot" id="sync-indicator">即時同步中</div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="btn-settings" title="設定">⚙️</button>
+      </div>
+    </div>
+
+    <!-- 搜尋 -->
+    <div style="margin-top:10px">
+      <input type="search" class="search-input" id="search-input" placeholder="🔍 搜尋店名、備註...">
+    </div>
+  </header>
+
+  <!-- 篩選區 -->
+  <div class="filter-section">
+    <!-- 地區 -->
+    <div class="filter-row" id="region-row">
+      <div class="chip active" data-val="">全部</div>
+      <div class="chip" data-val="雙北">雙北</div>
+      <div class="chip" data-val="桃園">桃園</div>
+      <div class="chip" data-val="宜蘭">宜蘭</div>
+      <div class="chip" data-val="台中">台中</div>
+      <div class="chip" data-val="其他縣市">其他</div>
+    </div>
+    <!-- 主分類 -->
+    <div class="filter-row" id="cat-row">
+      <div class="chip active" data-val="">全部分類</div>
+      <div class="chip" data-val="咖啡下午茶">☕ 咖啡</div>
+      <div class="chip" data-val="正餐飽食">🍱 正餐</div>
+      <div class="chip" data-val="輕食小吃">🥯 輕食</div>
+      <div class="chip" data-val="親子休閒">🎡 親子</div>
+      <div class="chip" data-val="微醺餐酒">🥂 餐酒</div>
+      <div class="chip" data-val="文具生活">✏️ 文具</div>
+      <div class="chip" data-val="其他">其他</div>
+    </div>
+    <!-- 特色標籤 -->
+    <div class="filter-row" id="tag-row">
+      <div class="chip tag-chip" data-val="不限時">不限時</div>
+      <div class="chip tag-chip" data-val="有貓咪">有貓咪 🐱</div>
+      <div class="chip tag-chip" data-val="推車友善">推車友善</div>
+      <div class="chip tag-chip" data-val="有插座">有插座</div>
+      <div class="chip tag-chip" data-val="親子友善">親子友善</div>
+      <div class="chip tag-chip" data-val="停車方便">停車方便</div>
+      <div class="chip tag-chip" data-val="景觀座位">景觀座位</div>
+      <div class="chip tag-chip" data-val="外帶友善">外帶友善</div>
+      <div class="chip tag-chip" data-val="預約制">預約制</div>
+      <div class="chip tag-chip" data-val="已造訪">✅ 去過了</div>
+    </div>
+  </div>
+
+  <!-- 結果列 & 視圖切換 -->
+  <div class="view-toggle-row">
+    <div id="results-info" class="results-bar" style="padding:0;font-size:12px;color:var(--muted)"></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="clear-btn" id="clear-filters" style="display:none">清除篩選</button>
+      <div class="view-btns">
+        <button class="view-btn active" id="btn-card-view">⊞</button>
+        <button class="view-btn" id="btn-list-view">≡</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 地點列表 -->
+  <main id="places-container" class="card-grid"></main>
+</div>
+
+<!-- FAB 新增 -->
+<button class="fab" id="btn-add" title="新增地點">＋</button>
+
+<!-- =================== MODAL: 新增/編輯 =================== -->
+<div class="modal-overlay" id="modal-form">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="form-title">新增地點</div>
+      <button class="modal-close" id="close-form">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="place-form" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label">店名 *</label>
+          <input type="text" class="form-input" id="f-name" placeholder="例：Slow Morning" required>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group">
+            <label class="form-label">地區</label>
+            <select class="form-select" id="f-region">
+              <option value="">選擇地區</option>
+              <option>雙北</option><option>桃園</option>
+              <option>宜蘭</option><option>台中</option><option>其他縣市</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">主分類</label>
+            <select class="form-select" id="f-category">
+              <option value="">選擇分類</option>
+              <option>咖啡下午茶</option><option>正餐飽食</option>
+              <option>輕食小吃</option><option>親子休閒</option>
+              <option>微醺餐酒</option><option>文具生活</option><option>其他</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">特色標籤（可多選）</label>
+          <div class="tags-grid" id="tags-grid">
+            <button type="button" class="tag-toggle" data-tag="不限時">不限時</button>
+            <button type="button" class="tag-toggle" data-tag="有貓咪">有貓咪 🐱</button>
+            <button type="button" class="tag-toggle" data-tag="推車友善">推車友善</button>
+            <button type="button" class="tag-toggle" data-tag="有插座">有插座</button>
+            <button type="button" class="tag-toggle" data-tag="親子友善">親子友善</button>
+            <button type="button" class="tag-toggle" data-tag="停車方便">停車方便 🚗</button>
+            <button type="button" class="tag-toggle" data-tag="景觀座位">景觀座位 🪟</button>
+            <button type="button" class="tag-toggle" data-tag="外帶友善">外帶友善 📦</button>
+            <button type="button" class="tag-toggle" data-tag="預約制">預約制</button>
+            <button type="button" class="tag-toggle" data-tag="季節限定">季節限定 🌸</button>
+            <button type="button" class="tag-toggle" data-tag="需要排隊">需要排隊 ⏳</button>
+            <button type="button" class="tag-toggle" data-tag="cp值高">CP值高 💰</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Google Map 連結</label>
+          <input type="url" class="form-input" id="f-maplink" placeholder="貼上 Google Maps 連結">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">推薦來源（IG / Threads 連結）</label>
+          <input type="url" class="form-input" id="f-sourcelink" placeholder="貼上 IG 或 Threads 連結">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">照片網址</label>
+          <input type="url" class="form-input" id="f-photourl" placeholder="貼上圖片連結（選填）">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">備註 / 推薦菜色</label>
+          <textarea class="form-textarea" id="f-note" placeholder="隨手記錄心得、推薦菜色、注意事項..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <div class="visited-toggle" id="visited-toggle">
+            <div>
+              <div class="visited-toggle-label">已經去過了 ✅</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">標記為已造訪</div>
+            </div>
+            <div class="toggle-switch"></div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="form-submit-btn">儲存地點</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =================== MODAL: 詳情 =================== -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- =================== MODAL: 設定 =================== -->
+<div class="modal-overlay settings-sheet" id="modal-settings">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">⚙️ 設定</div>
+      <button class="modal-close" id="close-settings">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- 用戶資訊 -->
+      <div class="settings-section">
+        <div class="settings-section-title">帳號</div>
+        <div class="settings-row" style="cursor:default">
+          <div class="settings-row-icon">👤</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label" id="s-username">—</div>
+            <div class="settings-row-sub" id="s-email">—</div>
+          </div>
+        </div>
+        <div class="settings-row" id="btn-logout">
+          <div class="settings-row-icon">🚪</div>
+          <div class="settings-row-text"><div class="settings-row-label" style="color:var(--red)">登出</div></div>
+          <div class="settings-row-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- 家庭共享 -->
+      <div class="settings-section">
+        <div class="settings-section-title">家庭群組</div>
+        <div class="settings-row" style="cursor:default">
+          <div class="settings-row-icon">👥</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label">群組成員</div>
+            <div class="settings-row-sub" id="s-members">載入中...</div>
+          </div>
+        </div>
+        <div style="margin:4px 0 12px">
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">邀請家人加入（7 天效期）</div>
+          <div class="invite-code-display">
+            <div class="invite-code" id="s-invitecode">——</div>
+            <button class="copy-btn" id="btn-copy-code">複製</button>
+          </div>
+          <button class="settings-row" style="width:100%;border:0.5px solid var(--border);background:var(--warm);border-radius:var(--radius-sm);margin-top:4px;cursor:pointer;justify-content:center;gap:8px" id="btn-refresh-code">
+            <span>🔄</span><span style="font-size:13px;color:var(--muted)">產生新邀請碼</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 備份 -->
+      <div class="settings-section">
+        <div class="settings-section-title">備份與資料</div>
+        <div class="settings-row" id="btn-export">
+          <div class="settings-row-icon">📤</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label">匯出備份</div>
+            <div class="settings-row-sub">下載 JSON 檔案</div>
+          </div>
+          <div class="settings-row-arrow">›</div>
+        </div>
+        <div class="settings-row" id="btn-import">
+          <div class="settings-row-icon">📥</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label">匯入資料</div>
+            <div class="settings-row-sub">從 JSON 備份還原</div>
+          </div>
+          <div class="settings-row-arrow">›</div>
+        </div>
+        <input type="file" id="import-file-input" accept=".json" style="display:none">
+      </div>
+
+      <!-- 統計 -->
+      <div class="settings-section">
+        <div class="settings-section-title">統計</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div style="background:var(--warm);border-radius:var(--radius-sm);padding:12px;text-align:center;border:0.5px solid var(--border)">
+            <div style="font-size:22px;font-weight:700;color:var(--accent-dark);font-family:var(--serif)" id="stat-total">0</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">全部</div>
+          </div>
+          <div style="background:var(--green-light);border-radius:var(--radius-sm);padding:12px;text-align:center;border:0.5px solid var(--border)">
+            <div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--serif)" id="stat-visited">0</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">去過了</div>
+          </div>
+          <div style="background:var(--warm);border-radius:var(--radius-sm);padding:12px;text-align:center;border:0.5px solid var(--border)">
+            <div style="font-size:22px;font-weight:700;color:var(--brown);font-family:var(--serif)" id="stat-unvisited">0</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">還沒去</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { firebaseConfig } from "../js/config.js";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ===== 全域狀態 =====
+let currentUser = null, groupId = null, groupData = null;
+let allPlaces = [], unsubscribe = null;
+let currentView = "card", editingId = null, visitedState = false;
+let filterRegion = "", filterCat = "", filterTags = [];
+
+// ===== 工具函數 =====
+function showToast(msg, type="") {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast show " + type;
+  setTimeout(() => t.className = "toast", 3000);
+}
+function openModal(id) { document.getElementById(id).classList.add("open"); }
+function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+function getCatEmoji(cat) {
+  const map = {"咖啡下午茶":"☕","正餐飽食":"🍱","輕食小吃":"🥯","親子休閒":"🎡","微醺餐酒":"🥂","文具生活":"✏️","其他":"📍"};
+  return map[cat] || "📍";
+}
+
+// ===== 初始化 =====
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "../index.html"; return; }
+  currentUser = user;
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+  if (!userSnap.exists() || !userSnap.data().groupId) {
+    // 建立新群組
+    groupId = "grp_" + Date.now();
+    const code = Array.from({length:6}, () => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*32)]).join("");
+    await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js").then(async ({setDoc}) => {
+      await setDoc(doc(db,"groups",groupId), { createdBy:user.uid, createdAt:Date.now(), members:[user.uid], memberNames:{[user.uid]:user.displayName||"你"}, inviteCode:code, inviteExpiry:Date.now()+7*24*60*60*1000 });
+      await setDoc(doc(db,"users",user.uid), { uid:user.uid, displayName:user.displayName||"", email:user.email||"", groupId, joinedAt:Date.now() }, {merge:true});
+    });
+  } else {
+    groupId = userSnap.data().groupId;
+  }
+
+  const grpSnap = await getDoc(doc(db, "groups", groupId));
+  groupData = grpSnap.data();
+
+  document.getElementById("loading-screen").style.display = "none";
+  document.getElementById("app").style.display = "flex";
+
+  subscribeToPlaces();
+  setupSettingsPanel();
+});
+
+// ===== 即時監聽地點 =====
+function subscribeToPlaces() {
+  const q = query(collection(db,"groups",groupId,"places"), orderBy("createdAt","desc"));
+  unsubscribe = onSnapshot(q, (snap) => {
+    allPlaces = snap.docs.map(d => ({id:d.id, ...d.data()}));
+    renderPlaces();
+    updateStats();
+  }, () => {
+    document.getElementById("sync-indicator").textContent = "離線中";
+    document.getElementById("sync-indicator").style.color = "var(--red)";
+  });
+}
+
+// ===== 渲染地點 =====
+function renderPlaces() {
+  const q = document.getElementById("search-input").value.toLowerCase();
+  let filtered = allPlaces.filter(p => {
+    if (filterRegion && p.region !== filterRegion) return false;
+    if (filterCat && p.category !== filterCat) return false;
+    for (const tag of filterTags) {
+      if (tag === "已造訪") { if (!p.visited) return false; }
+      else { if (!p.tags || !p.tags.includes(tag)) return false; }
+    }
+    if (q && !p.name?.toLowerCase().includes(q) && !p.note?.toLowerCase().includes(q) && !p.region?.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const hasFilter = filterRegion || filterCat || filterTags.length || q;
+  document.getElementById("clear-filters").style.display = hasFilter ? "block" : "none";
+  const info = document.getElementById("results-info");
+  info.innerHTML = hasFilter ? `找到 <strong>${filtered.length}</strong> 個地點` : `共 <strong>${allPlaces.length}</strong> 個地點`;
+
+  const container = document.getElementById("places-container");
+  if (!filtered.length) {
+    container.className = "";
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">${hasFilter?"🔍":"🗺️"}</div><div class="empty-title">${hasFilter?"找不到符合的地點":"還沒有地點"}</div><div class="empty-sub">${hasFilter?"試試調整篩選條件":"點右下角 ＋ 新增你們的第一個秘密基地！"}</div></div>`;
+    return;
+  }
+
+  if (currentView === "card") {
+    container.className = "card-grid";
+    container.innerHTML = filtered.map(p => `
+      <div class="place-card" data-id="${p.id}">
+        <div class="card-photo">
+          ${p.photoUrl ? `<img src="${p.photoUrl}" alt="${p.name}" onerror="this.style.display='none'">` : ""}
+          <div class="emoji-fallback">${getCatEmoji(p.category)}</div>
+          <div class="${p.visited?'visited-badge':'unvisited-badge'}">${p.visited?'✅ 去過了':'想去'}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">${p.name||"未命名"}</div>
+          <div class="card-region">${p.region||""}</div>
+          <div class="card-cat">${p.category||""}</div>
+          <div class="card-tags">${(p.tags||[]).slice(0,3).map(t=>`<span class="card-tag">${t}</span>`).join("")}</div>
+        </div>
+      </div>
+    `).join("");
+  } else {
+    container.className = "card-grid list";
+    container.innerHTML = filtered.map(p => `
+      <div class="list-card" data-id="${p.id}">
+        <div class="list-icon">
+          ${p.photoUrl ? `<img src="${p.photoUrl}" alt="${p.name}" onerror="this.style.display='none'">` : ""}
+          <span style="position:relative;z-index:1">${getCatEmoji(p.category)}</span>
+        </div>
+        <div class="list-info">
+          <div class="list-name">${p.name||"未命名"}</div>
+          <div class="list-meta">${[p.region,p.category].filter(Boolean).join(" · ")}</div>
+          <div class="list-meta">${(p.tags||[]).join(" · ")}</div>
+          ${p.visited?'<div class="list-visited">✅ 已造訪</div>':''}
+        </div>
+        <div class="list-arrow">›</div>
+      </div>
+    `).join("");
+  }
+
+  container.querySelectorAll("[data-id]").forEach(el => {
+    el.addEventListener("click", () => openDetail(el.dataset.id));
+  });
+}
+
+// ===== 詳情 =====
+function openDetail(id) {
+  const p = allPlaces.find(x => x.id === id);
+  if (!p) return;
+  const html = `
+    <div class="detail-photo">
+      ${p.photoUrl ? `<img src="${p.photoUrl}" alt="${p.name}" onerror="this.style.display='none'">` : ""}
+      <span style="font-size:60px;position:relative;z-index:1">${getCatEmoji(p.category)}</span>
+    </div>
+    <div class="detail-body">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
+        <div class="detail-name">${p.name||"未命名"}</div>
+        <div style="flex-shrink:0;padding:4px 10px;border-radius:10px;font-size:12px;background:${p.visited?"var(--green-light)":"var(--warm)"};color:${p.visited?"var(--green)":"var(--muted)"};border:0.5px solid var(--border)">${p.visited?"✅ 去過了":"📌 想去"}</div>
+      </div>
+      <div class="detail-meta">
+        ${p.region?`<span class="meta-pill">${p.region}</span>`:""}
+        ${p.category?`<span class="meta-pill cat">${getCatEmoji(p.category)} ${p.category}</span>`:""}
+      </div>
+      ${p.tags&&p.tags.length?`<div class="detail-tags">${p.tags.map(t=>`<span class="detail-tag">${t}</span>`).join("")}</div>`:""}
+      ${p.note?`<div class="detail-note">${p.note}</div>`:""}
+      <div class="detail-links">
+        ${p.mapLink?`<a class="link-btn" href="${p.mapLink}" target="_blank" rel="noopener"><span class="link-icon">🗺️</span>在 Google Maps 開啟導航</a>`:""}
+        ${p.sourceLink?`<a class="link-btn" href="${p.sourceLink}" target="_blank" rel="noopener"><span class="link-icon">📸</span>查看推薦來源</a>`:""}
+      </div>
+      <div class="detail-actions">
+        <button class="btn-edit" onclick="openEdit('${p.id}')">✏️ 編輯</button>
+        <button class="btn-delete" onclick="confirmDelete('${p.id}','${(p.name||"").replace(/'/g,"\\'")}')">🗑 刪除</button>
+      </div>
+      <div class="created-by">由 ${p.createdBy||"你"} 新增</div>
+    </div>
+  `;
+  document.getElementById("detail-content").innerHTML = html;
+  openModal("modal-detail");
+}
+
+// ===== 新增/編輯表單 =====
+function openAddForm() {
+  editingId = null; visitedState = false;
+  document.getElementById("form-title").textContent = "新增地點";
+  document.getElementById("place-form").reset();
+  document.querySelectorAll(".tag-toggle").forEach(t => t.classList.remove("selected"));
+  document.getElementById("visited-toggle").classList.remove("on");
+  openModal("modal-form");
+}
+
+window.openEdit = (id) => {
+  const p = allPlaces.find(x => x.id === id);
+  if (!p) return;
+  editingId = id; visitedState = p.visited || false;
+  document.getElementById("form-title").textContent = "編輯地點";
+  document.getElementById("f-name").value = p.name || "";
+  document.getElementById("f-region").value = p.region || "";
+  document.getElementById("f-category").value = p.category || "";
+  document.getElementById("f-maplink").value = p.mapLink || "";
+  document.getElementById("f-sourcelink").value = p.sourceLink || "";
+  document.getElementById("f-photourl").value = p.photoUrl || "";
+  document.getElementById("f-note").value = p.note || "";
+  document.querySelectorAll(".tag-toggle").forEach(t => {
+    t.classList.toggle("selected", (p.tags||[]).includes(t.dataset.tag));
+  });
+  document.getElementById("visited-toggle").classList.toggle("on", visitedState);
+  closeModal("modal-detail");
+  openModal("modal-form");
+};
+
+window.confirmDelete = async (id, name) => {
+  if (!confirm(`確定要刪除「${name}」嗎？`)) return;
+  try {
+    await deleteDoc(doc(db,"groups",groupId,"places",id));
+    closeModal("modal-detail");
+    showToast("已刪除「"+name+"」", "success");
+  } catch(e) { showToast("刪除失敗", "error"); }
+};
+
+// 標籤切換
+document.querySelectorAll(".tag-toggle").forEach(btn => {
+  btn.addEventListener("click", () => btn.classList.toggle("selected"));
+});
+
+// 已造訪切換
+document.getElementById("visited-toggle").addEventListener("click", function() {
+  visitedState = !visitedState;
+  this.classList.toggle("on", visitedState);
+});
+
+// 表單送出
+document.getElementById("place-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("form-submit-btn");
+  btn.disabled = true; btn.textContent = "儲存中...";
+  const tags = [...document.querySelectorAll(".tag-toggle.selected")].map(t => t.dataset.tag);
+  const data = {
+    name: document.getElementById("f-name").value.trim(),
+    region: document.getElementById("f-region").value,
+    category: document.getElementById("f-category").value,
+    mapLink: document.getElementById("f-maplink").value.trim(),
+    sourceLink: document.getElementById("f-sourcelink").value.trim(),
+    photoUrl: document.getElementById("f-photourl").value.trim(),
+    note: document.getElementById("f-note").value.trim(),
+    tags, visited: visitedState
+  };
+  try {
+    if (editingId) {
+      await updateDoc(doc(db,"groups",groupId,"places",editingId), { ...data, updatedAt: serverTimestamp() });
+      showToast("已更新！", "success");
+    } else {
+      await addDoc(collection(db,"groups",groupId,"places"), { ...data, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), createdBy: currentUser.displayName || currentUser.email || "你" });
+      showToast("新增成功！", "success");
+    }
+    closeModal("modal-form");
+  } catch(err) { showToast("儲存失敗："+err.message, "error"); }
+  btn.disabled = false; btn.textContent = "儲存地點";
+});
+
+// ===== 篩選邏輯 =====
+document.querySelectorAll("#region-row .chip").forEach(c => {
+  c.addEventListener("click", () => {
+    document.querySelectorAll("#region-row .chip").forEach(x => x.classList.remove("active"));
+    c.classList.add("active"); filterRegion = c.dataset.val; renderPlaces();
+  });
+});
+document.querySelectorAll("#cat-row .chip").forEach(c => {
+  c.addEventListener("click", () => {
+    document.querySelectorAll("#cat-row .chip").forEach(x => x.classList.remove("active"));
+    c.classList.add("active"); filterCat = c.dataset.val; renderPlaces();
+  });
+});
+document.querySelectorAll("#tag-row .chip").forEach(c => {
+  c.addEventListener("click", () => {
+    const val = c.dataset.val;
+    c.classList.toggle("active");
+    if (filterTags.includes(val)) filterTags = filterTags.filter(t => t !== val);
+    else filterTags.push(val);
+    renderPlaces();
+  });
+});
+document.getElementById("search-input").addEventListener("input", renderPlaces);
+document.getElementById("clear-filters").addEventListener("click", () => {
+  filterRegion = ""; filterCat = ""; filterTags = [];
+  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  document.querySelector("#region-row .chip").classList.add("active");
+  document.querySelector("#cat-row .chip").classList.add("active");
+  document.getElementById("search-input").value = "";
+  renderPlaces();
+});
+
+// ===== 視圖切換 =====
+document.getElementById("btn-card-view").addEventListener("click", () => {
+  currentView = "card";
+  document.getElementById("btn-card-view").classList.add("active");
+  document.getElementById("btn-list-view").classList.remove("active");
+  renderPlaces();
+});
+document.getElementById("btn-list-view").addEventListener("click", () => {
+  currentView = "list";
+  document.getElementById("btn-list-view").classList.add("active");
+  document.getElementById("btn-card-view").classList.remove("active");
+  renderPlaces();
+});
+
+// ===== FAB & Modal 控制 =====
+document.getElementById("btn-add").addEventListener("click", openAddForm);
+document.getElementById("close-form").addEventListener("click", () => closeModal("modal-form"));
+document.getElementById("close-settings").addEventListener("click", () => closeModal("modal-settings"));
+document.getElementById("btn-settings").addEventListener("click", () => { setupSettingsPanel(); openModal("modal-settings"); });
+
+// 點背景關閉
+["modal-form","modal-detail","modal-settings"].forEach(id => {
+  document.getElementById(id).addEventListener("click", function(e) {
+    if (e.target === this) closeModal(id);
+  });
+});
+
+// ===== 設定面板 =====
+async function setupSettingsPanel() {
+  if (!currentUser || !groupId) return;
+  document.getElementById("s-username").textContent = currentUser.displayName || "使用者";
+  document.getElementById("s-email").textContent = currentUser.email || "(匿名)";
+
+  const grpSnap = await getDoc(doc(db,"groups",groupId));
+  groupData = grpSnap.data();
+  if (groupData) {
+    document.getElementById("s-invitecode").textContent = groupData.inviteCode || "——";
+    const names = Object.values(groupData.memberNames || {});
+    document.getElementById("s-members").textContent = names.join("、") || "只有你";
+  }
+}
+
+// 複製邀請碼
+document.getElementById("btn-copy-code").addEventListener("click", () => {
+  const code = document.getElementById("s-invitecode").textContent;
+  navigator.clipboard.writeText(code).then(() => showToast("邀請碼已複製！", "success"));
+});
+
+// 重新產生邀請碼
+document.getElementById("btn-refresh-code").addEventListener("click", async () => {
+  const code = Array.from({length:6}, () => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*32)]).join("");
+  await updateDoc(doc(db,"groups",groupId), { inviteCode: code, inviteExpiry: Date.now()+7*24*60*60*1000 });
+  document.getElementById("s-invitecode").textContent = code;
+  showToast("新邀請碼已產生！", "success");
+});
+
+// 登出
+document.getElementById("btn-logout").addEventListener("click", async () => {
+  if (!confirm("確定要登出嗎？")) return;
+  await signOut(auth);
+  window.location.href = "../index.html";
+});
+
+// ===== 匯出 =====
+document.getElementById("btn-export").addEventListener("click", () => {
+  const data = { exportedAt: new Date().toISOString(), version: "1.0", count: allPlaces.length, places: allPlaces.map(p => { const {id,...rest} = p; return rest; }) };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url;
+  a.download = `口袋名單備份_${new Date().toLocaleDateString("zh-TW").replace(/\//g,"-")}.json`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast(`已匯出 ${allPlaces.length} 個地點`, "success");
+});
+
+// ===== 匯入 =====
+document.getElementById("btn-import").addEventListener("click", () => {
+  document.getElementById("import-file-input").click();
+});
+document.getElementById("import-file-input").addEventListener("change", async (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  const text = await file.text();
+  try {
+    const data = JSON.parse(text);
+    const places = data.places || data;
+    if (!Array.isArray(places)) throw new Error("格式不正確");
+    if (!confirm(`確定要匯入 ${places.length} 個地點嗎？`)) return;
+    showToast("匯入中...");
+    let count = 0;
+    for (const p of places) {
+      if (!p.name) continue;
+      await addDoc(collection(db,"groups",groupId,"places"), { ...p, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), createdBy: currentUser.displayName || "匯入" });
+      count++;
+    }
+    showToast(`成功匯入 ${count} 個地點！`, "success");
+  } catch(err) { showToast("匯入失敗：" + err.message, "error"); }
+  e.target.value = "";
+});
+
+// ===== 統計 =====
+function updateStats() {
+  document.getElementById("stat-total").textContent = allPlaces.length;
+  const v = allPlaces.filter(p=>p.visited).length;
+  document.getElementById("stat-visited").textContent = v;
+  document.getElementById("stat-unvisited").textContent = allPlaces.length - v;
+}
+</script>
+</body>
+</html>
