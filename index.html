@@ -7,6 +7,19 @@
 <title>口袋名單 — 我們的秘密基地</title>
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  html, body { height: 100%; }
+  .login-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%);
+  }
+  .login-container { width: 100%; max-width: 420px; }
+</style>
 </head>
 <body class="login-page">
 
@@ -18,7 +31,7 @@
       <p class="logo-sub">我們的秘密基地 · 一起記錄好去處</p>
     </div>
 
-    <button class="btn-google" id="btn-google-login" style="background: #4285F4; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px;">
+    <button class="btn-google" id="btn-google-login">
       用 Google 帳號登入
     </button>
 
@@ -31,7 +44,6 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBqjIwARGN1KOpvXubFA6eanLyPfQfDi5A",
@@ -44,29 +56,24 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
-
 const statusMsg = document.getElementById("status-msg");
 
 document.getElementById("btn-google-login").addEventListener("click", async () => {
   statusMsg.innerText = "正在開啟登入視窗...";
   try {
     const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
+    await signInWithPopup(auth, provider);
     statusMsg.innerText = "登入成功！正在跳轉...";
-    localStorage.setItem('fb_config', JSON.stringify(firebaseConfig));
     window.location.href = "app.html";
   } catch(e) {
     console.error(e);
     statusMsg.innerText = "錯誤: " + e.message;
-    alert("登入遇到問題：\n1. 請檢查 Firebase 授權網域是否包含 yamap610.github.io\n2. 錯誤訊息：" + e.message);
   }
 });
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
     statusMsg.innerText = "偵測到已登入，準備進入...";
-    localStorage.setItem('fb_config', JSON.stringify(firebaseConfig));
     window.location.href = "app.html";
   }
 });
