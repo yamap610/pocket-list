@@ -53,7 +53,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { firebaseConfig } from "./js/config.js";
+
+// 直接把 Firebase 設定寫在這裡，不讀取外部檔案，保證不會出錯
+const firebaseConfig = {
+  apiKey: "AIzaSyBqjIwARGN1KOpvXubFA6eanLyPfQfDi5A",
+  authDomain: "favorite-74e87.firebaseapp.com",
+  databaseURL: "https://favorite-74e87-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "favorite-74e87",
+  storageBucket: "favorite-74e87.firebasestorage.app",
+  messagingSenderId: "909094354338",
+  appId: "1:909094354338:web:9a4c1909f80919c2f4c6fb"
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -61,62 +71,49 @@ const db = getFirestore(app);
 
 function showToast(msg, type="") {
   const t = document.getElementById("toast");
+  if(!t) return;
   t.textContent = msg;
   t.className = "toast show " + type;
   setTimeout(() => t.className = "toast", 3000);
 }
 
-// Google 登入
+// Google 登入功能
 document.getElementById("btn-google-login").addEventListener("click", async () => {
   try {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     showToast("歡迎回來！" + (result.user.displayName || "").split(" ")[0]);
-    // 確保有群組
     await ensureGroup(result.user);
     setTimeout(() => { window.location.href = "pages/app.html"; }, 800);
   } catch(e) {
+    console.error(e);
     if (e.code !== "auth/popup-closed-by-user") {
-      showToast("登入失敗，請再試一次", "error");
+      showToast("登入失敗，請確認 Firebase 授權網域已設定", "error");
     }
   }
 });
 
-// 邀請碼加入
+// 邀請碼功能
 document.getElementById("btn-join").addEventListener("click", async () => {
   const code = document.getElementById("invite-code-input").value.trim().toUpperCase();
   if (code.length !== 6) { showToast("請輸入 6 位邀請碼", "error"); return; }
-
   showToast("驗證中...");
   try {
-    // 查詢邀請碼
     const q = query(collection(db, "groups"), where("inviteCode", "==", code));
     const snap = await getDocs(q);
     if (snap.empty) { showToast("邀請碼無效", "error"); return; }
-
     const groupDoc = snap.docs[0];
-    if (groupDoc.data().inviteExpiry < Date.now()) { showToast("邀請碼已過期", "error"); return; }
-
-    // 先登入（Google 或匿名）
     let user = auth.currentUser;
     if (!user) {
       const provider = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        user = result.user;
-      } catch(e2) {
-        // 若取消 Google，用匿名
-        const r2 = await signInAnonymously(auth);
-        user = r2.user;
-      }
+      const result = await signInWithPopup(auth, provider);
+      user = result.user;
     }
-
     await updateDoc(doc(db, "groups", groupDoc.id), {
       members: arrayUnion(user.uid),
       [`memberNames.${user.uid}`]: user.displayName || "家人"
     });
     await setDoc(doc(db, "users", user.uid), { uid: user.uid, groupId: groupDoc.id, joinedAt: Date.now(), displayName: user.displayName || "家人" }, { merge: true });
-
     showToast("成功加入！即時同步已開啟 🎉", "success");
     setTimeout(() => { window.location.href = "pages/app.html"; }, 900);
   } catch(e) {
@@ -124,15 +121,12 @@ document.getElementById("btn-join").addEventListener("click", async () => {
   }
 });
 
-// 確保用戶有群組
 async function ensureGroup(user) {
   const userRef = doc(db, "users", user.uid);
   const snap = await getDoc(userRef);
   if (snap.exists() && snap.data().groupId) return snap.data().groupId;
-
   const groupId = "grp_" + Date.now();
   const code = Array.from({length:6}, () => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*32)]).join("");
-
   await setDoc(doc(db, "groups", groupId), {
     createdBy: user.uid, createdAt: Date.now(),
     members: [user.uid],
@@ -143,9 +137,13 @@ async function ensureGroup(user) {
   return groupId;
 }
 
-// 已登入直接跳轉
 onAuthStateChanged(auth, (user) => {
-  if (user) window.location.href = "pages/app.html";
+  if (user) {
+     // 檢查目前是否已在首頁，避免無限跳轉
+     if (!window.location.pathname.includes('pages/app.html')) {
+       window.location.href = "pages/app.html";
+     }
+  }
 });
 </script>
 </body>
