@@ -54,12 +54,8 @@ document.getElementById("btn-google-login").addEventListener("click", async () =
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     statusMsg.innerText = "登入成功！正在跳轉...";
-    
-    // 儲存設定到本地，讓下一頁也能用
     localStorage.setItem('fb_config', JSON.stringify(firebaseConfig));
-    
-    // 跳轉到主程式
-    window.location.href = "pages/app.html";
+    window.location.href = "app.html";
   } catch(e) {
     console.error(e);
     statusMsg.innerText = "錯誤: " + e.message;
@@ -71,7 +67,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     statusMsg.innerText = "偵測到已登入，準備進入...";
     localStorage.setItem('fb_config', JSON.stringify(firebaseConfig));
-    window.location.href = "pages/app.html";
+    window.location.href = "app.html";
   }
 });
 </script>
