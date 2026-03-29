@@ -8,6 +8,36 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗺️</text></svg>">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* 修正 modal 不被遮擋 */
+.modal-sheet { display: flex; flex-direction: column; }
+.modal-header { flex-shrink: 0; position: sticky; top: 0; background: var(--card); z-index: 10; border-bottom: 0.5px solid var(--border-light); }
+.modal-handle { flex-shrink: 0; }
+.modal-body { overflow-y: auto; flex: 1; }
+
+/* 照片上傳 */
+.photo-upload-area {
+  width: 100%; height: 140px; border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm); background: var(--warm);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer; gap: 8px; position: relative; overflow: hidden;
+  transition: border-color 0.2s;
+}
+.photo-upload-area:active { border-color: var(--accent); }
+.photo-upload-area img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo-upload-area .upload-icon { font-size: 28px; position: relative; z-index: 1; }
+.photo-upload-area .upload-text { font-size: 12px; color: var(--muted); position: relative; z-index: 1; }
+.photo-remove-btn {
+  position: absolute; top: 6px; right: 6px; z-index: 2;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); color: white; border: none;
+  font-size: 12px; cursor: pointer; display: none;
+  align-items: center; justify-content: center;
+}
+.photo-upload-area.has-photo .photo-remove-btn { display: flex; }
+.photo-upload-area.has-photo .upload-icon,
+.photo-upload-area.has-photo .upload-text { display: none; }
+</style>
 </head>
 <body>
 
@@ -54,13 +84,12 @@
     <div class="filter-row" id="tag-row">
       <div class="chip tag-chip" data-val="不限時">不限時</div>
       <div class="chip tag-chip" data-val="有貓咪">有貓咪 🐱</div>
-      <div class="chip tag-chip" data-val="推車友善">推車友善</div>
       <div class="chip tag-chip" data-val="有插座">有插座</div>
       <div class="chip tag-chip" data-val="親子友善">親子友善</div>
       <div class="chip tag-chip" data-val="停車方便">停車方便</div>
-      <div class="chip tag-chip" data-val="景觀座位">景觀座位</div>
       <div class="chip tag-chip" data-val="外帶友善">外帶友善</div>
       <div class="chip tag-chip" data-val="預約制">預約制</div>
+      <div class="chip tag-chip" data-val="需要排隊">需要排隊</div>
       <div class="chip tag-chip" data-val="已造訪">✅ 去過了</div>
     </div>
   </div>
@@ -119,16 +148,12 @@
           <div class="tags-grid">
             <button type="button" class="tag-toggle" data-tag="不限時">不限時</button>
             <button type="button" class="tag-toggle" data-tag="有貓咪">有貓咪 🐱</button>
-            <button type="button" class="tag-toggle" data-tag="推車友善">推車友善</button>
             <button type="button" class="tag-toggle" data-tag="有插座">有插座</button>
             <button type="button" class="tag-toggle" data-tag="親子友善">親子友善</button>
             <button type="button" class="tag-toggle" data-tag="停車方便">停車方便 🚗</button>
-            <button type="button" class="tag-toggle" data-tag="景觀座位">景觀座位 🪟</button>
             <button type="button" class="tag-toggle" data-tag="外帶友善">外帶友善 📦</button>
             <button type="button" class="tag-toggle" data-tag="預約制">預約制</button>
-            <button type="button" class="tag-toggle" data-tag="季節限定">季節限定 🌸</button>
             <button type="button" class="tag-toggle" data-tag="需要排隊">需要排隊 ⏳</button>
-            <button type="button" class="tag-toggle" data-tag="cp值高">CP值高 💰</button>
           </div>
         </div>
         <div class="form-group">
@@ -140,8 +165,14 @@
           <input type="url" class="form-input" id="f-sourcelink" placeholder="貼上 IG 或 Threads 連結">
         </div>
         <div class="form-group">
-          <label class="form-label">照片網址</label>
-          <input type="url" class="form-input" id="f-photourl" placeholder="貼上圖片連結（選填）">
+          <label class="form-label">照片</label>
+          <input type="file" id="f-photo-file" accept="image/*" style="display:none">
+          <div class="photo-upload-area" id="photo-upload-area" onclick="document.getElementById('f-photo-file').click()">
+            <img id="photo-preview" src="" style="display:none">
+            <button type="button" class="photo-remove-btn" id="photo-remove-btn" onclick="event.stopPropagation();removePhoto()">✕</button>
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">點擊選擇照片</div>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">備註 / 推薦菜色</label>
@@ -227,12 +258,29 @@
         <div class="settings-row" id="btn-import">
           <div class="settings-row-icon">📥</div>
           <div class="settings-row-text">
-            <div class="settings-row-label">匯入資料</div>
-            <div class="settings-row-sub">從 JSON 備份還原</div>
+            <div class="settings-row-label">匯入資料（JSON）</div>
+            <div class="settings-row-sub">從備份 JSON 還原</div>
+          </div>
+          <div class="settings-row-arrow">›</div>
+        </div>
+        <div class="settings-row" id="btn-import-csv">
+          <div class="settings-row-icon">📊</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label">批量匯入（Excel/CSV）</div>
+            <div class="settings-row-sub">用試算表一次新增多筆</div>
+          </div>
+          <div class="settings-row-arrow">›</div>
+        </div>
+        <div class="settings-row" id="btn-download-template">
+          <div class="settings-row-icon">📋</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label">下載 CSV 範本</div>
+            <div class="settings-row-sub">填好後再批量匯入</div>
           </div>
           <div class="settings-row-arrow">›</div>
         </div>
         <input type="file" id="import-file-input" accept=".json" style="display:none">
+        <input type="file" id="import-csv-input" accept=".csv" style="display:none">
       </div>
       <div class="settings-section">
         <div class="settings-section-title">統計</div>
@@ -279,6 +327,7 @@ let currentUser = null, groupId = null, groupData = null;
 let allPlaces = [];
 let currentView = "card", editingId = null, visitedState = false;
 let filterRegion = "", filterCat = "", filterTags = [];
+let currentPhotoBase64 = "";
 
 function showToast(msg, type="") {
   const t = document.getElementById("toast");
@@ -292,17 +341,43 @@ function getCatEmoji(cat) {
   return map[cat] || "📍";
 }
 
-// 手勢下滑關閉
-function enableSwipeClose(handleId, overlayId) {
-  const handle = document.getElementById(handleId);
-  const sheet = handle?.closest('.modal-sheet');
-  if (!handle || !sheet) return;
-  let startY = 0;
-  sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, {passive:true});
-  sheet.addEventListener('touchend', e => {
-    if (e.changedTouches[0].clientY - startY > 80) closeModal(overlayId);
+// 手勢下滑關閉（不影響內部滾動）
+function enableSwipeClose(sheetEl, overlayId) {
+  let startY = 0, startScrollTop = 0;
+  sheetEl.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+    startScrollTop = sheetEl.scrollTop;
+  }, {passive:true});
+  sheetEl.addEventListener('touchend', e => {
+    const diff = e.changedTouches[0].clientY - startY;
+    if (diff > 80 && startScrollTop <= 0) closeModal(overlayId);
   }, {passive:true});
 }
+
+// 照片處理
+document.getElementById('f-photo-file').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { showToast("照片請小於 2MB", "error"); return; }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    currentPhotoBase64 = ev.target.result;
+    const preview = document.getElementById('photo-preview');
+    const area = document.getElementById('photo-upload-area');
+    preview.src = currentPhotoBase64;
+    preview.style.display = 'block';
+    area.classList.add('has-photo');
+  };
+  reader.readAsDataURL(file);
+});
+
+window.removePhoto = () => {
+  currentPhotoBase64 = "";
+  document.getElementById('photo-preview').src = '';
+  document.getElementById('photo-preview').style.display = 'none';
+  document.getElementById('photo-upload-area').classList.remove('has-photo');
+  document.getElementById('f-photo-file').value = '';
+};
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = "index.html"; return; }
@@ -322,17 +397,19 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById("app").style.display = "flex";
   subscribeToPlaces();
   setupSettingsPanel();
-  enableSwipeClose("handle-form", "modal-form");
-  enableSwipeClose("handle-detail", "modal-detail");
-  enableSwipeClose("handle-settings", "modal-settings");
+
+  // 啟用手勢
+  document.querySelectorAll('.modal-sheet').forEach((sheet, i) => {
+    const ids = ["modal-form","modal-detail","modal-settings"];
+    enableSwipeClose(sheet, ids[i]);
+  });
 });
 
 function subscribeToPlaces() {
   const q = query(collection(db,"groups",groupId,"places"), orderBy("createdAt","desc"));
   onSnapshot(q, (snap) => {
     allPlaces = snap.docs.map(d => ({id:d.id, ...d.data()}));
-    renderPlaces();
-    updateStats();
+    renderPlaces(); updateStats();
   }, () => {
     document.getElementById("sync-indicator").textContent = "離線中";
     document.getElementById("sync-indicator").style.color = "var(--red)";
@@ -378,8 +455,7 @@ function renderPlaces() {
           <div class="card-cat">${p.category||""}</div>
           <div class="card-tags">${(p.tags||[]).slice(0,3).map(t=>`<span class="card-tag">${t}</span>`).join("")}</div>
         </div>
-      </div>
-    `).join("");
+      </div>`).join("");
   } else {
     container.className = "card-grid list";
     container.innerHTML = filtered.map(p => `
@@ -395,8 +471,7 @@ function renderPlaces() {
           ${p.visited?'<div class="list-visited">✅ 已造訪</div>':''}
         </div>
         <div class="list-arrow">›</div>
-      </div>
-    `).join("");
+      </div>`).join("");
   }
 
   container.querySelectorAll("[data-id]").forEach(el => {
@@ -432,17 +507,17 @@ function openDetail(id) {
         <button class="btn-delete" onclick="confirmDelete('${p.id}','${(p.name||"").replace(/'/g,"\\'")}')">🗑 刪除</button>
       </div>
       <div class="created-by">由 ${p.createdBy||"你"} 新增</div>
-    </div>
-  `;
+    </div>`;
   openModal("modal-detail");
 }
 
 function openAddForm() {
-  editingId = null; visitedState = false;
+  editingId = null; visitedState = false; currentPhotoBase64 = "";
   document.getElementById("form-title").textContent = "新增地點";
   document.getElementById("place-form").reset();
   document.querySelectorAll(".tag-toggle").forEach(t => t.classList.remove("selected"));
   document.getElementById("visited-toggle").classList.remove("on");
+  window.removePhoto();
   openModal("modal-form");
 }
 
@@ -450,14 +525,22 @@ window.openEdit = (id) => {
   const p = allPlaces.find(x => x.id === id);
   if (!p) return;
   editingId = id; visitedState = p.visited || false;
+  currentPhotoBase64 = p.photoUrl || "";
   document.getElementById("form-title").textContent = "編輯地點";
   document.getElementById("f-name").value = p.name || "";
   document.getElementById("f-region").value = p.region || "";
   document.getElementById("f-category").value = p.category || "";
   document.getElementById("f-maplink").value = p.mapLink || "";
   document.getElementById("f-sourcelink").value = p.sourceLink || "";
-  document.getElementById("f-photourl").value = p.photoUrl || "";
   document.getElementById("f-note").value = p.note || "";
+  // 顯示現有照片
+  if (p.photoUrl) {
+    document.getElementById('photo-preview').src = p.photoUrl;
+    document.getElementById('photo-preview').style.display = 'block';
+    document.getElementById('photo-upload-area').classList.add('has-photo');
+  } else {
+    window.removePhoto();
+  }
   document.querySelectorAll(".tag-toggle").forEach(t => {
     t.classList.toggle("selected", (p.tags||[]).includes(t.dataset.tag));
   });
@@ -478,7 +561,6 @@ window.confirmDelete = async (id, name) => {
 document.querySelectorAll(".tag-toggle").forEach(btn => {
   btn.addEventListener("click", () => btn.classList.toggle("selected"));
 });
-
 document.getElementById("visited-toggle").addEventListener("click", function() {
   visitedState = !visitedState;
   this.classList.toggle("on", visitedState);
@@ -495,7 +577,7 @@ document.getElementById("place-form").addEventListener("submit", async (e) => {
     category: document.getElementById("f-category").value,
     mapLink: document.getElementById("f-maplink").value.trim(),
     sourceLink: document.getElementById("f-sourcelink").value.trim(),
-    photoUrl: document.getElementById("f-photourl").value.trim(),
+    photoUrl: currentPhotoBase64,
     note: document.getElementById("f-note").value.trim(),
     tags, visited: visitedState
   };
@@ -512,6 +594,7 @@ document.getElementById("place-form").addEventListener("submit", async (e) => {
   btn.disabled = false; btn.textContent = "儲存地點";
 });
 
+// 篩選
 document.querySelectorAll("#region-row .chip").forEach(c => {
   c.addEventListener("click", () => {
     document.querySelectorAll("#region-row .chip").forEach(x => x.classList.remove("active"));
@@ -584,20 +667,19 @@ document.getElementById("btn-copy-code").addEventListener("click", () => {
   const code = document.getElementById("s-invitecode").textContent;
   navigator.clipboard.writeText(code).then(() => showToast("邀請碼已複製！", "success"));
 });
-
 document.getElementById("btn-refresh-code").addEventListener("click", async () => {
   const code = Array.from({length:6}, () => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.floor(Math.random()*32)]).join("");
   await updateDoc(doc(db,"groups",groupId), { inviteCode: code, inviteExpiry: Date.now()+7*24*60*60*1000 });
   document.getElementById("s-invitecode").textContent = code;
   showToast("新邀請碼已產生！", "success");
 });
-
 document.getElementById("btn-logout").addEventListener("click", async () => {
   if (!confirm("確定要登出嗎？")) return;
   await signOut(auth);
   window.location.href = "index.html";
 });
 
+// 匯出
 document.getElementById("btn-export").addEventListener("click", () => {
   const data = { exportedAt: new Date().toISOString(), version: "1.0", count: allPlaces.length, places: allPlaces.map(p => { const {id,...rest} = p; return rest; }) };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
@@ -608,9 +690,8 @@ document.getElementById("btn-export").addEventListener("click", () => {
   showToast(`已匯出 ${allPlaces.length} 個地點`, "success");
 });
 
-document.getElementById("btn-import").addEventListener("click", () => {
-  document.getElementById("import-file-input").click();
-});
+// 匯入 JSON
+document.getElementById("btn-import").addEventListener("click", () => document.getElementById("import-file-input").click());
 document.getElementById("import-file-input").addEventListener("change", async (e) => {
   const file = e.target.files[0]; if (!file) return;
   const text = await file.text();
@@ -628,6 +709,50 @@ document.getElementById("import-file-input").addEventListener("change", async (e
     }
     showToast(`成功匯入 ${count} 個地點！`, "success");
   } catch(err) { showToast("匯入失敗：" + err.message, "error"); }
+  e.target.value = "";
+});
+
+// 下載 CSV 範本
+document.getElementById("btn-download-template").addEventListener("click", () => {
+  const csv = "店名,地區,主分類,標籤(用|分隔),Google Maps連結,推薦來源連結,備註,已造訪(是/否)\n" +
+    "範例咖啡廳,雙北,咖啡下午茶,不限時|有插座,https://maps.google.com,,好喝的拿鐵,否\n" +
+    "範例餐廳,宜蘭,正餐飽食,停車方便,,,推薦牛肉麵,是";
+  const blob = new Blob(["\uFEFF"+csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url;
+  a.download = "口袋名單匯入範本.csv";
+  a.click(); URL.revokeObjectURL(url);
+  showToast("範本已下載！", "success");
+});
+
+// 匯入 CSV
+document.getElementById("btn-import-csv").addEventListener("click", () => document.getElementById("import-csv-input").click());
+document.getElementById("import-csv-input").addEventListener("change", async (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  const text = await file.text();
+  try {
+    const lines = text.replace(/\r/g,'').split('\n').filter(l => l.trim());
+    const rows = lines.slice(1); // 跳過標題列
+    if (!rows.length) throw new Error("沒有資料");
+    if (!confirm(`確定要匯入 ${rows.length} 筆資料嗎？`)) return;
+    showToast("CSV 匯入中...");
+    let count = 0;
+    for (const row of rows) {
+      const cols = row.split(',');
+      const name = cols[0]?.trim();
+      if (!name) continue;
+      const tags = cols[3]?.trim() ? cols[3].split('|').map(t=>t.trim()).filter(Boolean) : [];
+      await addDoc(collection(db,"groups",groupId,"places"), {
+        name, region: cols[1]?.trim()||"", category: cols[2]?.trim()||"",
+        tags, mapLink: cols[4]?.trim()||"", sourceLink: cols[5]?.trim()||"",
+        note: cols[6]?.trim()||"", visited: cols[7]?.trim()==="是",
+        photoUrl: "", createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
+        createdBy: currentUser.displayName || "CSV匯入"
+      });
+      count++;
+    }
+    showToast(`成功匯入 ${count} 筆！`, "success");
+  } catch(err) { showToast("CSV匯入失敗：" + err.message, "error"); }
   e.target.value = "";
 });
 
