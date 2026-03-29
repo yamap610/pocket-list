@@ -11,15 +11,12 @@
 </head>
 <body>
 
-<!-- 載入中 -->
 <div id="loading-screen" class="loading-screen">
   <div class="spinner"></div>
   <p style="font-size:13px;color:var(--muted)">載入口袋名單中...</p>
 </div>
 
 <div id="app" class="app-layout" style="display:none">
-
-  <!-- Header -->
   <header class="app-header">
     <div class="header-top">
       <div>
@@ -27,7 +24,7 @@
         <div class="sync-dot" id="sync-indicator">即時同步中</div>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" id="btn-settings" title="設定">⚙️</button>
+        <button class="icon-btn" id="btn-settings">⚙️</button>
       </div>
     </div>
     <div style="margin-top:10px">
@@ -35,7 +32,6 @@
     </div>
   </header>
 
-  <!-- 篩選區 -->
   <div class="filter-section">
     <div class="filter-row" id="region-row">
       <div class="chip active" data-val="">全部</div>
@@ -69,9 +65,8 @@
     </div>
   </div>
 
-  <!-- 結果列 & 視圖切換 -->
   <div class="view-toggle-row">
-    <div id="results-info" class="results-bar" style="padding:0;font-size:12px;color:var(--muted)"></div>
+    <div id="results-info" style="font-size:12px;color:var(--muted)"></div>
     <div style="display:flex;align-items:center;gap:8px">
       <button class="clear-btn" id="clear-filters" style="display:none">清除篩選</button>
       <div class="view-btns">
@@ -81,17 +76,15 @@
     </div>
   </div>
 
-  <!-- 地點列表 -->
   <main id="places-container" class="card-grid"></main>
 </div>
 
-<!-- FAB 新增 -->
-<button class="fab" id="btn-add" title="新增地點">＋</button>
+<button class="fab" id="btn-add">＋</button>
 
 <!-- MODAL: 新增/編輯 -->
 <div class="modal-overlay" id="modal-form">
   <div class="modal-sheet">
-    <div class="modal-handle"></div>
+    <div class="modal-handle" id="handle-form"></div>
     <div class="modal-header">
       <div class="modal-title" id="form-title">新增地點</div>
       <button class="modal-close" id="close-form">✕</button>
@@ -123,7 +116,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">特色標籤（可多選）</label>
-          <div class="tags-grid" id="tags-grid">
+          <div class="tags-grid">
             <button type="button" class="tag-toggle" data-tag="不限時">不限時</button>
             <button type="button" class="tag-toggle" data-tag="有貓咪">有貓咪 🐱</button>
             <button type="button" class="tag-toggle" data-tag="推車友善">推車友善</button>
@@ -172,7 +165,7 @@
 <!-- MODAL: 詳情 -->
 <div class="modal-overlay" id="modal-detail">
   <div class="modal-sheet">
-    <div class="modal-handle"></div>
+    <div class="modal-handle" id="handle-detail"></div>
     <div id="detail-content"></div>
   </div>
 </div>
@@ -180,7 +173,7 @@
 <!-- MODAL: 設定 -->
 <div class="modal-overlay settings-sheet" id="modal-settings">
   <div class="modal-sheet">
-    <div class="modal-handle"></div>
+    <div class="modal-handle" id="handle-settings"></div>
     <div class="modal-header">
       <div class="modal-title">⚙️ 設定</div>
       <button class="modal-close" id="close-settings">✕</button>
@@ -262,7 +255,6 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
 <script type="module">
@@ -284,7 +276,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUser = null, groupId = null, groupData = null;
-let allPlaces = [], unsubscribe = null;
+let allPlaces = [];
 let currentView = "card", editingId = null, visitedState = false;
 let filterRegion = "", filterCat = "", filterTags = [];
 
@@ -298,6 +290,18 @@ function closeModal(id) { document.getElementById(id).classList.remove("open"); 
 function getCatEmoji(cat) {
   const map = {"咖啡下午茶":"☕","正餐飽食":"🍱","輕食小吃":"🥯","親子休閒":"🎡","微醺餐酒":"🥂","文具生活":"✏️","其他":"📍"};
   return map[cat] || "📍";
+}
+
+// 手勢下滑關閉
+function enableSwipeClose(handleId, overlayId) {
+  const handle = document.getElementById(handleId);
+  const sheet = handle?.closest('.modal-sheet');
+  if (!handle || !sheet) return;
+  let startY = 0;
+  sheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, {passive:true});
+  sheet.addEventListener('touchend', e => {
+    if (e.changedTouches[0].clientY - startY > 80) closeModal(overlayId);
+  }, {passive:true});
 }
 
 onAuthStateChanged(auth, async (user) => {
@@ -318,11 +322,14 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById("app").style.display = "flex";
   subscribeToPlaces();
   setupSettingsPanel();
+  enableSwipeClose("handle-form", "modal-form");
+  enableSwipeClose("handle-detail", "modal-detail");
+  enableSwipeClose("handle-settings", "modal-settings");
 });
 
 function subscribeToPlaces() {
   const q = query(collection(db,"groups",groupId,"places"), orderBy("createdAt","desc"));
-  unsubscribe = onSnapshot(q, (snap) => {
+  onSnapshot(q, (snap) => {
     allPlaces = snap.docs.map(d => ({id:d.id, ...d.data()}));
     renderPlaces();
     updateStats();
@@ -347,8 +354,7 @@ function renderPlaces() {
 
   const hasFilter = filterRegion || filterCat || filterTags.length || q;
   document.getElementById("clear-filters").style.display = hasFilter ? "block" : "none";
-  const info = document.getElementById("results-info");
-  info.innerHTML = hasFilter ? `找到 <strong>${filtered.length}</strong> 個地點` : `共 <strong>${allPlaces.length}</strong> 個地點`;
+  document.getElementById("results-info").innerHTML = hasFilter ? `找到 <strong>${filtered.length}</strong> 個地點` : `共 <strong>${allPlaces.length}</strong> 個地點`;
 
   const container = document.getElementById("places-container");
   if (!filtered.length) {
@@ -401,7 +407,7 @@ function renderPlaces() {
 function openDetail(id) {
   const p = allPlaces.find(x => x.id === id);
   if (!p) return;
-  const html = `
+  document.getElementById("detail-content").innerHTML = `
     <div class="detail-photo">
       ${p.photoUrl ? `<img src="${p.photoUrl}" alt="${p.name}" onerror="this.style.display='none'">` : ""}
       <span style="font-size:60px;position:relative;z-index:1">${getCatEmoji(p.category)}</span>
@@ -428,7 +434,6 @@ function openDetail(id) {
       <div class="created-by">由 ${p.createdBy||"你"} 新增</div>
     </div>
   `;
-  document.getElementById("detail-content").innerHTML = html;
   openModal("modal-detail");
 }
 
