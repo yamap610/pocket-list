@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -12,32 +13,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap');
 
 :root {
-  --cream: #F7F3EE;
-  --warm: #EDE5D8;
-  --warm2: #E4D9C8;
-  --card: #FFFDF9;
-  --brown-light: #C4A882;
-  --brown: #8B6B4A;
-  --brown-dark: #5C4230;
-  --dark: #3A2E24;
-  --muted: #A89580;
-  --muted-light: #C8BAA8;
-  --accent: #C4956A;
-  --accent-dark: #A67C52;
-  --green: #7A9E7E;
-  --green-light: #EBF3EC;
-  --red: #C4776A;
-  --red-light: #F5EDEC;
-  --border: #E2D5C3;
-  --border-light: #EDE5D8;
-  --shadow: rgba(90,60,30,0.08);
-  --shadow-md: rgba(90,60,30,0.14);
-  --radius: 14px;
-  --radius-sm: 8px;
-  --radius-lg: 20px;
+–cream: #F7F3EE;
+–warm: #EDE5D8;
+–warm2: #E4D9C8;
+–card: #FFFDF9;
+–brown-light: #C4A882;
+–brown: #8B6B4A;
+–brown-dark: #5C4230;
+–dark: #3A2E24;
+–muted: #A89580;
+–muted-light: #C8BAA8;
+–accent: #C4956A;
+–accent-dark: #A67C52;
+–green: #7A9E7E;
+–green-light: #EBF3EC;
+–red: #C4776A;
+–red-light: #F5EDEC;
+–border: #E2D5C3;
+–border-light: #EDE5D8;
+–shadow: rgba(90,60,30,0.08);
+–shadow-md: rgba(90,60,30,0.14);
+–radius: 14px;
+–radius-sm: 8px;
+–radius-lg: 20px;
 
-  --serif: 'Noto Serif TC', 'Georgia', serif;
-  --sans: 'Noto Sans TC', 'Helvetica Neue', sans-serif;
+–serif: ‘Noto Serif TC’, ‘Georgia’, serif;
+–sans: ‘Noto Sans TC’, ‘Helvetica Neue’, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,12 +46,12 @@
 html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
 body {
-  font-family: var(--sans);
-  background: var(--cream);
-  color: var(--dark);
-  min-height: 100vh;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+font-family: var(–sans);
+background: var(–cream);
+color: var(–dark);
+min-height: 100vh;
+line-height: 1.6;
+-webkit-font-smoothing: antialiased;
 }
 
 /* ===== 登入頁 ===== */
@@ -58,9 +59,9 @@ body {
 
 .login-bg { position: fixed; inset: 0; z-index: 0; background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%); }
 .login-deco {
-  position: absolute; border-radius: 50%;
-  background: radial-gradient(circle, var(--brown-light) 0%, transparent 70%);
-  opacity: 0.15;
+position: absolute; border-radius: 50%;
+background: radial-gradient(circle, var(–brown-light) 0%, transparent 70%);
+opacity: 0.15;
 }
 .deco-1 { width: 400px; height: 400px; top: -100px; right: -100px; }
 .deco-2 { width: 300px; height: 300px; bottom: -80px; left: -80px; }
@@ -69,429 +70,464 @@ body {
 .login-container { position: relative; z-index: 1; width: 100%; max-width: 420px; padding: 24px 16px; }
 
 .login-card {
-  background: var(--card);
-  border-radius: var(--radius-lg);
-  padding: 36px 32px;
-  border: 0.5px solid var(--border);
-  box-shadow: 0 8px 40px var(--shadow-md);
+background: var(–card);
+border-radius: var(–radius-lg);
+padding: 36px 32px;
+border: 0.5px solid var(–border);
+box-shadow: 0 8px 40px var(–shadow-md);
 }
 
 .login-logo { text-align: center; margin-bottom: 28px; }
 .logo-icon { font-size: 48px; display: block; margin-bottom: 12px; }
-.logo-title { font-family: var(--serif); font-size: 28px; font-weight: 700; color: var(--dark); letter-spacing: 2px; }
-.logo-sub { font-size: 13px; color: var(--muted); margin-top: 6px; letter-spacing: 0.5px; }
+.logo-title { font-family: var(–serif); font-size: 28px; font-weight: 700; color: var(–dark); letter-spacing: 2px; }
+.logo-sub { font-size: 13px; color: var(–muted); margin-top: 6px; letter-spacing: 0.5px; }
 
 .btn-google {
-  width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
-  padding: 13px; border-radius: var(--radius);
-  border: 0.5px solid var(--border); background: var(--card);
-  font-family: var(--sans); font-size: 15px; color: var(--dark);
-  cursor: pointer; transition: all 0.2s;
+width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
+padding: 13px; border-radius: var(–radius);
+border: 0.5px solid var(–border); background: var(–card);
+font-family: var(–sans); font-size: 15px; color: var(–dark);
+cursor: pointer; transition: all 0.2s;
 }
-.btn-google:hover { background: var(--warm); border-color: var(--brown-light); transform: translateY(-1px); box-shadow: 0 4px 16px var(--shadow); }
+.btn-google:hover { background: var(–warm); border-color: var(–brown-light); transform: translateY(-1px); box-shadow: 0 4px 16px var(–shadow); }
 .btn-google:active { transform: translateY(0); }
 
 /* ===== 主應用 Layout ===== */
 .app-layout {
-  display: flex; flex-direction: column; min-height: 100vh;
-  max-width: 480px; margin: 0 auto;
+display: flex; flex-direction: column; min-height: 100vh;
+max-width: 480px; margin: 0 auto;
 }
 
 /* ===== Header ===== */
 .app-header {
-  background: var(--card); border-bottom: 0.5px solid var(--border);
-  padding: 14px 16px 10px; position: sticky; top: 0; z-index: 100;
+background: var(–card); border-bottom: 0.5px solid var(–border);
+padding: 14px 16px 10px; position: sticky; top: 0; z-index: 100;
 }
 .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.app-title-small { font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--dark); letter-spacing: 1px; }
+.app-title-small { font-family: var(–serif); font-size: 18px; font-weight: 700; color: var(–dark); letter-spacing: 1px; }
 .header-actions { display: flex; gap: 8px; }
 .icon-btn {
-  width: 36px; height: 36px; border-radius: 50%; border: 0.5px solid var(--border);
-  background: var(--warm); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 16px; transition: all 0.2s; color: var(--brown);
+width: 36px; height: 36px; border-radius: 50%; border: 0.5px solid var(–border);
+background: var(–warm); display: flex; align-items: center; justify-content: center;
+cursor: pointer; font-size: 16px; transition: all 0.2s; color: var(–brown);
 }
-.icon-btn:hover { background: var(--warm2); border-color: var(--brown-light); }
+.icon-btn:hover { background: var(–warm2); border-color: var(–brown-light); }
 .sync-dot {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 11px; color: var(--green);
+display: inline-flex; align-items: center; gap: 4px;
+font-size: 11px; color: var(–green);
 }
-.sync-dot::before { content: ""; width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+.sync-dot::before { content: “”; width: 6px; height: 6px; background: var(–green); border-radius: 50%; animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
 /* ===== 搜尋 ===== */
 .search-input {
-  width: 100%; padding: 10px 16px; border-radius: 20px;
-  border: 0.5px solid var(--border); background: var(--warm);
-  font-family: var(--sans); font-size: 14px; color: var(--dark); outline: none;
-  transition: all 0.2s;
+width: 100%; padding: 10px 16px; border-radius: 20px;
+border: 0.5px solid var(–border); background: var(–warm);
+font-family: var(–sans); font-size: 14px; color: var(–dark); outline: none;
+transition: all 0.2s;
 }
-.search-input:focus { border-color: var(--accent); background: var(--card); box-shadow: 0 0 0 3px rgba(196,149,106,0.1); }
-.search-input::placeholder { color: var(--muted-light); }
+.search-input:focus { border-color: var(–accent); background: var(–card); box-shadow: 0 0 0 3px rgba(196,149,106,0.1); }
+.search-input::placeholder { color: var(–muted-light); }
 
 /* ===== 篩選 ===== */
-.filter-section { background: var(--card); border-bottom: 0.5px solid var(--border); }
+.filter-section { background: var(–card); border-bottom: 0.5px solid var(–border); }
 .filter-row {
-  display: flex; gap: 7px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none;
+display: flex; gap: 7px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none;
 }
 .filter-row::-webkit-scrollbar { display: none; }
 .chip {
-  white-space: nowrap; padding: 5px 13px; border-radius: 16px;
-  border: 0.5px solid var(--border); background: var(--warm);
-  font-size: 12px; color: var(--brown); cursor: pointer;
-  transition: all 0.15s; flex-shrink: 0; font-family: var(--sans);
+white-space: nowrap; padding: 5px 13px; border-radius: 16px;
+border: 0.5px solid var(–border); background: var(–warm);
+font-size: 12px; color: var(–brown); cursor: pointer;
+transition: all 0.15s; flex-shrink: 0; font-family: var(–sans);
 }
-.chip:hover { border-color: var(--brown-light); background: var(--warm2); }
-.chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+.chip:hover { border-color: var(–brown-light); background: var(–warm2); }
+.chip.active { background: var(–accent); border-color: var(–accent); color: white; }
 .chip.tag-chip { padding: 4px 10px; font-size: 11px; }
 
 /* ===== 結果統計 & 視圖切換 ===== */
-.results-bar strong { color: var(--accent-dark); }
+.results-bar strong { color: var(–accent-dark); }
 .clear-btn {
-  padding: 3px 10px; border-radius: 10px; border: 0.5px solid var(--border);
-  background: transparent; font-size: 11px; color: var(--muted); cursor: pointer;
-  font-family: var(--sans); transition: all 0.15s;
+padding: 3px 10px; border-radius: 10px; border: 0.5px solid var(–border);
+background: transparent; font-size: 11px; color: var(–muted); cursor: pointer;
+font-family: var(–sans); transition: all 0.15s;
 }
-.clear-btn:hover { border-color: var(--red); color: var(--red); }
+.clear-btn:hover { border-color: var(–red); color: var(–red); }
 
 .view-toggle-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 16px 4px;
+display: flex; align-items: center; justify-content: space-between;
+padding: 8px 16px 4px;
 }
 .view-btns { display: flex; gap: 4px; }
 .view-btn {
-  padding: 5px 12px; border-radius: 12px; border: 0.5px solid var(--border);
-  background: transparent; font-size: 12px; color: var(--muted); cursor: pointer;
-  font-family: var(--sans); transition: all 0.15s;
+padding: 5px 12px; border-radius: 12px; border: 0.5px solid var(–border);
+background: transparent; font-size: 12px; color: var(–muted); cursor: pointer;
+font-family: var(–sans); transition: all 0.15s;
 }
-.view-btn.active { background: var(--brown-dark); border-color: var(--brown-dark); color: white; }
+.view-btn.active { background: var(–brown-dark); border-color: var(–brown-dark); color: white; }
 
 /* ===== 卡片網格 ===== */
 .card-grid {
-  padding: 8px 12px 100px;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+padding: 8px 12px 100px;
+display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
 }
 .card-grid.list { grid-template-columns: 1fr; gap: 0; padding: 0 0 100px; }
 
 .place-card {
-  background: var(--card); border-radius: var(--radius);
-  border: 0.5px solid var(--border); overflow: hidden;
-  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-  animation: fadeIn 0.3s ease;
+background: var(–card); border-radius: var(–radius);
+border: 0.5px solid var(–border); overflow: hidden;
+cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+animation: fadeIn 0.3s ease;
 }
 .place-card:active { transform: scale(0.97); }
 @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 
 .card-photo {
-  width: 100%; height: 110px;
-  background: var(--warm); display: flex; align-items: center; justify-content: center;
-  font-size: 32px; color: var(--muted-light); position: relative; overflow: hidden;
+width: 100%; height: 110px;
+background: var(–warm); display: flex; align-items: center; justify-content: center;
+font-size: 32px; color: var(–muted-light); position: relative; overflow: hidden;
 }
 .card-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 .card-photo .emoji-fallback { font-size: 32px; position: relative; z-index: 1; }
 
 .visited-badge {
-  position: absolute; top: 6px; right: 6px;
-  background: var(--green); color: white; font-size: 10px; padding: 2px 7px;
-  border-radius: 8px; font-weight: 500; z-index: 2;
+position: absolute; top: 6px; right: 6px;
+background: var(–green); color: white; font-size: 10px; padding: 2px 7px;
+border-radius: 8px; font-weight: 500; z-index: 2;
 }
 .unvisited-badge {
-  position: absolute; top: 6px; right: 6px;
-  background: rgba(255,255,255,0.85); color: var(--accent-dark); font-size: 10px; padding: 2px 7px;
-  border-radius: 8px; border: 0.5px solid var(--border); z-index: 2;
+position: absolute; top: 6px; right: 6px;
+background: rgba(255,255,255,0.85); color: var(–accent-dark); font-size: 10px; padding: 2px 7px;
+border-radius: 8px; border: 0.5px solid var(–border); z-index: 2;
 }
 
 .card-body { padding: 10px 11px 12px; }
-.card-name { font-size: 13px; font-weight: 500; color: var(--dark); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-region { font-size: 11px; color: var(--muted); }
-.card-cat { font-size: 11px; color: var(--accent-dark); margin-top: 2px; }
+.card-name { font-size: 13px; font-weight: 500; color: var(–dark); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-region { font-size: 11px; color: var(–muted); }
+.card-cat { font-size: 11px; color: var(–accent-dark); margin-top: 2px; }
 .card-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 7px; }
-.card-tag { font-size: 10px; padding: 2px 7px; background: var(--warm); border-radius: 6px; color: var(--brown); }
+.card-tag { font-size: 10px; padding: 2px 7px; background: var(–warm); border-radius: 6px; color: var(–brown); }
 
 /* 列表模式 */
 .list-card {
-  background: var(--card); display: flex; align-items: center; gap: 12px;
-  padding: 12px 16px; border-bottom: 0.5px solid var(--border-light);
-  cursor: pointer; transition: background 0.15s;
+background: var(–card); display: flex; align-items: center; gap: 12px;
+padding: 12px 16px; border-bottom: 0.5px solid var(–border-light);
+cursor: pointer; transition: background 0.15s;
 }
-.list-card:hover { background: var(--warm); }
+.list-card:hover { background: var(–warm); }
 .list-icon {
-  width: 50px; height: 50px; border-radius: 12px;
-  background: var(--warm); flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; font-size: 24px;
-  overflow: hidden; position: relative;
+width: 50px; height: 50px; border-radius: 12px;
+background: var(–warm); flex-shrink: 0;
+display: flex; align-items: center; justify-content: center; font-size: 24px;
+overflow: hidden; position: relative;
 }
 .list-icon img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 .list-info { flex: 1; min-width: 0; }
-.list-name { font-size: 14px; font-weight: 500; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.list-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.list-visited { font-size: 10px; color: var(--green); margin-top: 2px; }
-.list-arrow { color: var(--muted-light); font-size: 18px; flex-shrink: 0; }
+.list-name { font-size: 14px; font-weight: 500; color: var(–dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.list-meta { font-size: 11px; color: var(–muted); margin-top: 2px; }
+.list-visited { font-size: 10px; color: var(–green); margin-top: 2px; }
+.list-arrow { color: var(–muted-light); font-size: 18px; flex-shrink: 0; }
 
 /* 空狀態 */
 .empty-state { padding: 60px 32px; text-align: center; }
 .empty-icon { font-size: 48px; margin-bottom: 12px; }
-.empty-title { font-family: var(--serif); font-size: 18px; color: var(--dark); margin-bottom: 8px; }
-.empty-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.empty-title { font-family: var(–serif); font-size: 18px; color: var(–dark); margin-bottom: 8px; }
+.empty-sub { font-size: 13px; color: var(–muted); line-height: 1.6; }
 
 /* ===== FAB ===== */
 .fab {
-  position: fixed; bottom: 28px; right: 20px;
-  width: 54px; height: 54px; border-radius: 50%;
-  background: var(--accent); border: none; color: white;
-  font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 20px rgba(196,149,106,0.4);
-  transition: all 0.2s; z-index: 200;
+position: fixed; bottom: 28px; right: 20px;
+width: 54px; height: 54px; border-radius: 50%;
+background: var(–accent); border: none; color: white;
+font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+box-shadow: 0 4px 20px rgba(196,149,106,0.4);
+transition: all 0.2s; z-index: 200;
 }
-.fab:hover { background: var(--accent-dark); transform: scale(1.08); }
+.fab:hover { background: var(–accent-dark); transform: scale(1.08); }
 .fab:active { transform: scale(0.96); }
 
 /* ===== Modal ===== */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(40,28,18,0.45);
-  z-index: 300; display: flex; align-items: flex-end; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+position: fixed; inset: 0; background: rgba(40,28,18,0.45);
+z-index: 300; display: flex; align-items: flex-end; justify-content: center;
+opacity: 0; pointer-events: none; transition: opacity 0.25s;
 }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
 
 .modal-sheet {
-  background: var(--card); border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  width: 100%; max-width: 480px; max-height: 92vh;
-  overflow-y: auto; padding: 0 0 env(safe-area-inset-bottom, 16px);
-  transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+background: var(–card); border-radius: var(–radius-lg) var(–radius-lg) 0 0;
+width: 100%; max-width: 480px; max-height: 92vh;
+overflow: hidden;
+display: flex; flex-direction: column;
+transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
 }
 .modal-overlay.open .modal-sheet { transform: translateY(0); }
 
 /* 拖拉手把 — sticky 固定不被滾走 */
 .modal-handle-wrap {
-  padding: 12px 0 4px; display: flex; justify-content: center; cursor: grab;
-  position: sticky; top: 0; z-index: 11; background: var(--card);
+padding: 12px 0 4px; display: flex; justify-content: center; cursor: grab;
+position: sticky; top: 0; z-index: 11; background: var(–card);
 }
 /* handle 直接在 sheet 下（不在 wrap 裡）時也做 sticky */
 .modal-sheet > .modal-handle {
-  width: 36px; height: 4px; background: var(--border); border-radius: 2px;
+width: 36px; height: 4px; background: var(–border); border-radius: 2px;
 }
 /* sticky 상단 wrapper: handle + header 一起固定 */
 .modal-sticky-top {
-  position: sticky; top: 0; z-index: 11; background: var(--card);
-  padding-top: 12px;
+position: sticky; top: 0; z-index: 11; background: var(–card);
+padding-top: 12px;
 }
 .modal-sticky-top .modal-handle {
-  width: 36px; height: 4px; background: var(--border); border-radius: 2px;
-  margin: 0 auto 8px;
+width: 36px; height: 4px; background: var(–border); border-radius: 2px;
+margin: 0 auto 8px;
 }
 .modal-header {
-  padding: 8px 20px 12px; display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 0.5px solid var(--border-light);
-  background: var(--card);
+padding: 8px 20px 12px; display: flex; align-items: center; justify-content: space-between;
+border-bottom: 0.5px solid var(–border-light);
+background: var(–card);
 }
-.modal-title { font-family: var(--serif); font-size: 18px; font-weight: 500; color: var(--dark); }
+.modal-title { font-family: var(–serif); font-size: 18px; font-weight: 500; color: var(–dark); }
 .modal-close {
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 0.5px solid var(--border); background: var(--warm);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 16px; color: var(--muted);
-  flex-shrink: 0; line-height: 1;
+width: 32px; height: 32px; border-radius: 50%;
+border: 0.5px solid var(–border); background: var(–warm);
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; font-size: 16px; color: var(–muted);
+flex-shrink: 0; line-height: 1;
 }
 
-.modal-body { padding: 20px; }
+.modal-body { padding: 20px; overflow-y: auto; flex: 1; padding-bottom: calc(20px + env(safe-area-inset-bottom, 16px)); }
 
+/* ===== 回訪意願 ===== */
+.revisit-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.revisit-btn {
+padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(–border);
+background: var(–warm); font-family: var(–sans); font-size: 13px;
+color: var(–dark); cursor: pointer; transition: all 0.15s;
+}
+.revisit-btn.selected { background: var(–accent); border-color: var(–accent); color: white; }
+.revisit-btn[data-val=“雷店避開”].selected { background: var(–red); border-color: var(–red); }
+
+/* ===== 取消按鈕 ===== */
+.btn-cancel-form {
+padding: 14px 20px; border-radius: var(–radius-sm);
+background: var(–warm); border: 0.5px solid var(–border);
+color: var(–muted); font-family: var(–sans); font-size: 15px;
+cursor: pointer; white-space: nowrap;
+}
+.btn-cancel-form:active { background: var(–border); }
+
+/* ===== 分類小字說明 ===== */
+.cat-desc { font-size: 11px; color: var(–muted); margin-top: 4px; }
 
 /* ===== 排序 ===== */
 .sort-select {
-  padding: 5px 10px; border-radius: 8px; border: 0.5px solid var(--border);
-  background: var(--warm); font-family: var(--sans); font-size: 12px;
-  color: var(--dark); outline: none; cursor: pointer;
+padding: 5px 10px; border-radius: 8px; border: 0.5px solid var(–border);
+background: var(–warm); font-family: var(–sans); font-size: 12px;
+color: var(–dark); outline: none; cursor: pointer;
 }
 
 /* ===== 表單 ===== */
 .form-group { margin-bottom: 18px; }
-.form-label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 7px; letter-spacing: 0.3px; }
+.form-label { display: block; font-size: 12px; font-weight: 500; color: var(–muted); margin-bottom: 7px; letter-spacing: 0.3px; }
 .form-input, .form-select, .form-textarea {
-  width: 100%; padding: 11px 14px; border-radius: var(--radius-sm);
-  border: 0.5px solid var(--border); background: var(--warm);
-  font-family: var(--sans); font-size: 14px; color: var(--dark); outline: none;
-  transition: all 0.2s; -webkit-appearance: none;
+width: 100%; padding: 11px 14px; border-radius: var(–radius-sm);
+border: 0.5px solid var(–border); background: var(–warm);
+font-family: var(–sans); font-size: 14px; color: var(–dark); outline: none;
+transition: all 0.2s; -webkit-appearance: none;
 }
 .form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--accent); background: var(--card);
-  box-shadow: 0 0 0 3px rgba(196,149,106,0.12);
+border-color: var(–accent); background: var(–card);
+box-shadow: 0 0 0 3px rgba(196,149,106,0.12);
 }
 .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 .form-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B6B4A' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%238B6B4A’ fill=‘none’ stroke-width=‘1.5’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
 }
 
 .tags-grid { display: flex; flex-wrap: wrap; gap: 7px; }
 .tag-toggle {
-  padding: 6px 12px; border-radius: 14px; border: 0.5px solid var(--border);
-  background: var(--warm); font-size: 12px; color: var(--brown);
-  cursor: pointer; transition: all 0.15s; font-family: var(--sans);
+padding: 6px 12px; border-radius: 14px; border: 0.5px solid var(–border);
+background: var(–warm); font-size: 12px; color: var(–brown);
+cursor: pointer; transition: all 0.15s; font-family: var(–sans);
 }
-.tag-toggle.selected { background: var(--brown); border-color: var(--brown); color: white; }
+.tag-toggle.selected { background: var(–brown); border-color: var(–brown); color: white; }
 
 .visited-toggle {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px; background: var(--warm); border-radius: var(--radius-sm);
-  border: 0.5px solid var(--border); cursor: pointer;
+display: flex; align-items: center; justify-content: space-between;
+padding: 14px; background: var(–warm); border-radius: var(–radius-sm);
+border: 0.5px solid var(–border); cursor: pointer;
 }
-.visited-toggle-label { font-size: 14px; color: var(--dark); }
+.visited-toggle-label { font-size: 14px; color: var(–dark); }
 .toggle-switch {
-  width: 44px; height: 24px; background: var(--border); border-radius: 12px;
-  position: relative; transition: background 0.2s; flex-shrink: 0;
+width: 44px; height: 24px; background: var(–border); border-radius: 12px;
+position: relative; transition: background 0.2s; flex-shrink: 0;
 }
 .toggle-switch::after {
-  content: ""; position: absolute; left: 3px; top: 3px;
-  width: 18px; height: 18px; border-radius: 50%; background: white;
-  transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+content: “”; position: absolute; left: 3px; top: 3px;
+width: 18px; height: 18px; border-radius: 50%; background: white;
+transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
-.visited-toggle.on .toggle-switch { background: var(--green); }
+.visited-toggle.on .toggle-switch { background: var(–green); }
 .visited-toggle.on .toggle-switch::after { transform: translateX(20px); }
 
 /* ===== 詳情 ===== */
+.modal-sheet > #detail-content,
+.modal-sheet .detail-wrap { overflow-y: auto; flex: 1; }
 .detail-photo {
-  width: 100%; height: 220px; background: var(--warm);
-  display: flex; align-items: center; justify-content: center; font-size: 60px;
-  position: relative; overflow: hidden;
+width: 100%; height: 220px; background: var(–warm);
+display: flex; align-items: center; justify-content: center; font-size: 60px;
+position: relative; overflow: hidden;
 }
 .detail-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
 .detail-body { padding: 20px; }
-.detail-name { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+.detail-name { font-family: var(–serif); font-size: 22px; font-weight: 700; color: var(–dark); margin-bottom: 8px; }
 .detail-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-.meta-pill { padding: 4px 12px; border-radius: 12px; font-size: 12px; background: var(--warm); color: var(--brown); border: 0.5px solid var(--border); }
-.meta-pill.cat { background: var(--accent); color: white; border-color: var(--accent); }
+.meta-pill { padding: 4px 12px; border-radius: 12px; font-size: 12px; background: var(–warm); color: var(–brown); border: 0.5px solid var(–border); }
+.meta-pill.cat { background: var(–accent); color: white; border-color: var(–accent); }
 .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-.detail-tag { padding: 4px 11px; border-radius: 10px; font-size: 12px; background: var(--warm2); color: var(--brown); }
-.detail-note { background: var(--warm); border-radius: var(--radius-sm); padding: 14px; font-size: 14px; color: var(--dark); line-height: 1.7; border-left: 3px solid var(--brown-light); margin-top: 12px; }
+.detail-tag { padding: 4px 11px; border-radius: 10px; font-size: 12px; background: var(–warm2); color: var(–brown); }
+
+.detail-custom-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.custom-tag { background: var(–warm); border: 0.5px solid var(–border); border-radius: 20px;
+padding: 3px 10px; font-size: 12px; color: var(–brown); }
+.detail-revisit { font-size: 13px; color: var(–muted); margin: 8px 0; }
+.revisit-badge { font-weight: 600; }
+.revisit-badge.revisit-great { color: #C4956A; }
+.revisit-badge.revisit-ok { color: var(–muted); }
+.revisit-badge.revisit-bad { color: var(–red); }
+
+.detail-note { background: var(–warm); border-radius: var(–radius-sm); padding: 14px; font-size: 14px; color: var(–dark); line-height: 1.7; border-left: 3px solid var(–brown-light); margin-top: 12px; }
 .detail-links { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
 .link-btn {
-  display: flex; align-items: center; gap: 10px; padding: 12px 16px;
-  border-radius: var(--radius-sm); border: 0.5px solid var(--border); background: var(--warm);
-  font-family: var(--sans); font-size: 14px; color: var(--dark); text-decoration: none;
-  transition: all 0.15s;
+display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+border-radius: var(–radius-sm); border: 0.5px solid var(–border); background: var(–warm);
+font-family: var(–sans); font-size: 14px; color: var(–dark); text-decoration: none;
+transition: all 0.15s;
 }
-.link-btn:hover { background: var(--warm2); border-color: var(--brown-light); }
+.link-btn:hover { background: var(–warm2); border-color: var(–brown-light); }
 .link-icon { font-size: 18px; }
-.detail-actions { display: flex; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 0.5px solid var(--border-light); }
+.detail-actions { display: flex; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 0.5px solid var(–border-light); }
 .btn-edit, .btn-delete {
-  flex: 1; padding: 12px; border-radius: var(--radius-sm);
-  font-family: var(--sans); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+flex: 1; padding: 12px; border-radius: var(–radius-sm);
+font-family: var(–sans); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s;
 }
-.btn-edit { background: var(--accent); border: none; color: white; }
-.btn-edit:hover { background: var(--accent-dark); }
-.btn-delete { background: transparent; border: 0.5px solid var(--border); color: var(--red); }
-.btn-delete:hover { background: var(--red-light); border-color: var(--red); }
-.created-by { font-size: 11px; color: var(--muted-light); text-align: right; margin-top: 12px; }
+.btn-edit { background: var(–accent); border: none; color: white; }
+.btn-edit:hover { background: var(–accent-dark); }
+.btn-delete { background: transparent; border: 0.5px solid var(–border); color: var(–red); }
+.btn-delete:hover { background: var(–red-light); border-color: var(–red); }
+.created-by { font-size: 11px; color: var(–muted-light); text-align: right; margin-top: 12px; }
 
 /* ===== 設定 ===== */
 .settings-sheet .modal-body { padding: 16px; }
 .settings-section { margin-bottom: 24px; }
-.settings-section-title { font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; padding: 0 4px; }
+.settings-section-title { font-size: 11px; font-weight: 500; color: var(–muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; padding: 0 4px; }
 .settings-row {
-  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
-  background: var(--warm); border-radius: var(--radius-sm); margin-bottom: 6px;
-  border: 0.5px solid var(--border); cursor: pointer; transition: all 0.15s;
+display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+background: var(–warm); border-radius: var(–radius-sm); margin-bottom: 6px;
+border: 0.5px solid var(–border); cursor: pointer; transition: all 0.15s;
 }
-.settings-row:hover { background: var(--warm2); }
+.settings-row:hover { background: var(–warm2); }
 .settings-row-icon { font-size: 20px; flex-shrink: 0; }
 .settings-row-text { flex: 1; }
-.settings-row-label { font-size: 14px; color: var(--dark); }
-.settings-row-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.settings-row-arrow { color: var(--muted-light); font-size: 14px; }
+.settings-row-label { font-size: 14px; color: var(–dark); }
+.settings-row-sub { font-size: 11px; color: var(–muted); margin-top: 1px; }
+.settings-row-arrow { color: var(–muted-light); font-size: 14px; }
 
 .invite-code-display {
-  display: flex; align-items: center; justify-content: center; gap: 16px;
-  padding: 20px; background: var(--warm); border-radius: var(--radius);
-  border: 0.5px solid var(--border); margin: 12px 0;
+display: flex; align-items: center; justify-content: center; gap: 16px;
+padding: 20px; background: var(–warm); border-radius: var(–radius);
+border: 0.5px solid var(–border); margin: 12px 0;
 }
-.invite-code { font-family: var(--serif); font-size: 32px; font-weight: 700; color: var(--accent-dark); letter-spacing: 6px; }
+.invite-code { font-family: var(–serif); font-size: 32px; font-weight: 700; color: var(–accent-dark); letter-spacing: 6px; }
 .copy-btn {
-  padding: 8px 14px; border-radius: var(--radius-sm); border: 0.5px solid var(--accent);
-  background: transparent; color: var(--accent); font-size: 13px; cursor: pointer;
-  font-family: var(--sans); transition: all 0.15s;
+padding: 8px 14px; border-radius: var(–radius-sm); border: 0.5px solid var(–accent);
+background: transparent; color: var(–accent); font-size: 13px; cursor: pointer;
+font-family: var(–sans); transition: all 0.15s;
 }
-.copy-btn:hover { background: var(--accent); color: white; }
+.copy-btn:hover { background: var(–accent); color: white; }
 
 /* ===== Toast ===== */
 .toast {
-  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
-  background: var(--dark); color: white; padding: 10px 20px; border-radius: 20px;
-  font-size: 13px; white-space: nowrap; z-index: 999;
-  opacity: 0; pointer-events: none; transition: all 0.3s; max-width: 90vw; text-align: center;
+position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+background: var(–dark); color: white; padding: 10px 20px; border-radius: 20px;
+font-size: 13px; white-space: nowrap; z-index: 999;
+opacity: 0; pointer-events: none; transition: all 0.3s; max-width: 90vw; text-align: center;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { background: var(--red); }
-.toast.success { background: var(--green); }
+.toast.error { background: var(–red); }
+.toast.success { background: var(–green); }
 
 /* ===== 送出按鈕 ===== */
 .btn-submit {
-  width: 100%; padding: 14px; border-radius: var(--radius-sm);
-  background: var(--accent); border: none; color: white;
-  font-family: var(--sans); font-size: 15px; font-weight: 500;
-  cursor: pointer; transition: all 0.2s; margin-top: 8px;
+width: 100%; padding: 14px; border-radius: var(–radius-sm);
+background: var(–accent); border: none; color: white;
+font-family: var(–sans); font-size: 15px; font-weight: 500;
+cursor: pointer; transition: all 0.2s; margin-top: 8px;
 }
-.btn-submit:hover { background: var(--accent-dark); }
+.btn-submit:hover { background: var(–accent-dark); }
 .btn-submit:active { transform: scale(0.98); }
 .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ===== 載入 ===== */
-.loading-screen { position: fixed; inset: 0; background: var(--cream); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 999; }
-.spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+.loading-screen { position: fixed; inset: 0; background: var(–cream); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 999; }
+.spinner { width: 36px; height: 36px; border: 3px solid var(–border); border-top-color: var(–accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ===== Responsive ===== */
 @media (min-width: 480px) {
-  .app-layout { box-shadow: 0 0 60px rgba(0,0,0,0.08); }
+.app-layout { box-shadow: 0 0 60px rgba(0,0,0,0.08); }
 }
-
 
 /* ===== LOGIN PAGE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 #login-screen {
-  position: fixed; inset: 0; z-index: 9999;
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px 16px;
-  background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%);
+position: fixed; inset: 0; z-index: 9999;
+display: flex; align-items: center; justify-content: center;
+padding: 24px 16px;
+background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%);
 }
 .login-card {
-  background: var(--card); border-radius: 24px; padding: 36px 28px;
-  width: 100%; max-width: 400px;
-  border: 0.5px solid var(--border);
-  box-shadow: 0 8px 40px var(--shadow-md);
-  text-align: center;
+background: var(–card); border-radius: 24px; padding: 36px 28px;
+width: 100%; max-width: 400px;
+border: 0.5px solid var(–border);
+box-shadow: 0 8px 40px var(–shadow-md);
+text-align: center;
 }
 .logo-icon { font-size: 52px; display: block; margin-bottom: 10px;
-  animation: float 3s ease-in-out infinite; }
+animation: float 3s ease-in-out infinite; }
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-.logo-title { font-family: var(--serif); font-size: 26px; font-weight: 700;
-  color: var(--dark); letter-spacing: 2px; margin-bottom: 4px; }
-.logo-sub { font-size: 13px; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 28px; }
-.input-label { font-size: 11px; color: var(--muted); font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  display: block; text-align: left; margin-bottom: 6px; }
+.logo-title { font-family: var(–serif); font-size: 26px; font-weight: 700;
+color: var(–dark); letter-spacing: 2px; margin-bottom: 4px; }
+.logo-sub { font-size: 13px; color: var(–muted); letter-spacing: 0.5px; margin-bottom: 28px; }
+.input-label { font-size: 11px; color: var(–muted); font-weight: 600;
+text-transform: uppercase; letter-spacing: 0.5px;
+display: block; text-align: left; margin-bottom: 6px; }
 .code-input {
-  width: 100%; padding: 14px 16px; border: 1.5px solid var(--border);
-  border-radius: 14px; background: var(--warm);
-  font-family: var(--sans); font-size: 20px; color: var(--dark);
-  outline: none; text-align: center; letter-spacing: 4px; font-weight: 600;
-  margin-bottom: 10px; transition: border-color .2s, background .2s;
+width: 100%; padding: 14px 16px; border: 1.5px solid var(–border);
+border-radius: 14px; background: var(–warm);
+font-family: var(–sans); font-size: 20px; color: var(–dark);
+outline: none; text-align: center; letter-spacing: 4px; font-weight: 600;
+margin-bottom: 10px; transition: border-color .2s, background .2s;
 }
-.code-input:focus { border-color: var(--accent); background: var(--card); }
-.err-msg { color: var(--red); font-size: 13px; min-height: 18px; margin-bottom: 10px; }
+.code-input:focus { border-color: var(–accent); background: var(–card); }
+.err-msg { color: var(–red); font-size: 13px; min-height: 18px; margin-bottom: 10px; }
 .enter-btn {
-  width: 100%; padding: 14px; border: none; border-radius: 14px;
-  background: linear-gradient(135deg, #C4956A, #8B6B4A);
-  color: white; font-family: var(--sans); font-size: 16px; font-weight: 600;
-  cursor: pointer; margin-bottom: 16px; transition: opacity .2s;
+width: 100%; padding: 14px; border: none; border-radius: 14px;
+background: linear-gradient(135deg, #C4956A, #8B6B4A);
+color: white; font-family: var(–sans); font-size: 16px; font-weight: 600;
+cursor: pointer; margin-bottom: 16px; transition: opacity .2s;
 }
 .enter-btn:active { opacity: 0.85; }
-.hint { font-size: 12px; color: var(--muted); line-height: 1.7; }
-.hint b { color: var(--brown); }
+.hint { font-size: 12px; color: var(–muted); line-height: 1.7; }
+.hint b { color: var(–brown); }
 </style>
+
 </head>
 <body>
 
 <!-- ===== LOGIN SCREEN ===== -->
+
 <div id="login-screen">
   <div class="login-card">
     <span class="logo-icon">🗺️</span>
@@ -535,8 +571,6 @@ function doLogin() {
 }
 </script>
 
-
-
 <div id="loading-screen" class="loading-screen">
   <div class="spinner"></div>
   <p style="font-size:13px;color:var(--muted)">載入口袋名單中...</p>
@@ -569,13 +603,12 @@ function doLogin() {
     </div>
     <div class="filter-row" id="cat-row">
       <div class="chip active" data-val="">全部分類</div>
-      <div class="chip" data-val="咖啡下午茶">☕ 咖啡</div>
-      <div class="chip" data-val="正餐飽食">🍱 正餐</div>
-      <div class="chip" data-val="輕食小吃">🥯 輕食</div>
-      <div class="chip" data-val="親子休閒">🎡 親子</div>
-      <div class="chip" data-val="微醺餐酒">🥂 餐酒</div>
-      <div class="chip" data-val="文具生活">✏️ 文具</div>
-      <div class="chip" data-val="其他">其他</div>
+      <div class="chip" data-val="日常外帶">🛍️ 日常外帶</div>
+      <div class="chip" data-val="聚會正餐">🍽️ 聚會正餐</div>
+      <div class="chip" data-val="甜點咖啡">☕ 甜點咖啡</div>
+      <div class="chip" data-val="親子放電">🎡 親子放電</div>
+      <div class="chip" data-val="藝文選物">✏️ 藝文選物</div>
+      <div class="chip" data-val="飲品手搖">🧋 飲品手搖</div>
     </div>
     <div class="filter-row" id="tag-row">
       <div class="chip tag-chip" data-val="不限時">不限時</div>
@@ -583,9 +616,12 @@ function doLogin() {
       <div class="chip tag-chip" data-val="有插座">有插座</div>
       <div class="chip tag-chip" data-val="親子友善">親子友善</div>
       <div class="chip tag-chip" data-val="停車方便">停車方便</div>
-      <div class="chip tag-chip" data-val="外帶友善">外帶友善</div>
       <div class="chip tag-chip" data-val="預約制">預約制</div>
+      <div class="chip tag-chip" data-val="可線上訂位">可線上訂位</div>
+      <div class="chip tag-chip" data-val="免費wifi">免費 WiFi</div>
+      <div class="chip tag-chip" data-val="外帶首選">外帶首選</div>
       <div class="chip tag-chip" data-val="已造訪">✅ 去過了</div>
+      <div class="chip tag-chip" data-val="雷店避開">💀 雷店</div>
     </div>
   </div>
 
@@ -613,6 +649,7 @@ function doLogin() {
 <button class="fab" id="btn-add">＋</button>
 
 <!-- MODAL: 新增/編輯 -->
+
 <div class="modal-overlay" id="modal-form">
   <div class="modal-sheet">
     <div class="modal-sticky-top">
@@ -630,7 +667,7 @@ function doLogin() {
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="form-group">
-            <label class="form-label">地區</label>
+            <label class="form-label">地區 *</label>
             <select class="form-select" id="f-region">
               <option value="">選擇地區</option>
               <option>雙北</option><option>桃園</option>
@@ -638,12 +675,15 @@ function doLogin() {
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">主分類</label>
+            <label class="form-label">主分類 *</label>
             <select class="form-select" id="f-category">
-              <option value="">選擇分類</option>
-              <option>咖啡下午茶</option><option>正餐飽食</option>
-              <option>輕食小吃</option><option>親子休閒</option>
-              <option>微醺餐酒</option><option>文具生活</option><option>其他</option>
+              <option value="">選擇分類 *</option>
+              <option value="日常外帶" title="下班順路買、解決晚餐">日常外帶</option>
+              <option value="聚會正餐" title="週末聚會、慶祝飯局">聚會正餐</option>
+              <option value="甜點咖啡" title="放鬆、甜點飲料">甜點咖啡</option>
+              <option value="親子放電" title="帶小孩放風、育兒友善">親子放電</option>
+              <option value="藝文選物" title="逛街、文具、美感物件">藝文選物</option>
+              <option value="飲品手搖" title="手搖飲、外送下午茶">飲品手搖</option>
             </select>
           </div>
         </div>
@@ -652,53 +692,75 @@ function doLogin() {
           <div class="tags-grid">
             <button type="button" class="tag-toggle" data-tag="不限時">不限時</button>
             <button type="button" class="tag-toggle" data-tag="有貓咪">有貓咪 🐱</button>
-            <button type="button" class="tag-toggle" data-tag="有插座">有插座</button>
-            <button type="button" class="tag-toggle" data-tag="親子友善">親子友善</button>
+            <button type="button" class="tag-toggle" data-tag="有插座">有插座 🔌</button>
+            <button type="button" class="tag-toggle" data-tag="親子友善">親子友善 👶</button>
             <button type="button" class="tag-toggle" data-tag="停車方便">停車方便 🚗</button>
-            <button type="button" class="tag-toggle" data-tag="外帶友善">外帶友善 📦</button>
             <button type="button" class="tag-toggle" data-tag="預約制">預約制</button>
-            <button type="button" class="tag-toggle" data-tag="需要排隊">需要排隊 ⏳</button>
-            </div>
+            <button type="button" class="tag-toggle" data-tag="可線上訂位">可線上訂位 📱</button>
+            <button type="button" class="tag-toggle" data-tag="免費wifi">免費 WiFi 📶</button>
+            <button type="button" class="tag-toggle" data-tag="外帶首選">外帶首選 🛍️</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">自訂標籤 <span style="font-size:11px;color:var(--muted);font-weight:400">例：火鍋 牛排 甜點（空格分隔）</span></label>
+          <input type="text" class="form-input" id="f-customtags" placeholder="#火鍋 #牛排 #甜點...">
         </div>
         <div class="form-group">
           <label class="form-label">Google Map 連結</label>
           <input type="url" class="form-input" id="f-maplink" placeholder="貼上 Google Maps 連結">
         </div>
-        
-        <div class="form-group">
-          <label class="form-label">照片網址</label>
-          <input type="url" class="form-input" id="f-photourl" placeholder="貼上圖片連結（選填）">
-        </div>
-        <div class="form-group">
-          <label class="form-label">備註 / 推薦菜色</label>
-          <textarea class="form-textarea" id="f-note" placeholder="隨手記錄心得、推薦菜色、注意事項..."></textarea>
-        </div>
-        <div class="form-group">
-          <div class="visited-toggle" id="visited-toggle">
-            <div>
-              <div class="visited-toggle-label">已經去過了 ✅</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px">標記為已造訪</div>
-            </div>
-            <div class="toggle-switch"></div>
-          </div>
-        </div>
-        <button type="submit" class="btn-submit" id="form-submit-btn">儲存地點</button>
-      </form>
+
+```
+    <div class="form-group">
+      <label class="form-label">照片網址</label>
+      <input type="url" class="form-input" id="f-photourl" placeholder="貼上圖片連結（選填）">
     </div>
+    <div class="form-group">
+      <label class="form-label">備註 / 推薦菜色</label>
+      <textarea class="form-textarea" id="f-note" placeholder="隨手記錄心得、推薦菜色、注意事項..."></textarea>
+    </div>
+    <div class="form-group">
+      <div class="visited-toggle" id="visited-toggle">
+        <div>
+          <div class="visited-toggle-label">已經去過了 ✅</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">標記為已造訪</div>
+        </div>
+        <div class="toggle-switch"></div>
+      </div>
+    </div>
+    <div class="form-group" id="revisit-group" style="display:none">
+      <label class="form-label">回訪意願</label>
+      <div class="revisit-options">
+        <button type="button" class="revisit-btn" data-val="必回">⭐ 必回</button>
+        <button type="button" class="revisit-btn" data-val="還不錯">👍 還不錯</button>
+        <button type="button" class="revisit-btn" data-val="普通">😐 普通</button>
+        <button type="button" class="revisit-btn" data-val="雷店避開">💀 雷店避開</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <button type="button" class="btn-cancel-form" id="btn-cancel-form">取消</button>
+      <button type="submit" class="btn-submit" id="form-submit-btn" style="flex:1">儲存地點</button>
+    </div>
+  </form>
+</div>
+```
+
   </div>
 </div>
 
 <!-- MODAL: 詳情 -->
+
 <div class="modal-overlay" id="modal-detail">
   <div class="modal-sheet">
     <div class="modal-sticky-top" style="padding-bottom:4px">
       <div class="modal-handle" id="handle-detail"></div>
     </div>
-    <div id="detail-content"></div>
+    <div class="detail-wrap" id="detail-content"></div>
   </div>
 </div>
 
 <!-- MODAL: 設定 -->
+
 <div class="modal-overlay settings-sheet" id="modal-settings">
   <div class="modal-sheet">
     <div class="modal-sticky-top">
@@ -804,7 +866,6 @@ function doLogin() {
 
 <div id="toast" class="toast"></div>
 
-
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -831,7 +892,7 @@ let groupId = "pocket_" + roomCode;
 let groupData = null;
 
 let allPlaces = [];
-let currentView = "card", editingId = null, visitedState = false;
+let currentView = "card", editingId = null, visitedState = false, revisitState = "";
 let filterRegion = "", filterCat = "", filterTags = [];
 
 function showToast(msg, type="") {
@@ -842,7 +903,7 @@ function showToast(msg, type="") {
 function openModal(id) { document.getElementById(id).classList.add("open"); }
 function closeModal(id) { document.getElementById(id).classList.remove("open"); }
 function getCatEmoji(cat) {
-  const map = {"咖啡下午茶":"☕","正餐飽食":"🍱","輕食小吃":"🥯","親子休閒":"🎡","微醺餐酒":"🥂","文具生活":"✏️","其他":"📍"};
+  const map = {"日常外帶":"🛍️","聚會正餐":"🍽️","甜點咖啡":"☕","親子放電":"🎡","藝文選物":"✏️","飲品手搖":"🧋"};
   return map[cat] || "📍";
 }
 
@@ -909,6 +970,7 @@ function renderPlaces() {
     if (filterCat && p.category !== filterCat) return false;
     for (const tag of filterTags) {
       if (tag === "已造訪") { if (!p.visited) return false; }
+      else if (tag === "雷店避開") { if (!p.revisit || p.revisit !== "雷店避開") return false; }
       else { if (!p.tags || !p.tags.includes(tag)) return false; }
     }
     if (q && !p.name?.toLowerCase().includes(q) && !p.note?.toLowerCase().includes(q) && !p.region?.toLowerCase().includes(q)) return false;
@@ -994,6 +1056,8 @@ function openDetail(id) {
       </div>
       ${p.tags&&p.tags.length?`<div class="detail-tags">${p.tags.map(t=>`<span class="detail-tag">${t}</span>`).join("")}</div>`:""}
       ${p.note?`<div class="detail-note">${p.note}</div>`:""}
+      ${p.customTags?`<div class="detail-custom-tags">${p.customTags.split(/\s+/).filter(Boolean).map(t=>`<span class="custom-tag">${t.startsWith('#')?t:'#'+t}</span>`).join('')}</div>`:""}
+      ${p.revisit?`<div class="detail-revisit">回訪意願：<span class="revisit-badge revisit-${p.revisit==='雷店避開'?'bad':p.revisit==='必回'?'great':'ok'}">${p.revisit==='必回'?'⭐':p.revisit==='還不錯'?'👍':p.revisit==='普通'?'😐':'💀'} ${p.revisit}</span></div>`:""}
       <div class="detail-links">
         ${p.mapLink?`<a class="link-btn" href="${p.mapLink}" target="_blank" rel="noopener"><span class="link-icon">🗺️</span>在 Google Maps 開啟導航</a>`:""}
       </div>
@@ -1013,6 +1077,10 @@ function openAddForm() {
   document.getElementById("place-form").reset();
   document.querySelectorAll(".tag-toggle").forEach(t => t.classList.remove("selected"));
   document.getElementById("visited-toggle").classList.remove("on");
+  document.getElementById("f-customtags").value = "";
+  document.getElementById("revisit-group").style.display = "none";
+  revisitState = "";
+  document.querySelectorAll(".revisit-btn").forEach(b => b.classList.remove("selected"));
   openModal("modal-form");
 }
 
@@ -1026,6 +1094,16 @@ window.openEdit = (id) => {
   document.getElementById("f-category").value = p.category || "";
   document.getElementById("f-maplink").value = p.mapLink || "";
   document.getElementById("f-photourl").value = p.photoUrl || "";
+  document.getElementById("f-customtags").value = p.customTags || "";
+  revisitState = p.revisit || "";
+  document.querySelectorAll(".revisit-btn").forEach(b => {
+    b.classList.toggle("selected", b.dataset.val === revisitState);
+  });
+  if (p.visited) {
+    document.getElementById("revisit-group").style.display = "block";
+  } else {
+    document.getElementById("revisit-group").style.display = "none";
+  }
   document.getElementById("f-note").value = p.note || "";
   document.querySelectorAll(".tag-toggle").forEach(t => {
     t.classList.toggle("selected", (p.tags||[]).includes(t.dataset.tag));
@@ -1051,11 +1129,27 @@ document.querySelectorAll(".tag-toggle").forEach(btn => {
 document.getElementById("visited-toggle").addEventListener("click", function() {
   visitedState = !visitedState;
   this.classList.toggle("on", visitedState);
+  document.getElementById("revisit-group").style.display = visitedState ? "block" : "none";
+  if (!visitedState) { revisitState = ""; document.querySelectorAll(".revisit-btn").forEach(b => b.classList.remove("selected")); }
 });
+
+document.querySelectorAll(".revisit-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    revisitState = btn.dataset.val;
+    document.querySelectorAll(".revisit-btn").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+  });
+});
+
+document.getElementById("btn-cancel-form").addEventListener("click", () => closeModal("modal-form"));
 
 document.getElementById("place-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const btn = document.getElementById("form-submit-btn");
+  const region = document.getElementById("f-region").value;
+  const category = document.getElementById("f-category").value;
+  if (!region) { showToast("請選擇地區 📍", "error"); return; }
+  if (!category) { showToast("請選擇主分類 📂", "error"); return; }
   btn.disabled = true; btn.textContent = "儲存中...";
   const tags = [...document.querySelectorAll(".tag-toggle.selected")].map(t => t.dataset.tag);
   const data = {
@@ -1065,7 +1159,9 @@ document.getElementById("place-form").addEventListener("submit", async (e) => {
     mapLink: document.getElementById("f-maplink").value.trim(),
     photoUrl: document.getElementById("f-photourl").value.trim(),
     note: document.getElementById("f-note").value.trim(),
-    tags, visited: visitedState
+    customTags: document.getElementById("f-customtags").value.trim(),
+    tags, visited: visitedState,
+    revisit: revisitState
   };
   try {
     if (editingId) {
@@ -1229,7 +1325,7 @@ document.getElementById("csv-file-input").addEventListener("change", async (e) =
   // Skip header row
   const dataRows = rows.slice(1);
   const catMap = {"咖啡下午茶":"咖啡下午茶","正餐飽食":"正餐飽食","輕食小吃":"輕食小吃","親子休閒":"親子休閒","微醺餐酒":"微醺餐酒","文具生活":"文具生活","其他":"其他"};
-  const validTags = ["不限時","有貓咪","有插座","親子友善","停車方便","外帶友善","預約制","需要排隊"];
+  const validTags = ["不限時","有貓咪","有插座","親子友善","停車方便","預約制","可線上訂位","免費wifi","外帶首選"];
   
   const places = dataRows.map(row => {
     // Simple CSV parse (handles basic cases)
@@ -1263,6 +1359,16 @@ document.getElementById("csv-file-input").addEventListener("change", async (e) =
   e.target.value = "";
 });
 
+const catDescs = {"日常外帶": "下班順路買、解決晚餐、單價親民", "聚會正餐": "週末聚會、慶祝、需要坐下來慢慢吃的飯局", "甜點咖啡": "放鬆、想吃點甜的或喝杯飲料", "親子放電": "帶小孩放風、需要大空間或友善育兒設施", "藝文選物": "逛街、買文具、安靜閱讀、找美感物件", "飲品手搖": "想喝一杯解饞、外送下午茶、尋找好喝的茶或咖啡"};
+
+document.getElementById("f-category").addEventListener("change", function() {
+  const desc = catDescs[this.value] || "";
+  let el = document.getElementById("cat-desc-text");
+  if (!el) { el = document.createElement("div"); el.id = "cat-desc-text"; el.className = "cat-desc"; this.parentNode.appendChild(el); }
+  el.textContent = desc;
+});
+
 </script>
+
 </body>
 </html>
