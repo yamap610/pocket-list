@@ -5,78 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3EE">
 <title>口袋名單 — 我們的秘密基地</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  html, body { height: 100%; }
-  .login-page {
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 16px;
-    background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%);
-  }
-  .login-container { width: 100%; max-width: 420px; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream: #F7F3EE; --warm: #EDE5D8; --card: #FFFDF9;
+  --brown: #8B6B4A; --dark: #3A2E24; --muted: #A89580;
+  --accent: #C4956A; --border: #E2D5C3; --shadow: rgba(90,60,30,0.10);
+  --red: #C4776A;
+  --serif: 'Noto Serif TC', serif; --sans: 'Noto Sans TC', sans-serif;
+}
+html, body {
+  height: 100%; font-family: var(--sans);
+  background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%);
+  color: var(--dark);
+}
+body {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 16px;
+}
+.login-card {
+  background: var(--card); border-radius: 24px; padding: 36px 28px;
+  width: 100%; max-width: 400px;
+  border: 0.5px solid var(--border);
+  box-shadow: 0 8px 40px var(--shadow);
+  text-align: center;
+}
+.logo-icon { font-size: 52px; display: block; margin-bottom: 10px;
+  animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.logo-title { font-family: var(--serif); font-size: 26px; font-weight: 700;
+  color: var(--dark); letter-spacing: 2px; margin-bottom: 4px; }
+.logo-sub { font-size: 13px; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 28px; }
+.input-label { font-size: 11px; color: var(--muted); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  display: block; text-align: left; margin-bottom: 6px; }
+.code-input {
+  width: 100%; padding: 14px 16px; border: 1.5px solid var(--border);
+  border-radius: 14px; background: var(--warm);
+  font-family: var(--sans); font-size: 20px; color: var(--dark);
+  outline: none; text-align: center; letter-spacing: 4px; font-weight: 600;
+  margin-bottom: 10px; transition: border-color .2s, background .2s;
+}
+.code-input:focus { border-color: var(--accent); background: var(--card); }
+.err-msg { color: var(--red); font-size: 13px; min-height: 18px; margin-bottom: 10px; }
+.enter-btn {
+  width: 100%; padding: 14px; border: none; border-radius: 14px;
+  background: linear-gradient(135deg, #C4956A, #8B6B4A);
+  color: white; font-family: var(--sans); font-size: 16px; font-weight: 600;
+  cursor: pointer; margin-bottom: 16px; transition: opacity .2s;
+}
+.enter-btn:active { opacity: 0.85; }
+.hint { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.hint b { color: var(--brown); }
 </style>
 </head>
-<body class="login-page">
+<body>
 
-<div class="login-container">
-  <div class="login-card">
-    <div class="login-logo">
-      <span class="logo-icon">🗺️</span>
-      <h1 class="logo-title">口袋名單</h1>
-      <p class="logo-sub">我們的秘密基地 · 一起記錄好去處</p>
-    </div>
+<div class="login-card">
+  <span class="logo-icon">🗺️</span>
+  <div class="logo-title">口袋名單</div>
+  <p class="logo-sub">我們的秘密基地・一起記錄好去處</p>
 
-    <button class="btn-google" id="btn-google-login">
-      用 Google 帳號登入
-    </button>
-
-    <div id="status-msg" style="margin-top: 20px; font-size: 14px; color: #8B6B4A; text-align: center;">
-      等待登入中...
-    </div>
-  </div>
+  <label class="input-label">家庭代號</label>
+  <input class="code-input" id="codeInput" placeholder="輸入代號" maxlength="20"
+    autocomplete="off" autocapitalize="none"
+    onkeypress="if(event.key==='Enter')doLogin()">
+  <div class="err-msg" id="errMsg"></div>
+  <button class="enter-btn" onclick="doLogin()">進入口袋名單 🗺️</button>
+  <p class="hint"><b>第一次用？</b> 想一個代號輸入即可，家人輸入同樣代號就能看到相同的地點清單。</p>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBqjIwARGN1KOpvXubFA6eanLyPfQfDi5A",
-  authDomain: "favorite-74e87.firebaseapp.com",
-  projectId: "favorite-74e87",
-  storageBucket: "favorite-74e87.firebasestorage.app",
-  messagingSenderId: "909094354338",
-  appId: "1:909094354338:web:9a4c1909f80919c2f4c6fb"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const statusMsg = document.getElementById("status-msg");
-
-document.getElementById("btn-google-login").addEventListener("click", async () => {
-  statusMsg.innerText = "正在開啟登入視窗...";
-  try {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-    statusMsg.innerText = "登入成功！正在跳轉...";
-    window.location.href = "app.html";
-  } catch(e) {
-    console.error(e);
-    statusMsg.innerText = "錯誤: " + e.message;
+<script>
+  // 如果已有儲存代號，直接跳轉
+  var saved = localStorage.getItem('pocket_last_room');
+  if (saved) {
+    window.location.href = 'app.html?code=' + encodeURIComponent(saved);
   }
-});
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    statusMsg.innerText = "偵測到已登入，準備進入...";
-    window.location.href = "app.html";
+  function doLogin() {
+    var val = document.getElementById('codeInput').value.trim().toLowerCase().replace(/\s+/g, '');
+    var err = document.getElementById('errMsg');
+    if (!val) { err.textContent = '請輸入代號！'; return; }
+    if (val.length < 3) { err.textContent = '代號至少 3 個字元'; return; }
+    err.textContent = '';
+    localStorage.setItem('pocket_last_room', val);
+    window.location.href = 'app.html?code=' + encodeURIComponent(val);
   }
-});
 </script>
 </body>
 </html>
