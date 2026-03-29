@@ -268,14 +268,21 @@ body {
 }
 /* handle 直接在 sheet 下（不在 wrap 裡）時也做 sticky */
 .modal-sheet > .modal-handle {
-  position: sticky; top: 12px; z-index: 11; margin: 12px auto 4px;
+  width: 36px; height: 4px; background: var(--border); border-radius: 2px;
 }
-
-/* sticky 標題列 — 讓 ✕ 不被滾走 */
+/* sticky 상단 wrapper: handle + header 一起固定 */
+.modal-sticky-top {
+  position: sticky; top: 0; z-index: 11; background: var(--card);
+  padding-top: 12px;
+}
+.modal-sticky-top .modal-handle {
+  width: 36px; height: 4px; background: var(--border); border-radius: 2px;
+  margin: 0 auto 8px;
+}
 .modal-header {
-  padding: 12px 20px 12px; display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 20px 12px; display: flex; align-items: center; justify-content: space-between;
   border-bottom: 0.5px solid var(--border-light);
-  position: sticky; top: 0; z-index: 10; background: var(--card);
+  background: var(--card);
 }
 .modal-title { font-family: var(--serif); font-size: 18px; font-weight: 500; color: var(--dark); }
 .modal-close {
@@ -287,6 +294,14 @@ body {
 }
 
 .modal-body { padding: 20px; }
+
+
+/* ===== 排序 ===== */
+.sort-select {
+  padding: 5px 10px; border-radius: 8px; border: 0.5px solid var(--border);
+  background: var(--warm); font-family: var(--sans); font-size: 12px;
+  color: var(--dark); outline: none; cursor: pointer;
+}
 
 /* ===== 表單 ===== */
 .form-group { margin-bottom: 18px; }
@@ -565,11 +580,9 @@ function doLogin() {
     <div class="filter-row" id="tag-row">
       <div class="chip tag-chip" data-val="不限時">不限時</div>
       <div class="chip tag-chip" data-val="有貓咪">有貓咪 🐱</div>
-      <div class="chip tag-chip" data-val="推車友善">推車友善</div>
       <div class="chip tag-chip" data-val="有插座">有插座</div>
       <div class="chip tag-chip" data-val="親子友善">親子友善</div>
       <div class="chip tag-chip" data-val="停車方便">停車方便</div>
-      <div class="chip tag-chip" data-val="景觀座位">景觀座位</div>
       <div class="chip tag-chip" data-val="外帶友善">外帶友善</div>
       <div class="chip tag-chip" data-val="預約制">預約制</div>
       <div class="chip tag-chip" data-val="已造訪">✅ 去過了</div>
@@ -580,6 +593,13 @@ function doLogin() {
     <div id="results-info" style="font-size:12px;color:var(--muted)"></div>
     <div style="display:flex;align-items:center;gap:8px">
       <button class="clear-btn" id="clear-filters" style="display:none">清除篩選</button>
+      <select class="sort-select" id="sort-select">
+        <option value="newest">最新新增</option>
+        <option value="oldest">最早新增</option>
+        <option value="name">名稱 A→Z</option>
+        <option value="visited">已造訪優先</option>
+        <option value="unvisited">還沒去優先</option>
+      </select>
       <div class="view-btns">
         <button class="view-btn active" id="btn-card-view">⊞</button>
         <button class="view-btn" id="btn-list-view">≡</button>
@@ -595,10 +615,12 @@ function doLogin() {
 <!-- MODAL: 新增/編輯 -->
 <div class="modal-overlay" id="modal-form">
   <div class="modal-sheet">
-    <div class="modal-handle" id="handle-form"></div>
-    <div class="modal-header">
-      <div class="modal-title" id="form-title">新增地點</div>
-      <button class="modal-close" id="close-form">✕</button>
+    <div class="modal-sticky-top">
+      <div class="modal-handle" id="handle-form"></div>
+      <div class="modal-header">
+        <div class="modal-title" id="form-title">新增地點</div>
+        <button class="modal-close" id="close-form">✕</button>
+      </div>
     </div>
     <div class="modal-body">
       <form id="place-form" autocomplete="off">
@@ -630,26 +652,19 @@ function doLogin() {
           <div class="tags-grid">
             <button type="button" class="tag-toggle" data-tag="不限時">不限時</button>
             <button type="button" class="tag-toggle" data-tag="有貓咪">有貓咪 🐱</button>
-            <button type="button" class="tag-toggle" data-tag="推車友善">推車友善</button>
             <button type="button" class="tag-toggle" data-tag="有插座">有插座</button>
             <button type="button" class="tag-toggle" data-tag="親子友善">親子友善</button>
             <button type="button" class="tag-toggle" data-tag="停車方便">停車方便 🚗</button>
-            <button type="button" class="tag-toggle" data-tag="景觀座位">景觀座位 🪟</button>
             <button type="button" class="tag-toggle" data-tag="外帶友善">外帶友善 📦</button>
             <button type="button" class="tag-toggle" data-tag="預約制">預約制</button>
-            <button type="button" class="tag-toggle" data-tag="季節限定">季節限定 🌸</button>
             <button type="button" class="tag-toggle" data-tag="需要排隊">需要排隊 ⏳</button>
-            <button type="button" class="tag-toggle" data-tag="cp值高">CP值高 💰</button>
-          </div>
+            </div>
         </div>
         <div class="form-group">
           <label class="form-label">Google Map 連結</label>
           <input type="url" class="form-input" id="f-maplink" placeholder="貼上 Google Maps 連結">
         </div>
-        <div class="form-group">
-          <label class="form-label">推薦來源（IG / Threads 連結）</label>
-          <input type="url" class="form-input" id="f-sourcelink" placeholder="貼上 IG 或 Threads 連結">
-        </div>
+        
         <div class="form-group">
           <label class="form-label">照片網址</label>
           <input type="url" class="form-input" id="f-photourl" placeholder="貼上圖片連結（選填）">
@@ -676,7 +691,9 @@ function doLogin() {
 <!-- MODAL: 詳情 -->
 <div class="modal-overlay" id="modal-detail">
   <div class="modal-sheet">
-    <div class="modal-handle" id="handle-detail"></div>
+    <div class="modal-sticky-top" style="padding-bottom:4px">
+      <div class="modal-handle" id="handle-detail"></div>
+    </div>
     <div id="detail-content"></div>
   </div>
 </div>
@@ -684,10 +701,12 @@ function doLogin() {
 <!-- MODAL: 設定 -->
 <div class="modal-overlay settings-sheet" id="modal-settings">
   <div class="modal-sheet">
-    <div class="modal-handle" id="handle-settings"></div>
-    <div class="modal-header">
-      <div class="modal-title">⚙️ 設定</div>
-      <button class="modal-close" id="close-settings">✕</button>
+    <div class="modal-sticky-top">
+      <div class="modal-handle" id="handle-settings"></div>
+      <div class="modal-header">
+        <div class="modal-title">⚙️ 設定</div>
+        <button class="modal-close" id="close-settings">✕</button>
+      </div>
     </div>
     <div class="modal-body">
       <div class="settings-section">
@@ -743,7 +762,24 @@ function doLogin() {
           </div>
           <div class="settings-row-arrow">›</div>
         </div>
+        <div class="settings-row" id="btn-csv-import">
+          <div class="settings-row-icon">📋</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label">批量匯入（CSV）</div>
+            <div class="settings-row-sub">下載範本 → 填好 → 上傳</div>
+          </div>
+          <div class="settings-row-arrow">›</div>
+        </div>
+        <div class="settings-row" id="btn-csv-template">
+          <div class="settings-row-icon">⬇️</div>
+          <div class="settings-row-text">
+            <div class="settings-row-label">下載 CSV 範本</div>
+            <div class="settings-row-sub">打開 Excel 或 Numbers 填寫</div>
+          </div>
+          <div class="settings-row-arrow">›</div>
+        </div>
         <input type="file" id="import-file-input" accept=".json" style="display:none">
+        <input type="file" id="csv-file-input" accept=".csv" style="display:none">
       </div>
       <div class="settings-section">
         <div class="settings-section-title">統計</div>
@@ -867,6 +903,7 @@ function subscribeToPlaces() {
 
 function renderPlaces() {
   const q = document.getElementById("search-input").value.toLowerCase();
+  const sortVal = document.getElementById("sort-select")?.value || "newest";
   let filtered = allPlaces.filter(p => {
     if (filterRegion && p.region !== filterRegion) return false;
     if (filterCat && p.category !== filterCat) return false;
@@ -878,6 +915,14 @@ function renderPlaces() {
     return true;
   });
 
+  // 排序
+  filtered.sort((a, b) => {
+    if (sortVal === "oldest") return (a.createdAt?.seconds||0) - (b.createdAt?.seconds||0);
+    if (sortVal === "name") return (a.name||"").localeCompare(b.name||"", "zh-TW");
+    if (sortVal === "visited") return (b.visited?1:0) - (a.visited?1:0);
+    if (sortVal === "unvisited") return (a.visited?1:0) - (b.visited?1:0);
+    return (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0); // newest default
+  });
   const hasFilter = filterRegion || filterCat || filterTags.length || q;
   document.getElementById("clear-filters").style.display = hasFilter ? "block" : "none";
   document.getElementById("results-info").innerHTML = hasFilter ? `找到 <strong>${filtered.length}</strong> 個地點` : `共 <strong>${allPlaces.length}</strong> 個地點`;
@@ -951,7 +996,6 @@ function openDetail(id) {
       ${p.note?`<div class="detail-note">${p.note}</div>`:""}
       <div class="detail-links">
         ${p.mapLink?`<a class="link-btn" href="${p.mapLink}" target="_blank" rel="noopener"><span class="link-icon">🗺️</span>在 Google Maps 開啟導航</a>`:""}
-        ${p.sourceLink?`<a class="link-btn" href="${p.sourceLink}" target="_blank" rel="noopener"><span class="link-icon">📸</span>查看推薦來源</a>`:""}
       </div>
       <div class="detail-actions">
         <button class="btn-edit" onclick="openEdit('${p.id}')">✏️ 編輯</button>
@@ -981,7 +1025,6 @@ window.openEdit = (id) => {
   document.getElementById("f-region").value = p.region || "";
   document.getElementById("f-category").value = p.category || "";
   document.getElementById("f-maplink").value = p.mapLink || "";
-  document.getElementById("f-sourcelink").value = p.sourceLink || "";
   document.getElementById("f-photourl").value = p.photoUrl || "";
   document.getElementById("f-note").value = p.note || "";
   document.querySelectorAll(".tag-toggle").forEach(t => {
@@ -1020,7 +1063,6 @@ document.getElementById("place-form").addEventListener("submit", async (e) => {
     region: document.getElementById("f-region").value,
     category: document.getElementById("f-category").value,
     mapLink: document.getElementById("f-maplink").value.trim(),
-    sourceLink: document.getElementById("f-sourcelink").value.trim(),
     photoUrl: document.getElementById("f-photourl").value.trim(),
     note: document.getElementById("f-note").value.trim(),
     tags, visited: visitedState
@@ -1082,6 +1124,7 @@ document.getElementById("btn-list-view").addEventListener("click", () => {
   renderPlaces();
 });
 
+document.getElementById("sort-select").addEventListener("change", renderPlaces);
 document.getElementById("btn-add").addEventListener("click", openAddForm);
 document.getElementById("close-form").addEventListener("click", () => closeModal("modal-form"));
 document.getElementById("close-settings").addEventListener("click", () => closeModal("modal-settings"));
@@ -1155,6 +1198,70 @@ function updateStats() {
   document.getElementById("stat-visited").textContent = v;
   document.getElementById("stat-unvisited").textContent = allPlaces.length - v;
 }
+
+
+// ══ CSV 範本下載 ══
+document.getElementById("btn-csv-template").addEventListener("click", () => {
+  const header = "店名,地區,主分類,特色標籤(逗號分隔),Google Map連結,照片網址,備註,已造訪(是/否)";
+  const example = "Slow Morning,宜蘭,咖啡下午茶,不限時|有貓咪,https://maps.google.com,,超好喝的拿鐵,否";
+  const example2 = "丸山咖哩,雙北,正餐飽食,停車方便,https://maps.google.com,,咖哩飯必點,是";
+  const csv = [header, example, example2].join("\n");
+  const bom = "\uFEFF"; // UTF-8 BOM for Excel
+  const blob = new Blob([bom + csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url;
+  a.download = "口袋名單匯入範本.csv";
+  a.click(); URL.revokeObjectURL(url);
+  showToast("範本已下載！用 Excel 或 Numbers 填好後上傳 📋", "success");
+});
+
+document.getElementById("btn-csv-import").addEventListener("click", () => {
+  document.getElementById("csv-file-input").click();
+});
+
+document.getElementById("csv-file-input").addEventListener("change", async (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  const text = await file.text();
+  // Parse CSV (handle UTF-8 BOM)
+  const clean = text.replace(/^\uFEFF/, "");
+  const rows = clean.split("\n").map(r => r.trim()).filter(r => r);
+  if (rows.length < 2) { showToast("CSV 格式不正確", "error"); return; }
+  // Skip header row
+  const dataRows = rows.slice(1);
+  const catMap = {"咖啡下午茶":"咖啡下午茶","正餐飽食":"正餐飽食","輕食小吃":"輕食小吃","親子休閒":"親子休閒","微醺餐酒":"微醺餐酒","文具生活":"文具生活","其他":"其他"};
+  const validTags = ["不限時","有貓咪","有插座","親子友善","停車方便","外帶友善","預約制","需要排隊"];
+  
+  const places = dataRows.map(row => {
+    // Simple CSV parse (handles basic cases)
+    const cols = row.split(",");
+    const name = (cols[0]||"").trim();
+    if (!name) return null;
+    const region = (cols[1]||"").trim();
+    const category = (cols[2]||"").trim();
+    const tagsRaw = (cols[3]||"").trim().split("|").map(t=>t.trim()).filter(t=>validTags.includes(t));
+    const mapLink = (cols[4]||"").trim();
+    const photoUrl = (cols[5]||"").trim();
+    const note = (cols[6]||"").trim();
+    const visited = (cols[7]||"").trim() === "是";
+    return { name, region, category, tags: tagsRaw, mapLink, photoUrl, note, visited };
+  }).filter(p => p && p.name);
+
+  if (!places.length) { showToast("沒有找到有效資料", "error"); return; }
+  if (!confirm(`確定要匯入 ${places.length} 個地點嗎？`)) return;
+  showToast("匯入中...");
+  let count = 0;
+  for (const p of places) {
+    try {
+      await addDoc(collection(db,"pocketlist",roomCode,"places"), {
+        ...p, createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
+        createdBy: roomCode.toUpperCase()
+      });
+      count++;
+    } catch(err) { console.error(err); }
+  }
+  showToast(`成功匯入 ${count} 個地點！`, "success");
+  e.target.value = "";
+});
 
 </script>
 </body>
