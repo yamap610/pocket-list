@@ -5,528 +5,199 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3EE">
-<title>口袋名單 — 我們的秘密基地</title>
+<title>口袋名單</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗺️</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ===== 基礎設定 ===== */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap');
-
 :root {
-–cream: #F7F3EE;
-–warm: #EDE5D8;
-–warm2: #E4D9C8;
-–card: #FFFDF9;
-–brown-light: #C4A882;
-–brown: #8B6B4A;
-–brown-dark: #5C4230;
-–dark: #3A2E24;
-–muted: #A89580;
-–muted-light: #C8BAA8;
-–accent: #C4956A;
-–accent-dark: #A67C52;
-–green: #7A9E7E;
-–green-light: #EBF3EC;
-–red: #C4776A;
-–red-light: #F5EDEC;
-–border: #E2D5C3;
-–border-light: #EDE5D8;
-–shadow: rgba(90,60,30,0.08);
-–shadow-md: rgba(90,60,30,0.14);
-–radius: 14px;
-–radius-sm: 8px;
-–radius-lg: 20px;
+  --cream:#F7F3EE; --warm:#EDE5D8; --warm2:#E4D9C8; --card:#FFFDF9;
+  --brown-light:#C4A882; --brown:#8B6B4A; --brown-dark:#5C4230;
+  --dark:#3A2E24; --muted:#A89580; --muted-light:#C8BAA8;
+  --accent:#C4956A; --accent-dark:#A67C52;
+  --green:#7A9E7E; --green-light:#EBF3EC;
+  --red:#C4776A; --red-light:#F5EDEC;
+  --border:#E2D5C3; --border-light:#EDE5D8;
+  --shadow:rgba(90,60,30,0.08); --shadow-md:rgba(90,60,30,0.14);
+  --radius:14px; --radius-sm:8px; --radius-lg:20px;
+  --serif:'Noto Serif TC',Georgia,serif;
+  --sans:'Noto Sans TC','Helvetica Neue',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--cream);color:var(--dark);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
 
-–serif: ‘Noto Serif TC’, ‘Georgia’, serif;
-–sans: ‘Noto Sans TC’, ‘Helvetica Neue’, sans-serif;
-}
+/* ── LOGIN ── */
+#login-screen{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:linear-gradient(135deg,#F7F0E8 0%,#EDE5D8 50%,#E4D5C0 100%)}
+.login-card{background:var(–card);border-radius:24px;padding:36px 28px;width:100%;max-width:400px;border:0.5px solid var(–border);box-shadow:0 8px 40px var(–shadow-md);text-align:center}
+.logo-icon{font-size:52px;display:block;margin-bottom:10px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.logo-title{font-family:var(–serif);font-size:26px;font-weight:700;color:var(–dark);letter-spacing:2px;margin-bottom:4px}
+.logo-sub{font-size:13px;color:var(–muted);margin-bottom:28px}
+.input-label{font-size:11px;color:var(–muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block;text-align:left;margin-bottom:6px}
+.code-input{width:100%;padding:14px 16px;border:1.5px solid var(–border);border-radius:14px;background:var(–warm);font-family:var(–sans);font-size:20px;color:var(–dark);outline:none;text-align:center;letter-spacing:4px;font-weight:600;margin-bottom:10px;transition:border-color .2s,background .2s}
+.code-input:focus{border-color:var(–accent);background:var(–card)}
+.err-msg{color:var(–red);font-size:13px;min-height:18px;margin-bottom:10px}
+.enter-btn{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#C4956A,#8B6B4A);color:white;font-family:var(–sans);font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;transition:opacity .2s}
+.enter-btn:active{opacity:.85}
+.hint{font-size:12px;color:var(–muted);line-height:1.7}
+.hint b{color:var(–brown)}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── APP LAYOUT ── */
+#app{display:none;flex-direction:column;min-height:100vh;max-width:480px;margin:0 auto}
 
-html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+/* ── HEADER ── */
+.app-header{background:var(–card);border-bottom:.5px solid var(–border);padding:14px 16px 10px;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.app-title{font-family:var(–serif);font-size:18px;font-weight:700;color:var(–dark);letter-spacing:1px}
+.sync-dot{font-size:12px;color:var(–green);margin-top:2px}
+.sync-dot.off{color:var(–red)}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:.5px solid var(–border);background:var(–warm);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.search-input{width:100%;padding:10px 16px 10px 38px;border:.5px solid var(–border);border-radius:20px;background:var(–warm);font-family:var(–sans);font-size:14px;color:var(–dark);outline:none}
+.search-wrap{position:relative}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none}
 
-body {
-font-family: var(–sans);
-background: var(–cream);
-color: var(–dark);
-min-height: 100vh;
-line-height: 1.6;
--webkit-font-smoothing: antialiased;
-}
+/* ── FILTERS ── */
+.filter-section{background:var(–card);border-bottom:.5px solid var(–border);padding:10px 0 8px}
+.filter-row{display:flex;gap:6px;overflow-x:auto;padding:0 14px 4px;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.chip{padding:6px 14px;border-radius:20px;border:.5px solid var(–border);background:var(–warm);font-size:12px;color:var(–muted);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.chip.active{background:var(–dark);border-color:var(–dark);color:var(–cream);font-weight:600}
+.tag-chip.active{background:var(–accent);border-color:var(–accent);color:white}
 
-/* ===== 登入頁 ===== */
-.login-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+/* ── VIEW ROW ── */
+.view-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(–card);border-bottom:.5px solid var(–border)}
+.sort-select{padding:5px 10px;border-radius:8px;border:.5px solid var(–border);background:var(–warm);font-family:var(–sans);font-size:12px;color:var(–dark);outline:none;cursor:pointer}
+.view-btns{display:flex;gap:4px}
+.view-btn{width:32px;height:32px;border-radius:8px;border:.5px solid var(–border);background:var(–warm);font-size:14px;cursor:pointer;color:var(–muted);display:flex;align-items:center;justify-content:center}
+.view-btn.active{background:var(–dark);color:var(–cream);border-color:var(–dark)}
+.clear-btn{padding:4px 10px;border-radius:8px;border:.5px solid var(–border);background:transparent;font-size:11px;color:var(–muted);cursor:pointer}
 
-.login-bg { position: fixed; inset: 0; z-index: 0; background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%); }
-.login-deco {
-position: absolute; border-radius: 50%;
-background: radial-gradient(circle, var(–brown-light) 0%, transparent 70%);
-opacity: 0.15;
-}
-.deco-1 { width: 400px; height: 400px; top: -100px; right: -100px; }
-.deco-2 { width: 300px; height: 300px; bottom: -80px; left: -80px; }
-.deco-3 { width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.08; }
+/* ── CARDS ── */
+main{padding:12px}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card-grid.list{grid-template-columns:1fr}
+.place-card{background:var(–card);border:.5px solid var(–border);border-radius:var(–radius);overflow:hidden;cursor:pointer;transition:transform .12s;box-shadow:0 2px 8px var(–shadow)}
+.place-card:active{transform:scale(.97)}
+.card-photo{position:relative;height:110px;background:var(–warm);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.emoji-fallback{font-size:32px;position:relative;z-index:1}
+.visited-badge,.unvisited-badge{position:absolute;top:6px;right:6px;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600;z-index:2}
+.visited-badge{background:var(–green-light);color:var(–green)}
+.unvisited-badge{background:rgba(255,255,255,.85);color:var(–muted)}
+.card-body{padding:10px}
+.card-name{font-size:13px;font-weight:600;color:var(–dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.card-region{font-size:11px;color:var(–muted)}
+.card-cat{font-size:11px;color:var(–accent-dark);margin-bottom:4px}
+.card-tags{display:flex;flex-wrap:wrap;gap:3px}
+.card-tag{font-size:10px;padding:1px 6px;border-radius:6px;background:var(–warm);color:var(–muted);border:.5px solid var(–border)}
+.list-card{background:var(–card);border:.5px solid var(–border);border-radius:var(–radius);padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .12s}
+.list-card:active{background:var(–warm)}
+.list-icon{width:44px;height:44px;border-radius:10px;background:var(–warm);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;position:relative}
+.list-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.list-info{flex:1;min-width:0}
+.list-name{font-size:14px;font-weight:600;color:var(–dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list-meta{font-size:11px;color:var(–muted)}
+.list-visited{font-size:11px;color:var(–green);margin-top:2px}
+.list-arrow{color:var(–muted-light);font-size:18px;flex-shrink:0}
+.empty-state{text-align:center;padding:60px 20px;color:var(–muted)}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-title{font-size:16px;font-weight:600;color:var(–dark);margin-bottom:6px}
+.empty-sub{font-size:13px;line-height:1.6}
 
-.login-container { position: relative; z-index: 1; width: 100%; max-width: 420px; padding: 24px 16px; }
+/* ── FAB ── */
+.fab{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0px));right:18px;width:56px;height:56px;background:linear-gradient(135deg,#C4956A,#8B6B4A);color:white;border:none;border-radius:18px;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(139,99,67,.4);z-index:200}
+.fab:active{transform:scale(.92)}
 
-.login-card {
-background: var(–card);
-border-radius: var(–radius-lg);
-padding: 36px 32px;
-border: 0.5px solid var(–border);
-box-shadow: 0 8px 40px var(–shadow-md);
-}
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(40,28,18,.45);z-index:300;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{background:var(–card);border-radius:var(–radius-lg) var(–radius-lg) 0 0;width:100%;max-width:480px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-top{position:sticky;top:0;z-index:10;background:var(–card);padding-top:10px;flex-shrink:0}
+.modal-handle{width:36px;height:4px;background:var(–border);border-radius:2px;margin:0 auto 8px}
+.modal-header{padding:8px 20px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid var(–border-light)}
+.modal-title{font-family:var(–serif);font-size:18px;font-weight:500;color:var(–dark)}
+.modal-close{width:32px;height:32px;border-radius:50%;border:.5px solid var(–border);background:var(–warm);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(–muted);flex-shrink:0}
+.modal-body{padding:20px;overflow-y:auto;flex:1;padding-bottom:calc(20px + env(safe-area-inset-bottom,16px))}
 
-.login-logo { text-align: center; margin-bottom: 28px; }
-.logo-icon { font-size: 48px; display: block; margin-bottom: 12px; }
-.logo-title { font-family: var(–serif); font-size: 28px; font-weight: 700; color: var(–dark); letter-spacing: 2px; }
-.logo-sub { font-size: 13px; color: var(–muted); margin-top: 6px; letter-spacing: 0.5px; }
+/* ── FORM ── */
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(–muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.form-input,.form-select,.form-textarea{width:100%;padding:11px 14px;border:1.5px solid var(–border);border-radius:var(–radius-sm);background:var(–warm);font-family:var(–sans);font-size:15px;color:var(–dark);outline:none;transition:border-color .2s,background .2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(–accent);background:var(–card)}
+.form-select{appearance:none;background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23a08060’ fill=‘none’ stroke-width=‘1.5’ stroke-linecap=‘round’/%3E%3C/svg%3E”);background-repeat:no-repeat;background-position:right 14px center;background-color:var(–warm);padding-right:36px}
+.form-textarea{min-height:80px;resize:vertical;line-height:1.6}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cat-hint{font-size:11px;color:var(–accent-dark);margin-top:4px;min-height:14px}
+.tags-grid{display:flex;flex-wrap:wrap;gap:7px}
+.tag-toggle{padding:7px 13px;border-radius:20px;border:1.5px solid var(–border);background:var(–warm);font-family:var(–sans);font-size:13px;color:var(–muted);cursor:pointer;transition:all .15s}
+.tag-toggle.selected{background:var(–accent);border-color:var(–accent);color:white}
+.revisit-options{display:flex;flex-wrap:wrap;gap:8px}
+.revisit-btn{padding:8px 14px;border-radius:20px;border:1.5px solid var(–border);background:var(–warm);font-family:var(–sans);font-size:13px;color:var(–dark);cursor:pointer;transition:all .15s}
+.revisit-btn.selected{background:var(–accent);border-color:var(–accent);color:white}
+.revisit-btn[data-val=“雷店避開”].selected{background:var(–red);border-color:var(–red)}
+.visited-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(–warm);border-radius:var(–radius-sm);border:.5px solid var(–border);cursor:pointer}
+.visited-label{font-size:14px;color:var(–dark)}
+.toggle-switch{width:44px;height:24px;background:var(–border);border-radius:12px;position:relative;transition:background .2s;flex-shrink:0}
+.toggle-switch::after{content:””;position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:white;transition:left .2s}
+.visited-toggle.on .toggle-switch{background:var(–green)}
+.visited-toggle.on .toggle-switch::after{left:23px}
+.form-btns{display:flex;gap:10px;margin-top:16px}
+.btn-submit{flex:1;padding:14px;border-radius:var(–radius-sm);background:var(–accent);border:none;color:white;font-family:var(–sans);font-size:15px;font-weight:500;cursor:pointer}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.btn-cancel{padding:14px 18px;border-radius:var(–radius-sm);background:var(–warm);border:.5px solid var(–border);color:var(–muted);font-family:var(–sans);font-size:15px;cursor:pointer}
 
-.btn-google {
-width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
-padding: 13px; border-radius: var(–radius);
-border: 0.5px solid var(–border); background: var(–card);
-font-family: var(–sans); font-size: 15px; color: var(–dark);
-cursor: pointer; transition: all 0.2s;
-}
-.btn-google:hover { background: var(–warm); border-color: var(–brown-light); transform: translateY(-1px); box-shadow: 0 4px 16px var(–shadow); }
-.btn-google:active { transform: translateY(0); }
+/* ── DETAIL ── */
+.detail-photo{height:180px;background:var(–warm);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;flex-shrink:0}
+.detail-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.detail-photo-emoji{font-size:60px;position:relative;z-index:1}
+.detail-body{padding:20px}
+.detail-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.detail-name{font-family:var(–serif);font-size:20px;font-weight:700;color:var(–dark)}
+.detail-badge{flex-shrink:0;padding:4px 10px;border-radius:10px;font-size:12px;border:.5px solid var(–border)}
+.detail-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.meta-pill{padding:4px 10px;border-radius:10px;font-size:12px;background:var(–warm);color:var(–muted);border:.5px solid var(–border)}
+.meta-pill.cat{background:var(–accent);color:white;border-color:var(–accent)}
+.detail-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.detail-tag{font-size:12px;padding:3px 9px;border-radius:10px;background:var(–warm);color:var(–brown);border:.5px solid var(–border)}
+.detail-custom-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.custom-tag{font-size:12px;padding:3px 9px;border-radius:10px;background:#EEF6EC;color:var(–green);border:.5px solid #D0E8D0}
+.detail-revisit{font-size:13px;font-weight:600;margin-bottom:10px}
+.detail-note{font-size:13px;color:var(–muted);line-height:1.7;padding:12px;background:var(–warm);border-radius:var(–radius-sm);margin-bottom:14px}
+.link-btn{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(–radius-sm);background:var(–warm);border:.5px solid var(–border);text-decoration:none;color:var(–dark);font-size:14px;margin-bottom:8px}
+.link-icon{font-size:18px}
+.detail-actions{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:.5px solid var(–border-light)}
+.btn-edit{flex:1;padding:12px;border-radius:var(–radius-sm);background:var(–warm);border:.5px solid var(–border);font-family:var(–sans);font-size:14px;color:var(–dark);cursor:pointer}
+.btn-delete{flex:1;padding:12px;border-radius:var(–radius-sm);background:var(–red-light);border:.5px solid var(–red);font-family:var(–sans);font-size:14px;color:var(–red);cursor:pointer}
+.created-by{font-size:11px;color:var(–muted-light);margin-top:14px;text-align:center}
 
-/* ===== 主應用 Layout ===== */
-.app-layout {
-display: flex; flex-direction: column; min-height: 100vh;
-max-width: 480px; margin: 0 auto;
-}
+/* ── SETTINGS ── */
+.settings-section{margin-bottom:20px}
+.settings-section-title{font-size:11px;font-weight:600;color:var(–muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.settings-row{display:flex;align-items:center;gap:12px;padding:12px;background:var(–warm);border-radius:var(–radius-sm);margin-bottom:6px;cursor:pointer;border:.5px solid var(–border)}
+.settings-row-icon{font-size:18px;width:24px;text-align:center}
+.settings-row-text{flex:1}
+.settings-row-label{font-size:14px;color:var(–dark)}
+.settings-row-sub{font-size:11px;color:var(–muted);margin-top:1px}
+.settings-row-arrow{color:var(–muted-light);font-size:16px}
+.code-display{font-size:22px;font-weight:700;color:var(–dark);letter-spacing:4px;background:var(–card);border-radius:var(–radius-sm);padding:10px;text-align:center;margin:8px 0;font-family:monospace}
+.copy-btn{padding:8px 16px;border-radius:var(–radius-sm);background:var(–accent);border:none;color:white;font-family:var(–sans);font-size:13px;cursor:pointer;width:100%}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stat-box{background:var(–warm);border-radius:var(–radius-sm);padding:12px;text-align:center;border:.5px solid var(–border)}
+.stat-num{font-size:22px;font-weight:700;font-family:var(–serif)}
+.stat-label{font-size:11px;color:var(–muted);margin-top:2px}
 
-/* ===== Header ===== */
-.app-header {
-background: var(–card); border-bottom: 0.5px solid var(–border);
-padding: 14px 16px 10px; position: sticky; top: 0; z-index: 100;
-}
-.header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.app-title-small { font-family: var(–serif); font-size: 18px; font-weight: 700; color: var(–dark); letter-spacing: 1px; }
-.header-actions { display: flex; gap: 8px; }
-.icon-btn {
-width: 36px; height: 36px; border-radius: 50%; border: 0.5px solid var(–border);
-background: var(–warm); display: flex; align-items: center; justify-content: center;
-cursor: pointer; font-size: 16px; transition: all 0.2s; color: var(–brown);
-}
-.icon-btn:hover { background: var(–warm2); border-color: var(–brown-light); }
-.sync-dot {
-display: inline-flex; align-items: center; gap: 4px;
-font-size: 11px; color: var(–green);
-}
-.sync-dot::before { content: “”; width: 6px; height: 6px; background: var(–green); border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-/* ===== 搜尋 ===== */
-.search-input {
-width: 100%; padding: 10px 16px; border-radius: 20px;
-border: 0.5px solid var(–border); background: var(–warm);
-font-family: var(–sans); font-size: 14px; color: var(–dark); outline: none;
-transition: all 0.2s;
-}
-.search-input:focus { border-color: var(–accent); background: var(–card); box-shadow: 0 0 0 3px rgba(196,149,106,0.1); }
-.search-input::placeholder { color: var(–muted-light); }
-
-/* ===== 篩選 ===== */
-.filter-section { background: var(–card); border-bottom: 0.5px solid var(–border); }
-.filter-row {
-display: flex; gap: 7px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none;
-}
-.filter-row::-webkit-scrollbar { display: none; }
-.chip {
-white-space: nowrap; padding: 5px 13px; border-radius: 16px;
-border: 0.5px solid var(–border); background: var(–warm);
-font-size: 12px; color: var(–brown); cursor: pointer;
-transition: all 0.15s; flex-shrink: 0; font-family: var(–sans);
-}
-.chip:hover { border-color: var(–brown-light); background: var(–warm2); }
-.chip.active { background: var(–accent); border-color: var(–accent); color: white; }
-.chip.tag-chip { padding: 4px 10px; font-size: 11px; }
-
-/* ===== 結果統計 & 視圖切換 ===== */
-.results-bar strong { color: var(–accent-dark); }
-.clear-btn {
-padding: 3px 10px; border-radius: 10px; border: 0.5px solid var(–border);
-background: transparent; font-size: 11px; color: var(–muted); cursor: pointer;
-font-family: var(–sans); transition: all 0.15s;
-}
-.clear-btn:hover { border-color: var(–red); color: var(–red); }
-
-.view-toggle-row {
-display: flex; align-items: center; justify-content: space-between;
-padding: 8px 16px 4px;
-}
-.view-btns { display: flex; gap: 4px; }
-.view-btn {
-padding: 5px 12px; border-radius: 12px; border: 0.5px solid var(–border);
-background: transparent; font-size: 12px; color: var(–muted); cursor: pointer;
-font-family: var(–sans); transition: all 0.15s;
-}
-.view-btn.active { background: var(–brown-dark); border-color: var(–brown-dark); color: white; }
-
-/* ===== 卡片網格 ===== */
-.card-grid {
-padding: 8px 12px 100px;
-display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-}
-.card-grid.list { grid-template-columns: 1fr; gap: 0; padding: 0 0 100px; }
-
-.place-card {
-background: var(–card); border-radius: var(–radius);
-border: 0.5px solid var(–border); overflow: hidden;
-cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-animation: fadeIn 0.3s ease;
-}
-.place-card:active { transform: scale(0.97); }
-@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-
-.card-photo {
-width: 100%; height: 110px;
-background: var(–warm); display: flex; align-items: center; justify-content: center;
-font-size: 32px; color: var(–muted-light); position: relative; overflow: hidden;
-}
-.card-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-.card-photo .emoji-fallback { font-size: 32px; position: relative; z-index: 1; }
-
-.visited-badge {
-position: absolute; top: 6px; right: 6px;
-background: var(–green); color: white; font-size: 10px; padding: 2px 7px;
-border-radius: 8px; font-weight: 500; z-index: 2;
-}
-.unvisited-badge {
-position: absolute; top: 6px; right: 6px;
-background: rgba(255,255,255,0.85); color: var(–accent-dark); font-size: 10px; padding: 2px 7px;
-border-radius: 8px; border: 0.5px solid var(–border); z-index: 2;
-}
-
-.card-body { padding: 10px 11px 12px; }
-.card-name { font-size: 13px; font-weight: 500; color: var(–dark); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-region { font-size: 11px; color: var(–muted); }
-.card-cat { font-size: 11px; color: var(–accent-dark); margin-top: 2px; }
-.card-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 7px; }
-.card-tag { font-size: 10px; padding: 2px 7px; background: var(–warm); border-radius: 6px; color: var(–brown); }
-
-/* 列表模式 */
-.list-card {
-background: var(–card); display: flex; align-items: center; gap: 12px;
-padding: 12px 16px; border-bottom: 0.5px solid var(–border-light);
-cursor: pointer; transition: background 0.15s;
-}
-.list-card:hover { background: var(–warm); }
-.list-icon {
-width: 50px; height: 50px; border-radius: 12px;
-background: var(–warm); flex-shrink: 0;
-display: flex; align-items: center; justify-content: center; font-size: 24px;
-overflow: hidden; position: relative;
-}
-.list-icon img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-.list-info { flex: 1; min-width: 0; }
-.list-name { font-size: 14px; font-weight: 500; color: var(–dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.list-meta { font-size: 11px; color: var(–muted); margin-top: 2px; }
-.list-visited { font-size: 10px; color: var(–green); margin-top: 2px; }
-.list-arrow { color: var(–muted-light); font-size: 18px; flex-shrink: 0; }
-
-/* 空狀態 */
-.empty-state { padding: 60px 32px; text-align: center; }
-.empty-icon { font-size: 48px; margin-bottom: 12px; }
-.empty-title { font-family: var(–serif); font-size: 18px; color: var(–dark); margin-bottom: 8px; }
-.empty-sub { font-size: 13px; color: var(–muted); line-height: 1.6; }
-
-/* ===== FAB ===== */
-.fab {
-position: fixed; bottom: 28px; right: 20px;
-width: 54px; height: 54px; border-radius: 50%;
-background: var(–accent); border: none; color: white;
-font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-box-shadow: 0 4px 20px rgba(196,149,106,0.4);
-transition: all 0.2s; z-index: 200;
-}
-.fab:hover { background: var(–accent-dark); transform: scale(1.08); }
-.fab:active { transform: scale(0.96); }
-
-/* ===== Modal ===== */
-.modal-overlay {
-position: fixed; inset: 0; background: rgba(40,28,18,0.45);
-z-index: 300; display: flex; align-items: flex-end; justify-content: center;
-opacity: 0; pointer-events: none; transition: opacity 0.25s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-
-.modal-sheet {
-background: var(–card); border-radius: var(–radius-lg) var(–radius-lg) 0 0;
-width: 100%; max-width: 480px; max-height: 92vh;
-overflow: hidden;
-display: flex; flex-direction: column;
-transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-}
-.modal-overlay.open .modal-sheet { transform: translateY(0); }
-
-/* 拖拉手把 — sticky 固定不被滾走 */
-.modal-handle-wrap {
-padding: 12px 0 4px; display: flex; justify-content: center; cursor: grab;
-position: sticky; top: 0; z-index: 11; background: var(–card);
-}
-/* handle 直接在 sheet 下（不在 wrap 裡）時也做 sticky */
-.modal-sheet > .modal-handle {
-width: 36px; height: 4px; background: var(–border); border-radius: 2px;
-}
-/* sticky 상단 wrapper: handle + header 一起固定 */
-.modal-sticky-top {
-position: sticky; top: 0; z-index: 11; background: var(–card);
-padding-top: 12px;
-}
-.modal-sticky-top .modal-handle {
-width: 36px; height: 4px; background: var(–border); border-radius: 2px;
-margin: 0 auto 8px;
-}
-.modal-header {
-padding: 8px 20px 12px; display: flex; align-items: center; justify-content: space-between;
-border-bottom: 0.5px solid var(–border-light);
-background: var(–card);
-}
-.modal-title { font-family: var(–serif); font-size: 18px; font-weight: 500; color: var(–dark); }
-.modal-close {
-width: 32px; height: 32px; border-radius: 50%;
-border: 0.5px solid var(–border); background: var(–warm);
-display: flex; align-items: center; justify-content: center;
-cursor: pointer; font-size: 16px; color: var(–muted);
-flex-shrink: 0; line-height: 1;
-}
-
-.modal-body { padding: 20px; overflow-y: auto; flex: 1; padding-bottom: calc(20px + env(safe-area-inset-bottom, 16px)); }
-
-/* ===== 回訪意願 ===== */
-.revisit-options { display: flex; flex-wrap: wrap; gap: 8px; }
-.revisit-btn {
-padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(–border);
-background: var(–warm); font-family: var(–sans); font-size: 13px;
-color: var(–dark); cursor: pointer; transition: all 0.15s;
-}
-.revisit-btn.selected { background: var(–accent); border-color: var(–accent); color: white; }
-.revisit-btn[data-val=“雷店避開”].selected { background: var(–red); border-color: var(–red); }
-
-/* ===== 取消按鈕 ===== */
-.btn-cancel-form {
-padding: 14px 20px; border-radius: var(–radius-sm);
-background: var(–warm); border: 0.5px solid var(–border);
-color: var(–muted); font-family: var(–sans); font-size: 15px;
-cursor: pointer; white-space: nowrap;
-}
-.btn-cancel-form:active { background: var(–border); }
-
-/* ===== 分類小字說明 ===== */
-.cat-desc { font-size: 11px; color: var(–muted); margin-top: 4px; }
-
-/* ===== 排序 ===== */
-.sort-select {
-padding: 5px 10px; border-radius: 8px; border: 0.5px solid var(–border);
-background: var(–warm); font-family: var(–sans); font-size: 12px;
-color: var(–dark); outline: none; cursor: pointer;
-}
-
-/* ===== 表單 ===== */
-.form-group { margin-bottom: 18px; }
-.form-label { display: block; font-size: 12px; font-weight: 500; color: var(–muted); margin-bottom: 7px; letter-spacing: 0.3px; }
-.form-input, .form-select, .form-textarea {
-width: 100%; padding: 11px 14px; border-radius: var(–radius-sm);
-border: 0.5px solid var(–border); background: var(–warm);
-font-family: var(–sans); font-size: 14px; color: var(–dark); outline: none;
-transition: all 0.2s; -webkit-appearance: none;
-}
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-border-color: var(–accent); background: var(–card);
-box-shadow: 0 0 0 3px rgba(196,149,106,0.12);
-}
-.form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-.form-select {
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%238B6B4A’ fill=‘none’ stroke-width=‘1.5’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
-background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
-}
-
-.tags-grid { display: flex; flex-wrap: wrap; gap: 7px; }
-.tag-toggle {
-padding: 6px 12px; border-radius: 14px; border: 0.5px solid var(–border);
-background: var(–warm); font-size: 12px; color: var(–brown);
-cursor: pointer; transition: all 0.15s; font-family: var(–sans);
-}
-.tag-toggle.selected { background: var(–brown); border-color: var(–brown); color: white; }
-
-.visited-toggle {
-display: flex; align-items: center; justify-content: space-between;
-padding: 14px; background: var(–warm); border-radius: var(–radius-sm);
-border: 0.5px solid var(–border); cursor: pointer;
-}
-.visited-toggle-label { font-size: 14px; color: var(–dark); }
-.toggle-switch {
-width: 44px; height: 24px; background: var(–border); border-radius: 12px;
-position: relative; transition: background 0.2s; flex-shrink: 0;
-}
-.toggle-switch::after {
-content: “”; position: absolute; left: 3px; top: 3px;
-width: 18px; height: 18px; border-radius: 50%; background: white;
-transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-.visited-toggle.on .toggle-switch { background: var(–green); }
-.visited-toggle.on .toggle-switch::after { transform: translateX(20px); }
-
-/* ===== 詳情 ===== */
-.modal-sheet > #detail-content,
-.modal-sheet .detail-wrap { overflow-y: auto; flex: 1; }
-.detail-photo {
-width: 100%; height: 220px; background: var(–warm);
-display: flex; align-items: center; justify-content: center; font-size: 60px;
-position: relative; overflow: hidden;
-}
-.detail-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-.detail-body { padding: 20px; }
-.detail-name { font-family: var(–serif); font-size: 22px; font-weight: 700; color: var(–dark); margin-bottom: 8px; }
-.detail-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-.meta-pill { padding: 4px 12px; border-radius: 12px; font-size: 12px; background: var(–warm); color: var(–brown); border: 0.5px solid var(–border); }
-.meta-pill.cat { background: var(–accent); color: white; border-color: var(–accent); }
-.detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-.detail-tag { padding: 4px 11px; border-radius: 10px; font-size: 12px; background: var(–warm2); color: var(–brown); }
-
-.detail-custom-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
-.custom-tag { background: var(–warm); border: 0.5px solid var(–border); border-radius: 20px;
-padding: 3px 10px; font-size: 12px; color: var(–brown); }
-.detail-revisit { font-size: 13px; color: var(–muted); margin: 8px 0; }
-.revisit-badge { font-weight: 600; }
-.revisit-badge.revisit-great { color: #C4956A; }
-.revisit-badge.revisit-ok { color: var(–muted); }
-.revisit-badge.revisit-bad { color: var(–red); }
-
-.detail-note { background: var(–warm); border-radius: var(–radius-sm); padding: 14px; font-size: 14px; color: var(–dark); line-height: 1.7; border-left: 3px solid var(–brown-light); margin-top: 12px; }
-.detail-links { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
-.link-btn {
-display: flex; align-items: center; gap: 10px; padding: 12px 16px;
-border-radius: var(–radius-sm); border: 0.5px solid var(–border); background: var(–warm);
-font-family: var(–sans); font-size: 14px; color: var(–dark); text-decoration: none;
-transition: all 0.15s;
-}
-.link-btn:hover { background: var(–warm2); border-color: var(–brown-light); }
-.link-icon { font-size: 18px; }
-.detail-actions { display: flex; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 0.5px solid var(–border-light); }
-.btn-edit, .btn-delete {
-flex: 1; padding: 12px; border-radius: var(–radius-sm);
-font-family: var(–sans); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s;
-}
-.btn-edit { background: var(–accent); border: none; color: white; }
-.btn-edit:hover { background: var(–accent-dark); }
-.btn-delete { background: transparent; border: 0.5px solid var(–border); color: var(–red); }
-.btn-delete:hover { background: var(–red-light); border-color: var(–red); }
-.created-by { font-size: 11px; color: var(–muted-light); text-align: right; margin-top: 12px; }
-
-/* ===== 設定 ===== */
-.settings-sheet .modal-body { padding: 16px; }
-.settings-section { margin-bottom: 24px; }
-.settings-section-title { font-size: 11px; font-weight: 500; color: var(–muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; padding: 0 4px; }
-.settings-row {
-display: flex; align-items: center; gap: 12px; padding: 14px 16px;
-background: var(–warm); border-radius: var(–radius-sm); margin-bottom: 6px;
-border: 0.5px solid var(–border); cursor: pointer; transition: all 0.15s;
-}
-.settings-row:hover { background: var(–warm2); }
-.settings-row-icon { font-size: 20px; flex-shrink: 0; }
-.settings-row-text { flex: 1; }
-.settings-row-label { font-size: 14px; color: var(–dark); }
-.settings-row-sub { font-size: 11px; color: var(–muted); margin-top: 1px; }
-.settings-row-arrow { color: var(–muted-light); font-size: 14px; }
-
-.invite-code-display {
-display: flex; align-items: center; justify-content: center; gap: 16px;
-padding: 20px; background: var(–warm); border-radius: var(–radius);
-border: 0.5px solid var(–border); margin: 12px 0;
-}
-.invite-code { font-family: var(–serif); font-size: 32px; font-weight: 700; color: var(–accent-dark); letter-spacing: 6px; }
-.copy-btn {
-padding: 8px 14px; border-radius: var(–radius-sm); border: 0.5px solid var(–accent);
-background: transparent; color: var(–accent); font-size: 13px; cursor: pointer;
-font-family: var(–sans); transition: all 0.15s;
-}
-.copy-btn:hover { background: var(–accent); color: white; }
-
-/* ===== Toast ===== */
-.toast {
-position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
-background: var(–dark); color: white; padding: 10px 20px; border-radius: 20px;
-font-size: 13px; white-space: nowrap; z-index: 999;
-opacity: 0; pointer-events: none; transition: all 0.3s; max-width: 90vw; text-align: center;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { background: var(–red); }
-.toast.success { background: var(–green); }
-
-/* ===== 送出按鈕 ===== */
-.btn-submit {
-width: 100%; padding: 14px; border-radius: var(–radius-sm);
-background: var(–accent); border: none; color: white;
-font-family: var(–sans); font-size: 15px; font-weight: 500;
-cursor: pointer; transition: all 0.2s; margin-top: 8px;
-}
-.btn-submit:hover { background: var(–accent-dark); }
-.btn-submit:active { transform: scale(0.98); }
-.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* ===== 載入 ===== */
-.loading-screen { position: fixed; inset: 0; background: var(–cream); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 999; }
-.spinner { width: 36px; height: 36px; border: 3px solid var(–border); border-top-color: var(–accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ===== Responsive ===== */
-@media (min-width: 480px) {
-.app-layout { box-shadow: 0 0 60px rgba(0,0,0,0.08); }
-}
-
-/* ===== LOGIN PAGE ===== */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-#login-screen {
-position: fixed; inset: 0; z-index: 9999;
-display: flex; align-items: center; justify-content: center;
-padding: 24px 16px;
-background: linear-gradient(135deg, #F7F0E8 0%, #EDE5D8 50%, #E4D5C0 100%);
-}
-.login-card {
-background: var(–card); border-radius: 24px; padding: 36px 28px;
-width: 100%; max-width: 400px;
-border: 0.5px solid var(–border);
-box-shadow: 0 8px 40px var(–shadow-md);
-text-align: center;
-}
-.logo-icon { font-size: 52px; display: block; margin-bottom: 10px;
-animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-.logo-title { font-family: var(–serif); font-size: 26px; font-weight: 700;
-color: var(–dark); letter-spacing: 2px; margin-bottom: 4px; }
-.logo-sub { font-size: 13px; color: var(–muted); letter-spacing: 0.5px; margin-bottom: 28px; }
-.input-label { font-size: 11px; color: var(–muted); font-weight: 600;
-text-transform: uppercase; letter-spacing: 0.5px;
-display: block; text-align: left; margin-bottom: 6px; }
-.code-input {
-width: 100%; padding: 14px 16px; border: 1.5px solid var(–border);
-border-radius: 14px; background: var(–warm);
-font-family: var(–sans); font-size: 20px; color: var(–dark);
-outline: none; text-align: center; letter-spacing: 4px; font-weight: 600;
-margin-bottom: 10px; transition: border-color .2s, background .2s;
-}
-.code-input:focus { border-color: var(–accent); background: var(–card); }
-.err-msg { color: var(–red); font-size: 13px; min-height: 18px; margin-bottom: 10px; }
-.enter-btn {
-width: 100%; padding: 14px; border: none; border-radius: 14px;
-background: linear-gradient(135deg, #C4956A, #8B6B4A);
-color: white; font-family: var(–sans); font-size: 16px; font-weight: 600;
-cursor: pointer; margin-bottom: 16px; transition: opacity .2s;
-}
-.enter-btn:active { opacity: 0.85; }
-.hint { font-size: 12px; color: var(–muted); line-height: 1.7; }
-.hint b { color: var(–brown); }
+/* ── TOAST ── */
+.toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(10px);background:var(–dark);color:white;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(–red)}
+.toast.success{background:var(–green)}
 </style>
 
 </head>
 <body>
 
-<!-- ===== LOGIN SCREEN ===== -->
+<!-- LOGIN -->
 
 <div id="login-screen">
   <div class="login-card">
@@ -534,61 +205,27 @@ cursor: pointer; margin-bottom: 16px; transition: opacity .2s;
     <div class="logo-title">口袋名單</div>
     <p class="logo-sub">我們的秘密基地・一起記錄好去處</p>
     <label class="input-label">家庭代號</label>
-    <input class="code-input" id="codeInput" placeholder="輸入代號" maxlength="20"
-      autocomplete="off" autocapitalize="none"
-      onkeypress="if(event.key==='Enter')doLogin()">
+    <input class="code-input" id="codeInput" placeholder="輸入代號" maxlength="20" autocomplete="off" autocapitalize="none">
     <div class="err-msg" id="errMsg"></div>
-    <button class="enter-btn" onclick="doLogin()">進入口袋名單 🗺️</button>
+    <button class="enter-btn" id="enterBtn">進入口袋名單 🗺️</button>
     <p class="hint"><b>第一次用？</b> 想一個代號輸入即可，家人輸入同樣代號就能看到相同的地點清單。</p>
   </div>
 </div>
 
-<script>
-// ===== 最先執行：檢查有無代號 =====
-(function() {
-  // 從 URL ?code= 或 localStorage 取代號
-  var params = new URLSearchParams(window.location.search);
-  var urlCode = params.get('code');
-  if (urlCode && urlCode.length >= 3) {
-    localStorage.setItem('pocket_last_room', urlCode.toLowerCase());
-  }
-  var saved = localStorage.getItem('pocket_last_room');
-  if (saved && saved.length >= 3) {
-    document.getElementById('login-screen').style.display = 'none';
-  }
-})();
+<!-- APP -->
 
-function doLogin() {
-  var val = document.getElementById('codeInput').value.trim().toLowerCase().replace(/\s+/g, '');
-  var err = document.getElementById('errMsg');
-  if (!val) { err.textContent = '請輸入代號！'; return; }
-  if (val.length < 3) { err.textContent = '代號至少 3 個字元'; return; }
-  err.textContent = '';
-  localStorage.setItem('pocket_last_room', val);
-  document.getElementById('login-screen').style.display = 'none';
-  // trigger app init
-  if (window._initApp) window._initApp();
-}
-</script>
-
-<div id="loading-screen" class="loading-screen">
-  <div class="spinner"></div>
-  <p style="font-size:13px;color:var(--muted)">載入口袋名單中...</p>
-</div>
-
-<div id="app" class="app-layout" style="display:none">
+<div id="app">
   <header class="app-header">
     <div class="header-top">
       <div>
-        <div class="app-title-small">🗺️ 口袋名單</div>
-        <div class="sync-dot" id="sync-indicator">即時同步中</div>
+        <div class="app-title">🗺️ 口袋名單</div>
+        <div class="sync-dot" id="sync-dot">即時同步中</div>
       </div>
-      <div class="header-actions">
-        <button class="icon-btn" id="btn-settings">⚙️</button>
-      </div>
+      <button class="icon-btn" id="btn-settings">⚙️</button>
     </div>
-    <div style="margin-top:10px">
-      <input type="search" class="search-input" id="search-input" placeholder="🔍 搜尋店名、備註...">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search" class="search-input" id="search-input" placeholder="搜尋店名、備註...">
     </div>
   </header>
 
@@ -632,7 +269,7 @@ function doLogin() {
       <select class="sort-select" id="sort-select">
         <option value="newest">最新新增</option>
         <option value="oldest">最早新增</option>
-        <option value="name">名稱 A→Z</option>
+        <option value="name">名稱排序</option>
         <option value="visited">已造訪優先</option>
         <option value="unvisited">還沒去優先</option>
       </select>
@@ -652,7 +289,7 @@ function doLogin() {
 
 <div class="modal-overlay" id="modal-form">
   <div class="modal-sheet">
-    <div class="modal-sticky-top">
+    <div class="modal-top">
       <div class="modal-handle" id="handle-form"></div>
       <div class="modal-header">
         <div class="modal-title" id="form-title">新增地點</div>
@@ -665,7 +302,7 @@ function doLogin() {
           <label class="form-label">店名 *</label>
           <input type="text" class="form-input" id="f-name" placeholder="例：Slow Morning" required>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-row">
           <div class="form-group">
             <label class="form-label">地區 *</label>
             <select class="form-select" id="f-region">
@@ -677,16 +314,17 @@ function doLogin() {
           <div class="form-group">
             <label class="form-label">主分類 *</label>
             <select class="form-select" id="f-category">
-              <option value="">選擇分類 *</option>
-              <option value="日常外帶" title="下班順路買、解決晚餐">日常外帶</option>
-              <option value="聚會正餐" title="週末聚會、慶祝飯局">聚會正餐</option>
-              <option value="甜點咖啡" title="放鬆、甜點飲料">甜點咖啡</option>
-              <option value="親子放電" title="帶小孩放風、育兒友善">親子放電</option>
-              <option value="藝文選物" title="逛街、文具、美感物件">藝文選物</option>
-              <option value="飲品手搖" title="手搖飲、外送下午茶">飲品手搖</option>
+              <option value="">選擇分類</option>
+              <option value="日常外帶">🛍️ 日常外帶</option>
+              <option value="聚會正餐">🍽️ 聚會正餐</option>
+              <option value="甜點咖啡">☕ 甜點咖啡</option>
+              <option value="親子放電">🎡 親子放電</option>
+              <option value="藝文選物">✏️ 藝文選物</option>
+              <option value="飲品手搖">🧋 飲品手搖</option>
             </select>
           </div>
         </div>
+        <div class="cat-hint" id="cat-hint"></div>
         <div class="form-group">
           <label class="form-label">特色標籤（可多選）</label>
           <div class="tags-grid">
@@ -702,49 +340,45 @@ function doLogin() {
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">自訂標籤 <span style="font-size:11px;color:var(--muted);font-weight:400">例：火鍋 牛排 甜點（空格分隔）</span></label>
+          <label class="form-label">自訂標籤 <span style="font-size:11px;font-weight:400">例：火鍋 牛排（空格分隔）</span></label>
           <input type="text" class="form-input" id="f-customtags" placeholder="#火鍋 #牛排 #甜點...">
         </div>
         <div class="form-group">
           <label class="form-label">Google Map 連結</label>
           <input type="url" class="form-input" id="f-maplink" placeholder="貼上 Google Maps 連結">
         </div>
-
-```
-    <div class="form-group">
-      <label class="form-label">照片網址</label>
-      <input type="url" class="form-input" id="f-photourl" placeholder="貼上圖片連結（選填）">
-    </div>
-    <div class="form-group">
-      <label class="form-label">備註 / 推薦菜色</label>
-      <textarea class="form-textarea" id="f-note" placeholder="隨手記錄心得、推薦菜色、注意事項..."></textarea>
-    </div>
-    <div class="form-group">
-      <div class="visited-toggle" id="visited-toggle">
-        <div>
-          <div class="visited-toggle-label">已經去過了 ✅</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">標記為已造訪</div>
+        <div class="form-group">
+          <label class="form-label">照片網址</label>
+          <input type="url" class="form-input" id="f-photourl" placeholder="貼上圖片連結（選填）">
         </div>
-        <div class="toggle-switch"></div>
-      </div>
+        <div class="form-group">
+          <label class="form-label">備註 / 推薦菜色</label>
+          <textarea class="form-textarea" id="f-note" placeholder="隨手記錄心得、推薦菜色、注意事項..."></textarea>
+        </div>
+        <div class="form-group">
+          <div class="visited-toggle" id="visited-toggle">
+            <div>
+              <div class="visited-label">已經去過了 ✅</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">標記為已造訪</div>
+            </div>
+            <div class="toggle-switch"></div>
+          </div>
+        </div>
+        <div class="form-group" id="revisit-group" style="display:none">
+          <label class="form-label">回訪意願</label>
+          <div class="revisit-options">
+            <button type="button" class="revisit-btn" data-val="必回">⭐ 必回</button>
+            <button type="button" class="revisit-btn" data-val="還不錯">👍 還不錯</button>
+            <button type="button" class="revisit-btn" data-val="普通">😐 普通</button>
+            <button type="button" class="revisit-btn" data-val="雷店避開">💀 雷店避開</button>
+          </div>
+        </div>
+        <div class="form-btns">
+          <button type="button" class="btn-cancel" id="btn-cancel-form">取消</button>
+          <button type="submit" class="btn-submit" id="form-submit-btn">儲存地點</button>
+        </div>
+      </form>
     </div>
-    <div class="form-group" id="revisit-group" style="display:none">
-      <label class="form-label">回訪意願</label>
-      <div class="revisit-options">
-        <button type="button" class="revisit-btn" data-val="必回">⭐ 必回</button>
-        <button type="button" class="revisit-btn" data-val="還不錯">👍 還不錯</button>
-        <button type="button" class="revisit-btn" data-val="普通">😐 普通</button>
-        <button type="button" class="revisit-btn" data-val="雷店避開">💀 雷店避開</button>
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:4px">
-      <button type="button" class="btn-cancel-form" id="btn-cancel-form">取消</button>
-      <button type="submit" class="btn-submit" id="form-submit-btn" style="flex:1">儲存地點</button>
-    </div>
-  </form>
-</div>
-```
-
   </div>
 </div>
 
@@ -752,18 +386,18 @@ function doLogin() {
 
 <div class="modal-overlay" id="modal-detail">
   <div class="modal-sheet">
-    <div class="modal-sticky-top" style="padding-bottom:4px">
+    <div class="modal-top" style="padding-bottom:4px">
       <div class="modal-handle" id="handle-detail"></div>
     </div>
-    <div class="detail-wrap" id="detail-content"></div>
+    <div class="modal-body" style="padding-top:0" id="detail-content"></div>
   </div>
 </div>
 
 <!-- MODAL: 設定 -->
 
-<div class="modal-overlay settings-sheet" id="modal-settings">
+<div class="modal-overlay" id="modal-settings">
   <div class="modal-sheet">
-    <div class="modal-sticky-top">
+    <div class="modal-top">
       <div class="modal-handle" id="handle-settings"></div>
       <div class="modal-header">
         <div class="modal-title">⚙️ 設定</div>
@@ -777,7 +411,7 @@ function doLogin() {
           <div class="settings-row-icon">🗝️</div>
           <div class="settings-row-text">
             <div class="settings-row-label" id="s-username">—</div>
-            <div class="settings-row-sub" id="s-email">家庭代號登入</div>
+            <div class="settings-row-sub">家庭代號登入</div>
           </div>
         </div>
         <div class="settings-row" id="btn-logout">
@@ -788,56 +422,30 @@ function doLogin() {
       </div>
       <div class="settings-section">
         <div class="settings-section-title">家庭共用</div>
-        <div class="settings-row" style="cursor:default">
-          <div class="settings-row-icon">👥</div>
-          <div class="settings-row-text">
-            <div class="settings-row-label">共用方式</div>
-            <div class="settings-row-sub" id="s-members">輸入相同代號即可共用</div>
-          </div>
-        </div>
-        <div style="margin:4px 0 12px">
-          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">把這個代號告訴家人，一起記錄口袋名單 🗺️</div>
-          <div class="invite-code-display">
-            <div class="invite-code" id="s-invitecode">——</div>
-            <button class="copy-btn" id="btn-copy-code">複製</button>
-          </div>
-          <button class="settings-row" style="width:100%;border:0.5px solid var(--border);background:var(--warm);border-radius:var(--radius-sm);margin-top:4px;cursor:pointer;justify-content:center;gap:8px" id="btn-refresh-code">
-            <span>💡</span><span style="font-size:13px;color:var(--muted)">輸入同樣代號的家人就能共用</span>
-          </button>
-        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">把這個代號告訴家人，一起記錄 🗺️</div>
+        <div class="code-display" id="s-code">—</div>
+        <button class="copy-btn" id="btn-copy-code">複製代號 📋</button>
       </div>
       <div class="settings-section">
-        <div class="settings-section-title">備份與資料</div>
+        <div class="settings-section-title">資料</div>
         <div class="settings-row" id="btn-export">
           <div class="settings-row-icon">📤</div>
-          <div class="settings-row-text">
-            <div class="settings-row-label">匯出備份</div>
-            <div class="settings-row-sub">下載 JSON 檔案</div>
-          </div>
+          <div class="settings-row-text"><div class="settings-row-label">匯出備份</div><div class="settings-row-sub">下載 JSON 檔案</div></div>
           <div class="settings-row-arrow">›</div>
         </div>
         <div class="settings-row" id="btn-import">
           <div class="settings-row-icon">📥</div>
-          <div class="settings-row-text">
-            <div class="settings-row-label">匯入資料</div>
-            <div class="settings-row-sub">從 JSON 備份還原</div>
-          </div>
-          <div class="settings-row-arrow">›</div>
-        </div>
-        <div class="settings-row" id="btn-csv-import">
-          <div class="settings-row-icon">📋</div>
-          <div class="settings-row-text">
-            <div class="settings-row-label">批量匯入（CSV）</div>
-            <div class="settings-row-sub">下載範本 → 填好 → 上傳</div>
-          </div>
+          <div class="settings-row-text"><div class="settings-row-label">匯入資料</div><div class="settings-row-sub">從 JSON 備份還原</div></div>
           <div class="settings-row-arrow">›</div>
         </div>
         <div class="settings-row" id="btn-csv-template">
           <div class="settings-row-icon">⬇️</div>
-          <div class="settings-row-text">
-            <div class="settings-row-label">下載 CSV 範本</div>
-            <div class="settings-row-sub">打開 Excel 或 Numbers 填寫</div>
-          </div>
+          <div class="settings-row-text"><div class="settings-row-label">下載 CSV 範本</div><div class="settings-row-sub">填好後批量匯入</div></div>
+          <div class="settings-row-arrow">›</div>
+        </div>
+        <div class="settings-row" id="btn-csv-import">
+          <div class="settings-row-icon">📋</div>
+          <div class="settings-row-text"><div class="settings-row-label">批量匯入 CSV</div><div class="settings-row-sub">上傳填好的範本</div></div>
           <div class="settings-row-arrow">›</div>
         </div>
         <input type="file" id="import-file-input" accept=".json" style="display:none">
@@ -845,19 +453,10 @@ function doLogin() {
       </div>
       <div class="settings-section">
         <div class="settings-section-title">統計</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-          <div style="background:var(--warm);border-radius:var(--radius-sm);padding:12px;text-align:center;border:0.5px solid var(--border)">
-            <div style="font-size:22px;font-weight:700;color:var(--accent-dark);font-family:var(--serif)" id="stat-total">0</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">全部</div>
-          </div>
-          <div style="background:var(--green-light);border-radius:var(--radius-sm);padding:12px;text-align:center;border:0.5px solid var(--border)">
-            <div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--serif)" id="stat-visited">0</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">去過了</div>
-          </div>
-          <div style="background:var(--warm);border-radius:var(--radius-sm);padding:12px;text-align:center;border:0.5px solid var(--border)">
-            <div style="font-size:22px;font-weight:700;color:var(--brown);font-family:var(--serif)" id="stat-unvisited">0</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">還沒去</div>
-          </div>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-num" id="stat-total" style="color:var(--accent-dark)">0</div><div class="stat-label">全部</div></div>
+          <div class="stat-box"><div class="stat-num" id="stat-visited" style="color:var(--green)">0</div><div class="stat-label">去過了</div></div>
+          <div class="stat-box"><div class="stat-num" id="stat-unvisited" style="color:var(--brown)">0</div><div class="stat-label">還沒去</div></div>
         </div>
       </div>
     </div>
@@ -866,228 +465,449 @@ function doLogin() {
 
 <div id="toast" class="toast"></div>
 
+<!-- LOGIN SCRIPT (runs first, non-module) -->
+
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var urlCode = params.get('code');
+  if (urlCode && urlCode.length >= 3) {
+    localStorage.setItem('pocket_last_room', urlCode.toLowerCase().trim());
+  }
+  var saved = localStorage.getItem('pocket_last_room');
+  if (saved && saved.length >= 3) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+  }
+})();
+
+document.getElementById('codeInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('enterBtn').addEventListener('click', doLogin);
+
+function doLogin() {
+  var val = document.getElementById('codeInput').value.trim().toLowerCase().replace(/\s+/g, '');
+  var err = document.getElementById('errMsg');
+  if (!val) { err.textContent = '請輸入代號！'; return; }
+  if (val.length < 3) { err.textContent = '代號至少 3 個字元'; return; }
+  err.textContent = '';
+  localStorage.setItem('pocket_last_room', val);
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  if (window._initApp) window._initApp();
+}
+</script>
+
+<!-- APP SCRIPT -->
+
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, onSnapshot, query, orderBy, serverTimestamp, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
+const FB = initializeApp({
   apiKey: "AIzaSyAy0QKDrORa_VSecvEbeUxjMkRU4jd-QEM",
   authDomain: "five-year-diary-d7e00.firebaseapp.com",
   projectId: "five-year-diary-d7e00",
   storageBucket: "five-year-diary-d7e00.firebasestorage.app",
   messagingSenderId: "298457239349",
   appId: "1:298457239349:web:9183353d8ad790076c867c"
+});
+const db = getFirestore(FB);
+
+let roomCode = (localStorage.getItem("pocket_last_room") || "").trim().toLowerCase();
+let allPlaces = [];
+let currentView = "card";
+let editingId = null;
+let visitedState = false;
+let revisitState = "";
+let filterRegion = "";
+let filterCat = "";
+let filterTags = [];
+
+const CAT_HINTS = {
+  "日常外帶": "下班順路買、解決晚餐、單價親民",
+  "聚會正餐": "週末聚會、慶祝、需要坐下來慢慢吃的飯局",
+  "甜點咖啡": "放鬆、想吃點甜的或喝杯飲料",
+  "親子放電": "帶小孩放風、需要大空間或友善育兒設施",
+  "藝文選物": "逛街、買文具、安靜閱讀、找美感物件",
+  "飲品手搖": "想喝一杯解饞、外送下午茶、尋找好喝的茶或咖啡"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const CAT_EMOJI = {
+  "日常外帶": "🛍️", "聚會正餐": "🍽️", "甜點咖啡": "☕",
+  "親子放電": "🎡", "藝文選物": "✏️", "飲品手搖": "🧋"
+};
 
-// ── 代號登入：從 localStorage 取得 roomCode ──
-let roomCode = localStorage.getItem("pocket_last_room") || "";
-roomCode = roomCode.trim().toLowerCase();
+function getEmoji(cat) { return CAT_EMOJI[cat] || "📍"; }
 
-// groupId 直接用 roomCode（Firestore 路徑: pocketlist/{roomCode}/places）
-let groupId = "pocket_" + roomCode;
-let groupData = null;
-
-let allPlaces = [];
-let currentView = "card", editingId = null, visitedState = false, revisitState = "";
-let filterRegion = "", filterCat = "", filterTags = [];
-
-function showToast(msg, type="") {
-  const t = document.getElementById("toast");
-  t.textContent = msg; t.className = "toast show " + type;
-  setTimeout(() => t.className = "toast", 3000);
+function toast(msg, type) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (type ? " " + type : "");
+  setTimeout(function() { t.className = "toast"; }, 3000);
 }
+
 function openModal(id) { document.getElementById(id).classList.add("open"); }
 function closeModal(id) { document.getElementById(id).classList.remove("open"); }
-function getCatEmoji(cat) {
-  const map = {"日常外帶":"🛍️","聚會正餐":"🍽️","甜點咖啡":"☕","親子放電":"🎡","藝文選物":"✏️","飲品手搖":"🧋"};
-  return map[cat] || "📍";
-}
 
-// 手勢下滑關閉 — 只在 handle 區域滑才觸發，不會影響表單滾動
-function enableSwipeClose(handleId, overlayId) {
-  const handle = document.getElementById(handleId);
-  const sheet = handle?.closest('.modal-sheet');
-  if (!handle || !sheet) return;
-  let startY = 0, swipeFromHandle = false;
-  // 只記錄從 handle 開始的觸摸
-  handle.addEventListener('touchstart', e => {
+function swipeClose(handleId, overlayId) {
+  var handle = document.getElementById(handleId);
+  if (!handle) return;
+  var sheet = handle.closest(".modal-sheet");
+  if (!sheet) return;
+  var startY = 0;
+  var active = false;
+  handle.addEventListener("touchstart", function(e) {
     startY = e.touches[0].clientY;
-    swipeFromHandle = true;
-  }, {passive:true});
-  sheet.addEventListener('touchstart', e => {
-    if (!swipeFromHandle) startY = e.touches[0].clientY;
-  }, {passive:true});
-  sheet.addEventListener('touchend', e => {
-    if (!swipeFromHandle) return;
-    swipeFromHandle = false;
+    active = true;
+  }, { passive: true });
+  sheet.addEventListener("touchend", function(e) {
+    if (!active) return;
+    active = false;
     if (e.changedTouches[0].clientY - startY > 60) closeModal(overlayId);
-  }, {passive:true});
-  // reset flag if touch starts elsewhere
-  sheet.addEventListener('touchstart', () => {}, {passive:true});
+  }, { passive: true });
 }
 
-// ── 初始化 App ──
-async function initApp() {
-  // Re-read roomCode in case login just set it
-  roomCode = localStorage.getItem("pocket_last_room") || "";
-  roomCode = roomCode.trim().toLowerCase();
-  groupId = "pocket_" + roomCode;
+// ── INIT ──
+function initApp() {
+  roomCode = (localStorage.getItem("pocket_last_room") || "").trim().toLowerCase();
   if (!roomCode) return;
-  document.getElementById("loading-screen").style.display = "none";
   document.getElementById("app").style.display = "flex";
   subscribeToPlaces();
-  setupSettingsPanel();
-  enableSwipeClose("handle-form", "modal-form");
-  enableSwipeClose("handle-detail", "modal-detail");
-  enableSwipeClose("handle-settings", "modal-settings");
+  setupSettings();
+  swipeClose("handle-form", "modal-form");
+  swipeClose("handle-detail", "modal-detail");
+  swipeClose("handle-settings", "modal-settings");
 }
-// 掛到 window 讓登入後能呼叫
 window._initApp = initApp;
-// 如果已有代號就直接初始化
 if (roomCode) initApp();
 
+// ── FIREBASE ──
 function subscribeToPlaces() {
-  const q = query(collection(db,"pocketlist",roomCode,"places"), orderBy("createdAt","desc"));
-  onSnapshot(q, (snap) => {
-    allPlaces = snap.docs.map(d => ({id:d.id, ...d.data()}));
+  var q = query(collection(db, "pocketlist", roomCode, "places"), orderBy("createdAt", "desc"));
+  onSnapshot(q, function(snap) {
+    allPlaces = snap.docs.map(function(d) {
+      var data = d.data();
+      data.id = d.id;
+      return data;
+    });
     renderPlaces();
     updateStats();
-  }, () => {
-    document.getElementById("sync-indicator").textContent = "離線中";
-    document.getElementById("sync-indicator").style.color = "var(--red)";
+    var dot = document.getElementById("sync-dot");
+    dot.textContent = "即時同步中";
+    dot.className = "sync-dot";
+  }, function() {
+    var dot = document.getElementById("sync-dot");
+    dot.textContent = "離線中";
+    dot.className = "sync-dot off";
   });
+}
+
+// ── RENDER ──
+function makeImg(url, name) {
+  if (!url) return "";
+  var img = document.createElement("img");
+  img.src = url;
+  img.alt = name || "";
+  img.addEventListener("error", function() { this.style.display = "none"; });
+  var div = document.createElement("div");
+  div.appendChild(img);
+  return div.innerHTML;
 }
 
 function renderPlaces() {
-  const q = document.getElementById("search-input").value.toLowerCase();
-  const sortVal = document.getElementById("sort-select")?.value || "newest";
-  let filtered = allPlaces.filter(p => {
+  var q = document.getElementById("search-input").value.toLowerCase();
+  var sortEl = document.getElementById("sort-select");
+  var sortVal = sortEl ? sortEl.value : "newest";
+
+  var filtered = allPlaces.filter(function(p) {
     if (filterRegion && p.region !== filterRegion) return false;
     if (filterCat && p.category !== filterCat) return false;
-    for (const tag of filterTags) {
+    for (var i = 0; i < filterTags.length; i++) {
+      var tag = filterTags[i];
       if (tag === "已造訪") { if (!p.visited) return false; }
-      else if (tag === "雷店避開") { if (!p.revisit || p.revisit !== "雷店避開") return false; }
-      else { if (!p.tags || !p.tags.includes(tag)) return false; }
+      else if (tag === "雷店避開") { if (p.revisit !== "雷店避開") return false; }
+      else { if (!p.tags || p.tags.indexOf(tag) < 0) return false; }
     }
-    if (q && !p.name?.toLowerCase().includes(q) && !p.note?.toLowerCase().includes(q) && !p.region?.toLowerCase().includes(q)) return false;
+    if (q) {
+      var name = (p.name || "").toLowerCase();
+      var note = (p.note || "").toLowerCase();
+      var region = (p.region || "").toLowerCase();
+      if (name.indexOf(q) < 0 && note.indexOf(q) < 0 && region.indexOf(q) < 0) return false;
+    }
     return true;
   });
 
-  // 排序
-  filtered.sort((a, b) => {
-    if (sortVal === "oldest") return (a.createdAt?.seconds||0) - (b.createdAt?.seconds||0);
-    if (sortVal === "name") return (a.name||"").localeCompare(b.name||"", "zh-TW");
-    if (sortVal === "visited") return (b.visited?1:0) - (a.visited?1:0);
-    if (sortVal === "unvisited") return (a.visited?1:0) - (b.visited?1:0);
-    return (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0); // newest default
+  filtered.sort(function(a, b) {
+    if (sortVal === "oldest") return (a.createdAt ? a.createdAt.seconds : 0) - (b.createdAt ? b.createdAt.seconds : 0);
+    if (sortVal === "name") return (a.name || "").localeCompare(b.name || "", "zh-TW");
+    if (sortVal === "visited") return (b.visited ? 1 : 0) - (a.visited ? 1 : 0);
+    if (sortVal === "unvisited") return (a.visited ? 1 : 0) - (b.visited ? 1 : 0);
+    return (b.createdAt ? b.createdAt.seconds : 0) - (a.createdAt ? a.createdAt.seconds : 0);
   });
-  const hasFilter = filterRegion || filterCat || filterTags.length || q;
-  document.getElementById("clear-filters").style.display = hasFilter ? "block" : "none";
-  document.getElementById("results-info").innerHTML = hasFilter ? `找到 <strong>${filtered.length}</strong> 個地點` : `共 <strong>${allPlaces.length}</strong> 個地點`;
 
-  const container = document.getElementById("places-container");
+  var hasFilter = filterRegion || filterCat || filterTags.length || q;
+  var clearBtn = document.getElementById("clear-filters");
+  clearBtn.style.display = hasFilter ? "block" : "none";
+  var info = document.getElementById("results-info");
+  info.innerHTML = hasFilter
+    ? "找到 <strong>" + filtered.length + "</strong> 個地點"
+    : "共 <strong>" + allPlaces.length + "</strong> 個地點";
+
+  var container = document.getElementById("places-container");
+
   if (!filtered.length) {
     container.className = "";
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">${hasFilter?"🔍":"🗺️"}</div><div class="empty-title">${hasFilter?"找不到符合的地點":"還沒有地點"}</div><div class="empty-sub">${hasFilter?"試試調整篩選條件":"點右下角 ＋ 新增你們的第一個秘密基地！"}</div></div>`;
+    var icon = hasFilter ? "🔍" : "🗺️";
+    var title = hasFilter ? "找不到符合的地點" : "還沒有地點";
+    var sub = hasFilter ? "試試調整篩選條件" : "點右下角 ＋ 新增你們的第一個秘密基地！";
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">' + icon + '</div><div class="empty-title">' + title + '</div><div class="empty-sub">' + sub + '</div></div>';
     return;
   }
 
   if (currentView === "card") {
     container.className = "card-grid";
-    container.innerHTML = filtered.map(p => `
-      <div class="place-card" data-id="${p.id}">
-        <div class="card-photo">
-          ${p.photoUrl ? `<img src="${p.photoUrl}" alt="${p.name}" onerror="this.style.display='none'">` : ""}
-          <div class="emoji-fallback">${getCatEmoji(p.category)}</div>
-          <div class="${p.visited?'visited-badge':'unvisited-badge'}">${p.visited?'✅ 去過了':'想去'}</div>
-        </div>
-        <div class="card-body">
-          <div class="card-name">${p.name||"未命名"}</div>
-          <div class="card-region">${p.region||""}</div>
-          <div class="card-cat">${p.category||""}</div>
-          <div class="card-tags">${(p.tags||[]).slice(0,3).map(t=>`<span class="card-tag">${t}</span>`).join("")}</div>
-        </div>
-      </div>
-    `).join("");
+    var html = "";
+    for (var i = 0; i < filtered.length; i++) {
+      var p = filtered[i];
+      var badgeClass = p.visited ? "visited-badge" : "unvisited-badge";
+      var badgeText = p.visited ? "✅ 去過了" : "想去";
+      var tagsHtml = "";
+      var ptags = p.tags || [];
+      for (var j = 0; j < Math.min(ptags.length, 3); j++) {
+        tagsHtml += '<span class="card-tag">' + ptags[j] + "</span>";
+      }
+      html += '<div class="place-card" data-id="' + p.id + '">';
+      html += '<div class="card-photo">';
+      if (p.photoUrl) html += makeImg(p.photoUrl, p.name);
+      html += '<div class="emoji-fallback">' + getEmoji(p.category) + "</div>";
+      html += '<div class="' + badgeClass + '">' + badgeText + "</div>";
+      html += "</div>";
+      html += '<div class="card-body">';
+      html += '<div class="card-name">' + (p.name || "未命名") + "</div>";
+      html += '<div class="card-region">' + (p.region || "") + "</div>";
+      html += '<div class="card-cat">' + (p.category || "") + "</div>";
+      html += '<div class="card-tags">' + tagsHtml + "</div>";
+      html += "</div></div>";
+    }
+    container.innerHTML = html;
   } else {
     container.className = "card-grid list";
-    container.innerHTML = filtered.map(p => `
-      <div class="list-card" data-id="${p.id}">
-        <div class="list-icon">
-          ${p.photoUrl ? `<img src="${p.photoUrl}" alt="${p.name}" onerror="this.style.display='none'">` : ""}
-          <span style="position:relative;z-index:1">${getCatEmoji(p.category)}</span>
-        </div>
-        <div class="list-info">
-          <div class="list-name">${p.name||"未命名"}</div>
-          <div class="list-meta">${[p.region,p.category].filter(Boolean).join(" · ")}</div>
-          <div class="list-meta">${(p.tags||[]).join(" · ")}</div>
-          ${p.visited?'<div class="list-visited">✅ 已造訪</div>':''}
-        </div>
-        <div class="list-arrow">›</div>
-      </div>
-    `).join("");
+    var html = "";
+    for (var i = 0; i < filtered.length; i++) {
+      var p = filtered[i];
+      var visitedHtml = p.visited ? '<div class="list-visited">✅ 已造訪</div>' : "";
+      var metaTags = (p.tags || []).join(" · ");
+      html += '<div class="list-card" data-id="' + p.id + '">';
+      html += '<div class="list-icon">';
+      if (p.photoUrl) html += makeImg(p.photoUrl, p.name);
+      html += '<span style="position:relative;z-index:1">' + getEmoji(p.category) + "</span>";
+      html += "</div>";
+      html += '<div class="list-info">';
+      html += '<div class="list-name">' + (p.name || "未命名") + "</div>";
+      var metaArr = [];
+      if (p.region) metaArr.push(p.region);
+      if (p.category) metaArr.push(p.category);
+      html += '<div class="list-meta">' + metaArr.join(" · ") + "</div>";
+      if (metaTags) html += '<div class="list-meta">' + metaTags + "</div>";
+      html += visitedHtml + "</div>";
+      html += '<div class="list-arrow">›</div>';
+      html += "</div>";
+    }
+    container.innerHTML = html;
   }
 
-  container.querySelectorAll("[data-id]").forEach(el => {
-    el.addEventListener("click", () => openDetail(el.dataset.id));
-  });
+  var cards = container.querySelectorAll("[data-id]");
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].addEventListener("click", (function(id) {
+      return function() { openDetail(id); };
+    })(cards[i].dataset.id));
+  }
 }
 
+// ── DETAIL ──
 function openDetail(id) {
-  const p = allPlaces.find(x => x.id === id);
+  var p = null;
+  for (var i = 0; i < allPlaces.length; i++) {
+    if (allPlaces[i].id === id) { p = allPlaces[i]; break; }
+  }
   if (!p) return;
-  document.getElementById("detail-content").innerHTML = `
-    <div class="detail-photo">
-      ${p.photoUrl ? `<img src="${p.photoUrl}" alt="${p.name}" onerror="this.style.display='none'">` : ""}
-      <span style="font-size:60px;position:relative;z-index:1">${getCatEmoji(p.category)}</span>
-    </div>
-    <div class="detail-body">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
-        <div class="detail-name">${p.name||"未命名"}</div>
-        <div style="flex-shrink:0;padding:4px 10px;border-radius:10px;font-size:12px;background:${p.visited?"var(--green-light)":"var(--warm)"};color:${p.visited?"var(--green)":"var(--muted)"};border:0.5px solid var(--border)">${p.visited?"✅ 去過了":"📌 想去"}</div>
-      </div>
-      <div class="detail-meta">
-        ${p.region?`<span class="meta-pill">${p.region}</span>`:""}
-        ${p.category?`<span class="meta-pill cat">${getCatEmoji(p.category)} ${p.category}</span>`:""}
-      </div>
-      ${p.tags&&p.tags.length?`<div class="detail-tags">${p.tags.map(t=>`<span class="detail-tag">${t}</span>`).join("")}</div>`:""}
-      ${p.note?`<div class="detail-note">${p.note}</div>`:""}
-      ${p.customTags?`<div class="detail-custom-tags">${p.customTags.split(/\s+/).filter(Boolean).map(t=>`<span class="custom-tag">${t.startsWith('#')?t:'#'+t}</span>`).join('')}</div>`:""}
-      ${p.revisit?`<div class="detail-revisit">回訪意願：<span class="revisit-badge revisit-${p.revisit==='雷店避開'?'bad':p.revisit==='必回'?'great':'ok'}">${p.revisit==='必回'?'⭐':p.revisit==='還不錯'?'👍':p.revisit==='普通'?'😐':'💀'} ${p.revisit}</span></div>`:""}
-      <div class="detail-links">
-        ${p.mapLink?`<a class="link-btn" href="${p.mapLink}" target="_blank" rel="noopener"><span class="link-icon">🗺️</span>在 Google Maps 開啟導航</a>`:""}
-      </div>
-      <div class="detail-actions">
-        <button class="btn-edit" onclick="openEdit('${p.id}')">✏️ 編輯</button>
-        <button class="btn-delete" onclick="confirmDelete('${p.id}','${(p.name||"").replace(/'/g,"\\'")}')">🗑 刪除</button>
-      </div>
-      <div class="created-by">由 ${p.createdBy||"你"} 新增</div>
-    </div>
-  `;
+
+  var dc = document.getElementById("detail-content");
+  dc.innerHTML = "";
+
+  // Photo
+  var photoDiv = document.createElement("div");
+  photoDiv.className = "detail-photo";
+  if (p.photoUrl) {
+    var img = document.createElement("img");
+    img.src = p.photoUrl;
+    img.alt = p.name || "";
+    img.addEventListener("error", function() { this.style.display = "none"; });
+    photoDiv.appendChild(img);
+  }
+  var emojiSpan = document.createElement("span");
+  emojiSpan.className = "detail-photo-emoji";
+  emojiSpan.textContent = getEmoji(p.category);
+  photoDiv.appendChild(emojiSpan);
+  dc.appendChild(photoDiv);
+
+  // Body
+  var body = document.createElement("div");
+  body.className = "detail-body";
+
+  // Top row
+  var topRow = document.createElement("div");
+  topRow.className = "detail-top-row";
+  var nameDiv = document.createElement("div");
+  nameDiv.className = "detail-name";
+  nameDiv.textContent = p.name || "未命名";
+  topRow.appendChild(nameDiv);
+  var badge = document.createElement("div");
+  badge.className = "detail-badge";
+  if (p.visited) {
+    badge.style.background = "var(--green-light)";
+    badge.style.color = "var(--green)";
+    badge.textContent = "✅ 去過了";
+  } else {
+    badge.style.background = "var(--warm)";
+    badge.style.color = "var(--muted)";
+    badge.textContent = "📌 想去";
+  }
+  topRow.appendChild(badge);
+  body.appendChild(topRow);
+
+  // Meta pills
+  var metaDiv = document.createElement("div");
+  metaDiv.className = "detail-meta";
+  if (p.region) {
+    var pill = document.createElement("span");
+    pill.className = "meta-pill";
+    pill.textContent = p.region;
+    metaDiv.appendChild(pill);
+  }
+  if (p.category) {
+    var pill = document.createElement("span");
+    pill.className = "meta-pill cat";
+    pill.textContent = getEmoji(p.category) + " " + p.category;
+    metaDiv.appendChild(pill);
+  }
+  body.appendChild(metaDiv);
+
+  // Tags
+  if (p.tags && p.tags.length) {
+    var tagsDiv = document.createElement("div");
+    tagsDiv.className = "detail-tags";
+    for (var i = 0; i < p.tags.length; i++) {
+      var span = document.createElement("span");
+      span.className = "detail-tag";
+      span.textContent = p.tags[i];
+      tagsDiv.appendChild(span);
+    }
+    body.appendChild(tagsDiv);
+  }
+
+  // Revisit
+  if (p.revisit) {
+    var revDiv = document.createElement("div");
+    revDiv.className = "detail-revisit";
+    var revEmoji = { "必回": "⭐", "還不錯": "👍", "普通": "😐", "雷店避開": "💀" };
+    revDiv.textContent = (revEmoji[p.revisit] || "") + " " + p.revisit;
+    revDiv.style.color = p.revisit === "雷店避開" ? "var(--red)" : p.revisit === "必回" ? "var(--accent)" : "var(--muted)";
+    body.appendChild(revDiv);
+  }
+
+  // Custom tags
+  if (p.customTags) {
+    var ctDiv = document.createElement("div");
+    ctDiv.className = "detail-custom-tags";
+    var ctArr = p.customTags.trim().split(/\s+/).filter(function(t) { return t; });
+    for (var i = 0; i < ctArr.length; i++) {
+      var span = document.createElement("span");
+      span.className = "custom-tag";
+      span.textContent = ctArr[i].charAt(0) === "#" ? ctArr[i] : "#" + ctArr[i];
+      ctDiv.appendChild(span);
+    }
+    body.appendChild(ctDiv);
+  }
+
+  // Note
+  if (p.note) {
+    var noteDiv = document.createElement("div");
+    noteDiv.className = "detail-note";
+    noteDiv.textContent = p.note;
+    body.appendChild(noteDiv);
+  }
+
+  // Map link
+  if (p.mapLink) {
+    var linkDiv = document.createElement("div");
+    var a = document.createElement("a");
+    a.className = "link-btn";
+    a.href = p.mapLink;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.innerHTML = '<span class="link-icon">🗺️</span>在 Google Maps 開啟導航';
+    linkDiv.appendChild(a);
+    body.appendChild(linkDiv);
+  }
+
+  // Actions
+  var actions = document.createElement("div");
+  actions.className = "detail-actions";
+  var editBtn = document.createElement("button");
+  editBtn.className = "btn-edit";
+  editBtn.textContent = "✏️ 編輯";
+  editBtn.addEventListener("click", function() { openEdit(p.id); });
+  var delBtn = document.createElement("button");
+  delBtn.className = "btn-delete";
+  delBtn.textContent = "🗑 刪除";
+  delBtn.addEventListener("click", function() { confirmDelete(p.id, p.name || ""); });
+  actions.appendChild(editBtn);
+  actions.appendChild(delBtn);
+  body.appendChild(actions);
+
+  // Created by
+  if (p.createdBy) {
+    var by = document.createElement("div");
+    by.className = "created-by";
+    by.textContent = "由 " + p.createdBy + " 新增";
+    body.appendChild(by);
+  }
+
+  dc.appendChild(body);
   openModal("modal-detail");
 }
 
-function openAddForm() {
-  editingId = null; visitedState = false;
-  document.getElementById("form-title").textContent = "新增地點";
-  document.getElementById("place-form").reset();
-  document.querySelectorAll(".tag-toggle").forEach(t => t.classList.remove("selected"));
-  document.getElementById("visited-toggle").classList.remove("on");
-  document.getElementById("f-customtags").value = "";
-  document.getElementById("revisit-group").style.display = "none";
+// ── FORM ──
+function resetForm() {
+  editingId = null;
+  visitedState = false;
   revisitState = "";
-  document.querySelectorAll(".revisit-btn").forEach(b => b.classList.remove("selected"));
+  document.getElementById("place-form").reset();
+  document.querySelectorAll(".tag-toggle").forEach(function(t) { t.classList.remove("selected"); });
+  document.querySelectorAll(".revisit-btn").forEach(function(b) { b.classList.remove("selected"); });
+  document.getElementById("visited-toggle").classList.remove("on");
+  document.getElementById("revisit-group").style.display = "none";
+  document.getElementById("cat-hint").textContent = "";
+}
+
+function openAddForm() {
+  document.getElementById("form-title").textContent = "新增地點";
+  resetForm();
   openModal("modal-form");
 }
 
-window.openEdit = (id) => {
-  const p = allPlaces.find(x => x.id === id);
+function openEdit(id) {
+  var p = null;
+  for (var i = 0; i < allPlaces.length; i++) {
+    if (allPlaces[i].id === id) { p = allPlaces[i]; break; }
+  }
   if (!p) return;
-  editingId = id; visitedState = p.visited || false;
+  editingId = id;
+  visitedState = p.visited || false;
+  revisitState = p.revisit || "";
   document.getElementById("form-title").textContent = "編輯地點";
   document.getElementById("f-name").value = p.name || "";
   document.getElementById("f-region").value = p.region || "";
@@ -1095,279 +915,314 @@ window.openEdit = (id) => {
   document.getElementById("f-maplink").value = p.mapLink || "";
   document.getElementById("f-photourl").value = p.photoUrl || "";
   document.getElementById("f-customtags").value = p.customTags || "";
-  revisitState = p.revisit || "";
-  document.querySelectorAll(".revisit-btn").forEach(b => {
+  document.getElementById("f-note").value = p.note || "";
+  document.getElementById("cat-hint").textContent = CAT_HINTS[p.category] || "";
+  document.querySelectorAll(".tag-toggle").forEach(function(t) {
+    t.classList.toggle("selected", (p.tags || []).indexOf(t.dataset.tag) >= 0);
+  });
+  document.querySelectorAll(".revisit-btn").forEach(function(b) {
     b.classList.toggle("selected", b.dataset.val === revisitState);
   });
-  if (p.visited) {
-    document.getElementById("revisit-group").style.display = "block";
-  } else {
-    document.getElementById("revisit-group").style.display = "none";
-  }
-  document.getElementById("f-note").value = p.note || "";
-  document.querySelectorAll(".tag-toggle").forEach(t => {
-    t.classList.toggle("selected", (p.tags||[]).includes(t.dataset.tag));
-  });
   document.getElementById("visited-toggle").classList.toggle("on", visitedState);
+  document.getElementById("revisit-group").style.display = visitedState ? "block" : "none";
   closeModal("modal-detail");
   openModal("modal-form");
-};
+}
 
-window.confirmDelete = async (id, name) => {
-  if (!confirm(`確定要刪除「${name}」嗎？`)) return;
+async function confirmDelete(id, name) {
+  if (!confirm("確定要刪除「" + name + "」嗎？")) return;
   try {
-    await deleteDoc(doc(db,"pocketlist",roomCode,"places",id));
+    await deleteDoc(doc(db, "pocketlist", roomCode, "places", id));
     closeModal("modal-detail");
-    showToast("已刪除「"+name+"」", "success");
-  } catch(e) { showToast("刪除失敗", "error"); }
-};
+    toast("已刪除「" + name + "」", "success");
+  } catch(e) {
+    toast("刪除失敗", "error");
+  }
+}
 
-document.querySelectorAll(".tag-toggle").forEach(btn => {
-  btn.addEventListener("click", () => btn.classList.toggle("selected"));
+// ── FORM SUBMIT ──
+document.getElementById("place-form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  var region = document.getElementById("f-region").value;
+  var category = document.getElementById("f-category").value;
+  if (!region) { toast("請選擇地區 📍", "error"); return; }
+  if (!category) { toast("請選擇主分類 📂", "error"); return; }
+  var btn = document.getElementById("form-submit-btn");
+  btn.disabled = true;
+  btn.textContent = "儲存中...";
+  var tags = [];
+  document.querySelectorAll(".tag-toggle.selected").forEach(function(t) { tags.push(t.dataset.tag); });
+  var data = {
+    name: document.getElementById("f-name").value.trim(),
+    region: region,
+    category: category,
+    mapLink: document.getElementById("f-maplink").value.trim(),
+    photoUrl: document.getElementById("f-photourl").value.trim(),
+    customTags: document.getElementById("f-customtags").value.trim(),
+    note: document.getElementById("f-note").value.trim(),
+    tags: tags,
+    visited: visitedState,
+    revisit: revisitState
+  };
+  try {
+    if (editingId) {
+      data.updatedAt = serverTimestamp();
+      await updateDoc(doc(db, "pocketlist", roomCode, "places", editingId), data);
+      toast("已更新！", "success");
+    } else {
+      data.createdAt = serverTimestamp();
+      data.updatedAt = serverTimestamp();
+      data.createdBy = roomCode.toUpperCase();
+      await addDoc(collection(db, "pocketlist", roomCode, "places"), data);
+      toast("新增成功！", "success");
+    }
+    closeModal("modal-form");
+  } catch(err) {
+    toast("儲存失敗：" + err.message, "error");
+  }
+  btn.disabled = false;
+  btn.textContent = "儲存地點";
+});
+
+// ── TOGGLES & TAGS ──
+document.querySelectorAll(".tag-toggle").forEach(function(btn) {
+  btn.addEventListener("click", function() { this.classList.toggle("selected"); });
 });
 
 document.getElementById("visited-toggle").addEventListener("click", function() {
   visitedState = !visitedState;
   this.classList.toggle("on", visitedState);
   document.getElementById("revisit-group").style.display = visitedState ? "block" : "none";
-  if (!visitedState) { revisitState = ""; document.querySelectorAll(".revisit-btn").forEach(b => b.classList.remove("selected")); }
+  if (!visitedState) {
+    revisitState = "";
+    document.querySelectorAll(".revisit-btn").forEach(function(b) { b.classList.remove("selected"); });
+  }
 });
 
-document.querySelectorAll(".revisit-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    revisitState = btn.dataset.val;
-    document.querySelectorAll(".revisit-btn").forEach(b => b.classList.remove("selected"));
+document.querySelectorAll(".revisit-btn").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    revisitState = this.dataset.val;
+    document.querySelectorAll(".revisit-btn").forEach(function(b) { b.classList.remove("selected"); });
     btn.classList.add("selected");
   });
 });
 
-document.getElementById("btn-cancel-form").addEventListener("click", () => closeModal("modal-form"));
-
-document.getElementById("place-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const btn = document.getElementById("form-submit-btn");
-  const region = document.getElementById("f-region").value;
-  const category = document.getElementById("f-category").value;
-  if (!region) { showToast("請選擇地區 📍", "error"); return; }
-  if (!category) { showToast("請選擇主分類 📂", "error"); return; }
-  btn.disabled = true; btn.textContent = "儲存中...";
-  const tags = [...document.querySelectorAll(".tag-toggle.selected")].map(t => t.dataset.tag);
-  const data = {
-    name: document.getElementById("f-name").value.trim(),
-    region: document.getElementById("f-region").value,
-    category: document.getElementById("f-category").value,
-    mapLink: document.getElementById("f-maplink").value.trim(),
-    photoUrl: document.getElementById("f-photourl").value.trim(),
-    note: document.getElementById("f-note").value.trim(),
-    customTags: document.getElementById("f-customtags").value.trim(),
-    tags, visited: visitedState,
-    revisit: revisitState
-  };
-  try {
-    if (editingId) {
-      await updateDoc(doc(db,"pocketlist",roomCode,"places",editingId), { ...data, updatedAt: serverTimestamp() });
-      showToast("已更新！", "success");
-    } else {
-      await addDoc(collection(db,"pocketlist",roomCode,"places"), { ...data, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), createdBy: roomCode.toUpperCase() });
-      showToast("新增成功！", "success");
-    }
-    closeModal("modal-form");
-  } catch(err) { showToast("儲存失敗："+err.message, "error"); }
-  btn.disabled = false; btn.textContent = "儲存地點";
+document.getElementById("f-category").addEventListener("change", function() {
+  document.getElementById("cat-hint").textContent = CAT_HINTS[this.value] || "";
 });
 
-document.querySelectorAll("#region-row .chip").forEach(c => {
-  c.addEventListener("click", () => {
-    document.querySelectorAll("#region-row .chip").forEach(x => x.classList.remove("active"));
-    c.classList.add("active"); filterRegion = c.dataset.val; renderPlaces();
+// ── FILTERS ──
+document.querySelectorAll("#region-row .chip").forEach(function(c) {
+  c.addEventListener("click", function() {
+    document.querySelectorAll("#region-row .chip").forEach(function(x) { x.classList.remove("active"); });
+    c.classList.add("active");
+    filterRegion = c.dataset.val;
+    renderPlaces();
   });
 });
-document.querySelectorAll("#cat-row .chip").forEach(c => {
-  c.addEventListener("click", () => {
-    document.querySelectorAll("#cat-row .chip").forEach(x => x.classList.remove("active"));
-    c.classList.add("active"); filterCat = c.dataset.val; renderPlaces();
+document.querySelectorAll("#cat-row .chip").forEach(function(c) {
+  c.addEventListener("click", function() {
+    document.querySelectorAll("#cat-row .chip").forEach(function(x) { x.classList.remove("active"); });
+    c.classList.add("active");
+    filterCat = c.dataset.val;
+    renderPlaces();
   });
 });
-document.querySelectorAll("#tag-row .chip").forEach(c => {
-  c.addEventListener("click", () => {
-    const val = c.dataset.val;
+document.querySelectorAll("#tag-row .chip").forEach(function(c) {
+  c.addEventListener("click", function() {
+    var val = c.dataset.val;
     c.classList.toggle("active");
-    if (filterTags.includes(val)) filterTags = filterTags.filter(t => t !== val);
+    var idx = filterTags.indexOf(val);
+    if (idx >= 0) filterTags.splice(idx, 1);
     else filterTags.push(val);
     renderPlaces();
   });
 });
 document.getElementById("search-input").addEventListener("input", renderPlaces);
-document.getElementById("clear-filters").addEventListener("click", () => {
+document.getElementById("sort-select").addEventListener("change", renderPlaces);
+document.getElementById("clear-filters").addEventListener("click", function() {
   filterRegion = ""; filterCat = ""; filterTags = [];
-  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  document.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("active"); });
   document.querySelector("#region-row .chip").classList.add("active");
   document.querySelector("#cat-row .chip").classList.add("active");
   document.getElementById("search-input").value = "";
   renderPlaces();
 });
 
-document.getElementById("btn-card-view").addEventListener("click", () => {
+// ── VIEW ──
+document.getElementById("btn-card-view").addEventListener("click", function() {
   currentView = "card";
   document.getElementById("btn-card-view").classList.add("active");
   document.getElementById("btn-list-view").classList.remove("active");
   renderPlaces();
 });
-document.getElementById("btn-list-view").addEventListener("click", () => {
+document.getElementById("btn-list-view").addEventListener("click", function() {
   currentView = "list";
   document.getElementById("btn-list-view").classList.add("active");
   document.getElementById("btn-card-view").classList.remove("active");
   renderPlaces();
 });
 
-document.getElementById("sort-select").addEventListener("change", renderPlaces);
+// ── MODALS ──
 document.getElementById("btn-add").addEventListener("click", openAddForm);
-document.getElementById("close-form").addEventListener("click", () => closeModal("modal-form"));
-document.getElementById("close-settings").addEventListener("click", () => closeModal("modal-settings"));
-document.getElementById("btn-settings").addEventListener("click", () => { setupSettingsPanel(); openModal("modal-settings"); });
+document.getElementById("close-form").addEventListener("click", function() { closeModal("modal-form"); });
+document.getElementById("btn-cancel-form").addEventListener("click", function() { closeModal("modal-form"); });
+document.getElementById("close-settings").addEventListener("click", function() { closeModal("modal-settings"); });
+document.getElementById("btn-settings").addEventListener("click", function() { setupSettings(); openModal("modal-settings"); });
 
-["modal-form","modal-detail","modal-settings"].forEach(id => {
+["modal-form", "modal-detail", "modal-settings"].forEach(function(id) {
   document.getElementById(id).addEventListener("click", function(e) {
     if (e.target === this) closeModal(id);
   });
 });
 
-async function setupSettingsPanel() {
-  if (!roomCode) return;
+// ── SETTINGS ──
+function setupSettings() {
   document.getElementById("s-username").textContent = roomCode.toUpperCase();
-  document.getElementById("s-email").textContent = "家庭代號登入";
-  // 設定面板不再需要群組邀請碼 — 直接顯示 roomCode
-  document.getElementById("s-invitecode").textContent = roomCode.toUpperCase();
-  document.getElementById("s-members").textContent = "輸入相同代號即可共用";
+  document.getElementById("s-code").textContent = roomCode.toUpperCase();
+  updateStats();
 }
 
-document.getElementById("btn-copy-code").addEventListener("click", () => {
-  navigator.clipboard.writeText(roomCode.toUpperCase()).then(() => showToast("代號已複製！", "success"));
+document.getElementById("btn-copy-code").addEventListener("click", function() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(roomCode.toUpperCase()).then(function() { toast("代號已複製！", "success"); });
+  } else {
+    toast("代號：" + roomCode.toUpperCase());
+  }
 });
 
-document.getElementById("btn-refresh-code").addEventListener("click", async () => {
-  showToast("提示：口袋名單代號就是你的家庭代號，分享給家人輸入即可共用 🗺️");
-});
-
-document.getElementById("btn-logout").addEventListener("click", async () => {
+document.getElementById("btn-logout").addEventListener("click", function() {
   if (!confirm("確定要切換代號嗎？")) return;
   localStorage.removeItem("pocket_last_room");
-  window.location.href = "index.html";
+  document.getElementById("app").style.display = "none";
+  document.getElementById("login-screen").style.display = "flex";
+  document.getElementById("codeInput").value = "";
 });
 
-document.getElementById("btn-export").addEventListener("click", () => {
-  const data = { exportedAt: new Date().toISOString(), version: "1.0", count: allPlaces.length, places: allPlaces.map(p => { const {id,...rest} = p; return rest; }) };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href = url;
-  a.download = `口袋名單備份_${new Date().toLocaleDateString("zh-TW").replace(/\//g,"-")}.json`;
-  a.click(); URL.revokeObjectURL(url);
-  showToast(`已匯出 ${allPlaces.length} 個地點`, "success");
+// ── EXPORT ──
+document.getElementById("btn-export").addEventListener("click", function() {
+  var exportData = { exportedAt: new Date().toISOString(), count: allPlaces.length, places: [] };
+  for (var i = 0; i < allPlaces.length; i++) {
+    var p = Object.assign({}, allPlaces[i]);
+    delete p.id;
+    exportData.places.push(p);
+  }
+  var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "口袋名單備份_" + new Date().toLocaleDateString("zh-TW").replace(/\//g, "-") + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("已匯出 " + allPlaces.length + " 個地點", "success");
 });
 
-document.getElementById("btn-import").addEventListener("click", () => {
+// ── IMPORT JSON ──
+document.getElementById("btn-import").addEventListener("click", function() {
   document.getElementById("import-file-input").click();
 });
-document.getElementById("import-file-input").addEventListener("change", async (e) => {
-  const file = e.target.files[0]; if (!file) return;
-  const text = await file.text();
+document.getElementById("import-file-input").addEventListener("change", async function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var text = await file.text();
   try {
-    const data = JSON.parse(text);
-    const places = data.places || data;
+    var data = JSON.parse(text);
+    var places = data.places || data;
     if (!Array.isArray(places)) throw new Error("格式不正確");
-    if (!confirm(`確定要匯入 ${places.length} 個地點嗎？`)) return;
-    showToast("匯入中...");
-    let count = 0;
-    for (const p of places) {
+    if (!confirm("確定要匯入 " + places.length + " 個地點嗎？")) return;
+    toast("匯入中...");
+    var count = 0;
+    for (var i = 0; i < places.length; i++) {
+      var p = places[i];
       if (!p.name) continue;
-      await addDoc(collection(db,"pocketlist",roomCode,"places"), { ...p, createdAt: serverTimestamp(), updatedAt: serverTimestamp(), createdBy: roomCode.toUpperCase() });
+      p.createdAt = serverTimestamp();
+      p.updatedAt = serverTimestamp();
+      p.createdBy = roomCode.toUpperCase();
+      await addDoc(collection(db, "pocketlist", roomCode, "places"), p);
       count++;
     }
-    showToast(`成功匯入 ${count} 個地點！`, "success");
-  } catch(err) { showToast("匯入失敗：" + err.message, "error"); }
+    toast("成功匯入 " + count + " 個地點！", "success");
+  } catch(err) {
+    toast("匯入失敗：" + err.message, "error");
+  }
   e.target.value = "";
 });
 
-function updateStats() {
-  document.getElementById("stat-total").textContent = allPlaces.length;
-  const v = allPlaces.filter(p=>p.visited).length;
-  document.getElementById("stat-visited").textContent = v;
-  document.getElementById("stat-unvisited").textContent = allPlaces.length - v;
-}
-
-
-// ══ CSV 範本下載 ══
-document.getElementById("btn-csv-template").addEventListener("click", () => {
-  const header = "店名,地區,主分類,特色標籤(逗號分隔),Google Map連結,照片網址,備註,已造訪(是/否)";
-  const example = "Slow Morning,宜蘭,咖啡下午茶,不限時|有貓咪,https://maps.google.com,,超好喝的拿鐵,否";
-  const example2 = "丸山咖哩,雙北,正餐飽食,停車方便,https://maps.google.com,,咖哩飯必點,是";
-  const csv = [header, example, example2].join("\n");
-  const bom = "\uFEFF"; // UTF-8 BOM for Excel
-  const blob = new Blob([bom + csv], {type:"text/csv;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href = url;
+// ── CSV TEMPLATE ──
+document.getElementById("btn-csv-template").addEventListener("click", function() {
+  var header = "店名,地區,主分類,特色標籤(用|分隔),Google Map連結,照片網址,備註,自訂標籤,已造訪(是/否),回訪意願";
+  var ex1 = "Slow Morning,宜蘭,甜點咖啡,不限時|有貓咪,https://maps.google.com,,超好喝的拿鐵,,否,";
+  var ex2 = "丸山咖哩,雙北,聚會正餐,停車方便,https://maps.google.com,,咖哩飯必點,#日式 #咖哩,是,必回";
+  var csv = header + "\n" + ex1 + "\n" + ex2;
+  var blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
   a.download = "口袋名單匯入範本.csv";
-  a.click(); URL.revokeObjectURL(url);
-  showToast("範本已下載！用 Excel 或 Numbers 填好後上傳 📋", "success");
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("範本已下載！填好後上傳 📋", "success");
 });
 
-document.getElementById("btn-csv-import").addEventListener("click", () => {
+document.getElementById("btn-csv-import").addEventListener("click", function() {
   document.getElementById("csv-file-input").click();
 });
-
-document.getElementById("csv-file-input").addEventListener("change", async (e) => {
-  const file = e.target.files[0]; if (!file) return;
-  const text = await file.text();
-  // Parse CSV (handle UTF-8 BOM)
-  const clean = text.replace(/^\uFEFF/, "");
-  const rows = clean.split("\n").map(r => r.trim()).filter(r => r);
-  if (rows.length < 2) { showToast("CSV 格式不正確", "error"); return; }
-  // Skip header row
-  const dataRows = rows.slice(1);
-  const catMap = {"咖啡下午茶":"咖啡下午茶","正餐飽食":"正餐飽食","輕食小吃":"輕食小吃","親子休閒":"親子休閒","微醺餐酒":"微醺餐酒","文具生活":"文具生活","其他":"其他"};
-  const validTags = ["不限時","有貓咪","有插座","親子友善","停車方便","預約制","可線上訂位","免費wifi","外帶首選"];
-  
-  const places = dataRows.map(row => {
-    // Simple CSV parse (handles basic cases)
-    const cols = row.split(",");
-    const name = (cols[0]||"").trim();
-    if (!name) return null;
-    const region = (cols[1]||"").trim();
-    const category = (cols[2]||"").trim();
-    const tagsRaw = (cols[3]||"").trim().split("|").map(t=>t.trim()).filter(t=>validTags.includes(t));
-    const mapLink = (cols[4]||"").trim();
-    const photoUrl = (cols[5]||"").trim();
-    const note = (cols[6]||"").trim();
-    const visited = (cols[7]||"").trim() === "是";
-    return { name, region, category, tags: tagsRaw, mapLink, photoUrl, note, visited };
-  }).filter(p => p && p.name);
-
-  if (!places.length) { showToast("沒有找到有效資料", "error"); return; }
-  if (!confirm(`確定要匯入 ${places.length} 個地點嗎？`)) return;
-  showToast("匯入中...");
-  let count = 0;
-  for (const p of places) {
-    try {
-      await addDoc(collection(db,"pocketlist",roomCode,"places"), {
-        ...p, createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
-        createdBy: roomCode.toUpperCase()
-      });
-      count++;
-    } catch(err) { console.error(err); }
+document.getElementById("csv-file-input").addEventListener("change", async function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var text = await file.text();
+  var clean = text.replace(/^\uFEFF/, "");
+  var rows = clean.split("\n").map(function(r) { return r.trim(); }).filter(function(r) { return r; });
+  if (rows.length < 2) { toast("CSV 格式不正確", "error"); return; }
+  var validTags = ["不限時","有貓咪","有插座","親子友善","停車方便","預約制","可線上訂位","免費wifi","外帶首選"];
+  var places = [];
+  for (var i = 1; i < rows.length; i++) {
+    var cols = rows[i].split(",");
+    var name = (cols[0] || "").trim();
+    if (!name) continue;
+    var rawTags = (cols[3] || "").split("|").map(function(t) { return t.trim(); });
+    var tags = rawTags.filter(function(t) { return validTags.indexOf(t) >= 0; });
+    places.push({
+      name: name,
+      region: (cols[1] || "").trim(),
+      category: (cols[2] || "").trim(),
+      tags: tags,
+      mapLink: (cols[4] || "").trim(),
+      photoUrl: (cols[5] || "").trim(),
+      note: (cols[6] || "").trim(),
+      customTags: (cols[7] || "").trim(),
+      visited: (cols[8] || "").trim() === "是",
+      revisit: (cols[9] || "").trim()
+    });
   }
-  showToast(`成功匯入 ${count} 個地點！`, "success");
+  if (!places.length) { toast("沒有找到有效資料", "error"); return; }
+  if (!confirm("確定要匯入 " + places.length + " 個地點嗎？")) return;
+  toast("匯入中...");
+  var count = 0;
+  for (var i = 0; i < places.length; i++) {
+    try {
+      var p = places[i];
+      p.createdAt = serverTimestamp();
+      p.updatedAt = serverTimestamp();
+      p.createdBy = roomCode.toUpperCase();
+      await addDoc(collection(db, "pocketlist", roomCode, "places"), p);
+      count++;
+    } catch(err) {
+      console.error(err);
+    }
+  }
+  toast("成功匯入 " + count + " 個地點！", "success");
   e.target.value = "";
 });
 
-const catDescs = {"日常外帶": "下班順路買、解決晚餐、單價親民", "聚會正餐": "週末聚會、慶祝、需要坐下來慢慢吃的飯局", "甜點咖啡": "放鬆、想吃點甜的或喝杯飲料", "親子放電": "帶小孩放風、需要大空間或友善育兒設施", "藝文選物": "逛街、買文具、安靜閱讀、找美感物件", "飲品手搖": "想喝一杯解饞、外送下午茶、尋找好喝的茶或咖啡"};
-
-document.getElementById("f-category").addEventListener("change", function() {
-  const desc = catDescs[this.value] || "";
-  let el = document.getElementById("cat-desc-text");
-  if (!el) { el = document.createElement("div"); el.id = "cat-desc-text"; el.className = "cat-desc"; this.parentNode.appendChild(el); }
-  el.textContent = desc;
-});
-
+// ── STATS ──
+function updateStats() {
+  var total = allPlaces.length;
+  var visited = allPlaces.filter(function(p) { return p.visited; }).length;
+  document.getElementById("stat-total").textContent = total;
+  document.getElementById("stat-visited").textContent = visited;
+  document.getElementById("stat-unvisited").textContent = total - visited;
+}
 </script>
 
 </body>
