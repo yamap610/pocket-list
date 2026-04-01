@@ -400,6 +400,30 @@ opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;
 
 /* Settings section spacing */
 .ss{margin-bottom:20px}
+
+/* ══ BOTTOM NAV ══ */
+body { padding-bottom: calc(68px + env(safe-area-inset-bottom,0px)); }
+.bottom-nav-pocket {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #FFFDF9; border-top: 1px solid #E2D5C3;
+  display: none; z-index: 400;
+  box-shadow: 0 -2px 16px rgba(90,60,30,.1);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.bottom-nav-pocket.show { display: flex; }
+.bn-p-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 8px 2px 6px; gap: 3px; cursor: pointer;
+  color: #A89580; font-family: 'Noto Sans TC', sans-serif;
+  border: none; background: none; transition: color .15s;
+}
+.bn-p-item.active { color: #8B6B4A; }
+.bn-p-item:active { opacity: .7; }
+.bn-p-icon { font-size: 19px; line-height: 1; }
+.bn-p-label { font-size: 9px; font-weight: 600; line-height: 1; }
+/* FAB 上移 */
+.fab { bottom: calc(68px + env(safe-area-inset-bottom,0px) + 14px); }
 </style>
 
 </head>
@@ -696,6 +720,8 @@ opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;
   }
 })();
 
+var APP_URLS_POCKET={home:'https://yui0151.github.io/home/',sec:'https://yui0151.github.io/secretary/',inv:'https://yui0151.github.io/inventory/',ward:'https://yui0151.github.io/wardrobe/',wiki:'https://yamap610.github.io/mywiki/'};
+function goApp(key){var b=APP_URLS_POCKET[key];if(!b)return;var rc=localStorage.getItem('pocketRoom')||localStorage.getItem('dash_last_room')||'';window.location.href=b+(rc?'?code='+rc:'');}
 document.getElementById('codeInput').addEventListener('keypress', function(e){
   if(e.key === 'Enter') doLogin();
 });
@@ -711,6 +737,8 @@ function doLogin(){
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   if(window._boot) window._boot();
+  document.getElementById('pocketNav').classList.add('show');
+localStorage.setItem('dash_last_room', v);
 }
 </script>
 
@@ -780,7 +808,7 @@ function initSwipe(handleId, modalId){
 }
 
 // ── Boot ──
-function boot(){
+function boot(){document.getElementById('pocketNav').classList.add('show');
   room = (localStorage.getItem('pocketRoom') || '').trim().toLowerCase();
   if(!room) return;
   listenPlaces();
@@ -1323,5 +1351,13 @@ function updateStats(){
 }
 </script>
 
+<nav class="bottom-nav-pocket" id="bottomNavPocket">
+  <button class="bn-p-item" onclick="goApp('home')"><span class="bn-p-icon">🏠</span><span class="bn-p-label">首頁</span></button>
+  <button class="bn-p-item" onclick="goApp('sec')"><span class="bn-p-icon">🐧</span><span class="bn-p-label">家務</span></button>
+  <button class="bn-p-item" onclick="goApp('inv')"><span class="bn-p-icon">🐰</span><span class="bn-p-label">庫存</span></button>
+  <button class="bn-p-item" onclick="goApp('ward')"><span class="bn-p-icon">👗</span><span class="bn-p-label">衣櫃</span></button>
+  <button class="bn-p-item" onclick="goApp('wiki')"><span class="bn-p-icon">📖</span><span class="bn-p-label">百科</span></button>
+  <button class="bn-p-item active"><span class="bn-p-icon">🗺️</span><span class="bn-p-label">地圖</span></button>
+</nav>
 </body>
 </html>
