@@ -24,76 +24,124 @@ body{font-family:'Noto Sans TC','Helvetica Neue',sans-serif;background:#F7F3EE;c
 }
 
 /* ── LOGIN ── */
-#login-screen{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:linear-gradient(135deg,#F7F0E8 0%,#EDE5D8 50%,#E4D5C0 100%);}
-.login-card{background:#FFFDF9;border-radius:24px;padding:36px 28px;width:100%;max-width:400px;border:1px solid #E2D5C3;box-shadow:0 8px 40px rgba(90,60,30,.14);text-align:center;}
+#login-screen{
+position:fixed;inset:0;z-index:9999;
+display:flex;align-items:center;justify-content:center;
+padding:24px 16px;
+background:linear-gradient(135deg,#F7F0E8 0%,#EDE5D8 50%,#E4D5C0 100%);
+}
+.login-card{
+background:#FFFDF9;border-radius:24px;padding:36px 28px;
+width:100%;max-width:400px;
+border:1px solid #E2D5C3;
+box-shadow:0 8px 40px rgba(90,60,30,.14);
+text-align:center;
+}
 .logo-icon{font-size:52px;display:block;margin-bottom:10px;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .logo-title{font-family:var(–serif);font-size:26px;font-weight:700;letter-spacing:2px;margin-bottom:4px}
 .logo-sub{font-size:13px;color:var(–muted);margin-bottom:28px}
 .input-label{font-size:11px;color:var(–muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block;text-align:left;margin-bottom:6px}
-.code-input{width:100%;padding:14px 16px;border:1.5px solid #E2D5C3;border-radius:14px;background:#EDE5D8;font-family:inherit;font-size:20px;color:#3A2E24;outline:none;text-align:center;letter-spacing:4px;font-weight:600;margin-bottom:10px;transition:border-color .2s,background .2s;}
+.code-input{
+width:100%;padding:14px 16px;border:1.5px solid #E2D5C3;border-radius:14px;
+background:#EDE5D8;font-family:inherit;font-size:20px;color:#3A2E24;
+outline:none;text-align:center;letter-spacing:4px;font-weight:600;margin-bottom:10px;
+transition:border-color .2s,background .2s;
+}
 .code-input:focus{border-color:#C4956A;background:#FFFDF9}
 .err-msg{color:#C4776A;font-size:13px;min-height:18px;margin-bottom:10px}
-.enter-btn{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#C4956A,#8B6B4A);color:white;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;}
+.enter-btn{
+width:100%;padding:14px;border:none;border-radius:14px;
+background:linear-gradient(135deg,#C4956A,#8B6B4A);
+color:white;font-family:inherit;font-size:16px;font-weight:600;
+cursor:pointer;margin-bottom:16px;
+}
 .hint{font-size:12px;color:var(–muted);line-height:1.7}
 .hint b{color:var(–brown)}
 
 /* ── APP ── */
-#app{display:none;flex-direction:column;min-height:100vh;max-width:480px;margin:0 auto;background:#F7F3EE}
+#app{display:none;flex-direction:column;min-height:100vh;max-width:480px;margin:0 auto;background:#F7F3EE;
+/* [FIX] 底部預留空間給 FAB */
+padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
 
 /* ── HEADER ── */
-.app-header{background:#FFFDF9;border-bottom:1px solid #E2D5C3;padding:14px 16px 10px;position:sticky;top:0;z-index:100;}
+.app-header{
+background:#FFFDF9;border-bottom:1px solid #E2D5C3;
+padding:14px 16px 10px;position:sticky;top:0;z-index:100;
+}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .app-title{font-family:var(–serif);font-size:18px;font-weight:700;letter-spacing:1px}
 .sync-status{font-size:12px;color:#7A9E7E;margin-top:2px}
 .sync-status.off{color:#C4776A}
-.icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid #E2D5C3;background:#EDE5D8;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;}
-/* 任務6: 修復搜尋欄截斷 */
+.icon-btn{
+width:36px;height:36px;border-radius:50%;border:1px solid #E2D5C3;
+background:#EDE5D8;display:flex;align-items:center;justify-content:center;
+cursor:pointer;font-size:16px;flex-shrink:0;
+}
 .search-wrap{position:relative}
 .search-input{
-width:100%;padding:10px 40px 10px 38px;
+width:100%;padding:10px 16px 10px 38px;
 border:1px solid #E2D5C3;border-radius:20px;
-background:#EDE5D8;font-family:inherit;font-size:13px;color:#3A2E24;outline:none;
-text-overflow:ellipsis;
-transition:border-color .2s,background .2s;
+background:#EDE5D8;font-family:inherit;font-size:14px;color:#3A2E24;outline:none;
 }
-.search-input:focus{border-color:#C4956A;background:#FFFDF9;}
-.search-input::placeholder{color:#A89580;font-size:12px;}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
-/* 清除按鈕 */
-.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#A89580;font-size:14px;cursor:pointer;padding:0;line-height:1;display:none;}
-.search-clear.visible{display:block;}
 
 /* ── FILTERS ── */
 .filter-bar{background:#FFFDF9;border-bottom:1px solid #E2D5C3;padding:8px 0}
 .filter-row{display:flex;gap:6px;overflow-x:auto;padding:0 14px 4px;scrollbar-width:none}
 .filter-row::-webkit-scrollbar{display:none}
-.chip{padding:6px 14px;border-radius:20px;border:1px solid #E2D5C3;background:#EDE5D8;font-size:12px;color:#A89580;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.chip{
+padding:6px 14px;border-radius:20px;border:1px solid #E2D5C3;
+background:#EDE5D8;font-size:12px;color:#A89580;cursor:pointer;
+white-space:nowrap;flex-shrink:0;transition:all .15s;
+}
 .chip.active{background:#3A2E24;border-color:#3A2E24;color:#F7F3EE;font-weight:600}
 .tag-chip.active{background:#C4956A;border-color:#C4956A;color:white}
 
 /* ── TOOLBAR ── */
-.toolbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#FFFDF9;border-bottom:1px solid #E2D5C3;}
+.toolbar{
+display:flex;align-items:center;justify-content:space-between;
+padding:8px 14px;background:#FFFDF9;border-bottom:1px solid #E2D5C3;
+}
 .results-info{font-size:12px;color:#A89580}
 .toolbar-right{display:flex;align-items:center;gap:6px}
-.sort-select{padding:5px 8px;border-radius:8px;border:1px solid #E2D5C3;background:#EDE5D8;font-family:inherit;font-size:12px;color:#3A2E24;outline:none;}
+.sort-select{
+padding:5px 8px;border-radius:8px;border:1px solid #E2D5C3;
+background:#EDE5D8;font-family:inherit;font-size:12px;color:#3A2E24;outline:none;
+}
 .view-btns{display:flex;gap:3px}
-.view-btn{width:30px;height:30px;border-radius:7px;border:1px solid #E2D5C3;background:#EDE5D8;font-size:13px;cursor:pointer;color:#A89580;display:flex;align-items:center;justify-content:center;}
+.view-btn{
+width:30px;height:30px;border-radius:7px;border:1px solid #E2D5C3;
+background:#EDE5D8;font-size:13px;cursor:pointer;color:#A89580;
+display:flex;align-items:center;justify-content:center;
+}
 .view-btn.active{background:#3A2E24;color:#F7F3EE;border-color:#3A2E24}
 .clear-btn{padding:4px 10px;border-radius:8px;border:1px solid #E2D5C3;background:transparent;font-size:11px;color:#A89580;cursor:pointer}
 
 /* ── PLACES ── */
-#places-container{padding:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));}
+#places-container{padding:12px}
 .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card-grid.list-view{grid-template-columns:1fr}
 
-/* Card */
-.place-card{background:#FFFDF9;border:1px solid #E2D5C3;border-radius:14px;overflow:hidden;cursor:pointer;box-shadow:0 2px 8px rgba(90,60,30,.08);transition:transform .12s;}
+.place-card{
+background:#FFFDF9;border:1px solid #E2D5C3;border-radius:14px;
+overflow:hidden;cursor:pointer;
+box-shadow:0 2px 8px rgba(90,60,30,.08);
+transition:transform .12s;
+}
 .place-card:active{transform:scale(.97)}
-.card-photo{position:relative;height:110px;background:#EDE5D8;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.card-photo{
+position:relative;height:110px;background:#EDE5D8;
+display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
 .card-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.card-emoji{font-size:32px;position:relative;z-index:1}
-.card-badge{position:absolute;top:6px;right:6px;z-index:2;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600;}
+/* [FIX] emoji 層級要在圖片之上但不蓋住圖片文字 */
+.card-emoji{font-size:32px;position:relative;z-index:1;pointer-events:none}
+.card-badge{
+position:absolute;top:6px;right:6px;z-index:2;
+font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600;
+}
 .badge-visited{background:#EBF3EC;color:#7A9E7E}
 .badge-want{background:rgba(255,255,255,.85);color:#A89580}
 .card-body{padding:10px}
@@ -103,10 +151,17 @@ transition:border-color .2s,background .2s;
 .card-tags{display:flex;flex-wrap:wrap;gap:3px}
 .card-tag{font-size:10px;padding:1px 6px;border-radius:6px;background:#EDE5D8;color:#A89580;border:1px solid #E2D5C3}
 
-/* List row */
-.list-row{background:#FFFDF9;border:1px solid #E2D5C3;border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 1px 4px rgba(90,60,30,.06);transition:background .12s;}
+.list-row{
+background:#FFFDF9;border:1px solid #E2D5C3;border-radius:14px;
+padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;
+box-shadow:0 1px 4px rgba(90,60,30,.06);transition:background .12s;
+}
 .list-row:active{background:#EDE5D8}
-.list-icon{width:44px;height:44px;border-radius:10px;background:#EDE5D8;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;position:relative;}
+.list-icon{
+width:44px;height:44px;border-radius:10px;background:#EDE5D8;
+display:flex;align-items:center;justify-content:center;
+font-size:22px;flex-shrink:0;overflow:hidden;position:relative;
+}
 .list-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .list-icon-emoji{position:relative;z-index:1}
 .list-info{flex:1;min-width:0}
@@ -115,86 +170,169 @@ transition:border-color .2s,background .2s;
 .list-visited{font-size:11px;color:#7A9E7E;margin-top:2px}
 .list-arrow{color:#C8BAA8;font-size:18px;flex-shrink:0}
 
-/* Empty */
 .empty{text-align:center;padding:60px 20px;color:#A89580}
 .empty-icon{font-size:48px;margin-bottom:12px}
 .empty-title{font-size:16px;font-weight:600;color:#3A2E24;margin-bottom:6px}
 .empty-sub{font-size:13px;line-height:1.6}
 
 /* ── FAB ── */
-.fab{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom, 0px));right:18px;width:56px;height:56px;background:linear-gradient(135deg,#C4956A,#8B6B4A);color:white;border:none;border-radius:18px;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(139,99,67,.4);z-index:200;}
+.fab{
+position:fixed;
+bottom:calc(22px + env(safe-area-inset-bottom, 0px));
+right:18px;width:56px;height:56px;
+background:linear-gradient(135deg,#C4956A,#8B6B4A);
+color:white;border:none;border-radius:18px;font-size:28px;
+cursor:pointer;display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 20px rgba(139,99,67,.4);z-index:200;
+}
 .fab:active{transform:scale(.92)}
 
 /* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:300;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay{
+position:fixed;inset:0;
+background:rgba(30,20,10,.5);
+z-index:300;
+display:flex;align-items:flex-end;justify-content:center;
+opacity:0;pointer-events:none;
+transition:opacity .25s;
+}
 .modal-overlay.open{opacity:1;pointer-events:all}
 .modal-sheet{
-background:#FFFDF9;border-radius:20px 20px 0 0;
+background:#FFFDF9;
+border-radius:20px 20px 0 0;
 width:100%;max-width:480px;
-max-height:92vh;   /* 任務6: 改為 max-height 而非固定 height，防止截斷 */
+height:90vh;
 display:flex;flex-direction:column;
 transform:translateY(100%);
 transition:transform .3s cubic-bezier(.32,.72,0,1);
-position:relative;z-index:1;overflow:hidden;
+position:relative;
+z-index:1;
+overflow:hidden;
 }
 .modal-overlay.open .modal-sheet{transform:translateY(0)}
 
-/* Sticky header inside sheet */
 .sheet-header{
-background:#FFFDF9;border-radius:20px 20px 0 0;
-padding:10px 0 0;flex-shrink:0;z-index:2;
+background:#FFFDF9;
+border-radius:20px 20px 0 0;
+padding:10px 0 0;
+flex-shrink:0;
+z-index:2;
 border-bottom:1px solid #EDE5D8;
 }
 .sheet-handle{width:36px;height:4px;background:#E2D5C3;border-radius:2px;margin:0 auto 10px}
-.sheet-title-row{display:flex;align-items:center;justify-content:space-between;padding:0 20px 12px;}
+.sheet-title-row{
+display:flex;align-items:center;justify-content:space-between;
+padding:0 20px 12px;
+}
 .sheet-title{font-family:var(–serif);font-size:18px;font-weight:500}
-.sheet-close{width:30px;height:30px;border-radius:50%;border:1px solid #E2D5C3;background:#EDE5D8;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#A89580;flex-shrink:0;}
+.sheet-close{
+width:30px;height:30px;border-radius:50%;border:1px solid #E2D5C3;
+background:#EDE5D8;display:flex;align-items:center;justify-content:center;
+cursor:pointer;font-size:15px;color:#A89580;flex-shrink:0;
+}
 
-/* 任務6: Sheet body 確保可滾動，防止版面跑版 */
 .sheet-body{
 overflow-y:scroll;
 -webkit-overflow-scrolling:touch;
 flex:1;
 padding:20px;
-padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+padding-bottom:16px;
 overscroll-behavior:contain;
-min-height:0;   /* 修正 flex 子元素溢出問題 */
 }
 
 /* ── FORM ── */
 .fg{margin-bottom:14px}
 .fl{display:block;font-size:11px;font-weight:600;color:#A89580;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
-.fi,.fs,.fta{width:100%;padding:11px 14px;border:1.5px solid #E2D5C3;border-radius:10px;background:#EDE5D8;font-family:inherit;font-size:15px;color:#3A2E24;outline:none;transition:border-color .2s,background .2s;}
+.fi,.fs,.fta{
+width:100%;padding:11px 14px;
+border:1.5px solid #E2D5C3;border-radius:10px;
+background:#EDE5D8;font-family:inherit;font-size:15px;color:#3A2E24;
+outline:none;transition:border-color .2s,background .2s;
+}
 .fi:focus,.fs:focus,.fta:focus{border-color:#C4956A;background:#FFFDF9}
-.fs{appearance:none;-webkit-appearance:none;background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23a08060’ fill=‘none’ stroke-width=‘1.5’ stroke-linecap=‘round’/%3E%3C/svg%3E”);background-repeat:no-repeat;background-position:right 14px center;background-color:#EDE5D8;padding-right:36px;}
+.fs{
+appearance:none;-webkit-appearance:none;
+background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23a08060’ fill=‘none’ stroke-width=‘1.5’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat:no-repeat;background-position:right 14px center;
+background-color:#EDE5D8;padding-right:36px;
+}
 .fs:focus{background-color:#FFFDF9}
-.fta{min-height:80px;resize:vertical;line-height:1.6}
+/* [FIX] 備註欄位：保留換行與空格 */
+.fta{
+min-height:80px;
+resize:vertical;
+line-height:1.6;
+white-space:pre-wrap;
+}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .cat-hint{font-size:11px;color:#A67C52;margin-top:4px;min-height:14px;font-style:italic}
+
 .tags-wrap{display:flex;flex-wrap:wrap;gap:7px}
-.ttag{padding:7px 12px;border-radius:20px;border:1.5px solid #E2D5C3;background:#EDE5D8;font-family:inherit;font-size:13px;color:#A89580;cursor:pointer;}
+.ttag{
+padding:7px 12px;border-radius:20px;border:1.5px solid #E2D5C3;
+background:#EDE5D8;font-family:inherit;font-size:13px;color:#A89580;cursor:pointer;
+}
 .ttag.on{background:#C4956A;border-color:#C4956A;color:white}
+
 .revisit-wrap{display:flex;flex-wrap:wrap;gap:8px}
-.rtag{padding:8px 14px;border-radius:20px;border:1.5px solid #E2D5C3;background:#EDE5D8;font-family:inherit;font-size:13px;color:#3A2E24;cursor:pointer;}
+.rtag{
+padding:8px 14px;border-radius:20px;border:1.5px solid #E2D5C3;
+background:#EDE5D8;font-family:inherit;font-size:13px;color:#3A2E24;cursor:pointer;
+}
 .rtag.on{background:#C4956A;border-color:#C4956A;color:white}
 .rtag.bad.on{background:#C4776A;border-color:#C4776A}
-.vtoggle{display:flex;align-items:center;justify-content:space-between;padding:13px;background:#EDE5D8;border-radius:10px;border:1px solid #E2D5C3;cursor:pointer;}
+
+.vtoggle{
+display:flex;align-items:center;justify-content:space-between;
+padding:13px;background:#EDE5D8;border-radius:10px;border:1px solid #E2D5C3;cursor:pointer;
+}
 .vtoggle-label{font-size:14px}
-.vswitch{width:44px;height:24px;background:#C8BAA8;border-radius:12px;position:relative;transition:background .2s;flex-shrink:0;}
-.vswitch::after{content:””;position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:white;transition:left .2s;}
+.vswitch{
+width:44px;height:24px;background:#C8BAA8;border-radius:12px;
+position:relative;transition:background .2s;flex-shrink:0;
+}
+.vswitch::after{
+content:””;position:absolute;left:3px;top:3px;
+width:18px;height:18px;border-radius:50%;background:white;transition:left .2s;
+}
 .vtoggle.on .vswitch{background:#7A9E7E}
 .vtoggle.on .vswitch::after{left:23px}
-.form-footer{flex-shrink:0;padding:12px 20px calc(12px + env(safe-area-inset-bottom, 0px));background:#FFFDF9;border-top:1px solid #EDE5D8;}
+
+.form-footer{
+flex-shrink:0;
+padding:12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+background:#FFFDF9;
+border-top:1px solid #EDE5D8;
+}
 .form-btns{display:flex;gap:10px}
-.btn-save{flex:1;padding:14px;border-radius:10px;border:none;background:#C4956A;color:white;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;}
+.btn-save{
+flex:1;padding:14px;border-radius:10px;border:none;
+background:#C4956A;color:white;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;
+}
 .btn-save:disabled{opacity:.6;cursor:not-allowed}
-.btn-cancel{padding:14px 18px;border-radius:10px;background:#EDE5D8;border:1px solid #E2D5C3;color:#A89580;font-family:inherit;font-size:15px;cursor:pointer;}
+.btn-cancel{
+padding:14px 18px;border-radius:10px;
+background:#EDE5D8;border:1px solid #E2D5C3;
+color:#A89580;font-family:inherit;font-size:15px;cursor:pointer;
+}
 
 /* ── DETAIL ── */
-.detail-photo{height:180px;background:#EDE5D8;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;flex-shrink:0;}
+.detail-photo{
+height:180px;background:#EDE5D8;
+display:flex;align-items:center;justify-content:center;
+overflow:hidden;position:relative;flex-shrink:0;
+}
 .detail-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.detail-emoji{font-size:60px;position:relative;z-index:1}
-.detail-body{padding:20px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;}
+/* [FIX] 詳情頁 emoji - 使用 z-index 確保不蓋住照片，但在無照片時顯示 */
+.detail-emoji{
+font-size:60px;
+position:relative;
+z-index:1;
+/* 若有照片，隱藏 emoji */
+}
+.detail-photo.has-photo .detail-emoji{display:none}
+
+.detail-body{padding:20px}
 .detail-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
 .detail-name{font-family:var(–serif);font-size:20px;font-weight:700}
 .detail-badge{flex-shrink:0;padding:4px 10px;border-radius:10px;font-size:12px;border:1px solid #E2D5C3}
@@ -206,22 +344,43 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
 .custom-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
 .ctag{font-size:12px;padding:3px 9px;border-radius:10px;background:#EBF3EC;color:#7A9E7E;border:1px solid #C8DEC8}
 .detail-revisit{font-size:13px;font-weight:600;margin-bottom:10px}
-.detail-hours{background:#F8F4EE;border:1px solid #E8D5BC;border-radius:10px;padding:12px 14px;margin-bottom:12px;}
-.detail-hours-row{display:flex;justify-content:space-between;align-items:flex-start;padding:4px 0;font-size:13px;border-bottom:1px solid #F0E8DC;}
+
+.detail-hours{
+background:#F8F4EE;border:1px solid #E8D5BC;border-radius:10px;
+padding:12px 14px;margin-bottom:12px;
+}
+.detail-hours-row{
+display:flex;justify-content:space-between;align-items:flex-start;
+padding:4px 0;font-size:13px;border-bottom:1px solid #F0E8DC;
+}
 .detail-hours-row:last-child{border-bottom:none}
 .detail-hours-day{color:#8B6B4A;font-weight:500;flex-shrink:0;width:48px}
 .detail-hours-time{color:#3A2E24;flex:1;text-align:right;line-height:1.5}
+/* [FIX] 備註：保留使用者換行與空格 */
 .detail-hours-raw{font-size:13px;color:#8B6B4A;padding:6px 0;line-height:1.6;white-space:pre-wrap}
-.detail-note{font-size:13px;color:#A89580;line-height:1.7;padding:12px;background:#EDE5D8;border-radius:10px;margin-bottom:14px}
-.link-btn{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:#EDE5D8;border:1px solid #E2D5C3;text-decoration:none;color:#3A2E24;font-size:14px;margin-bottom:8px;}
-.detail-actions{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #EDE5D8;padding-bottom:calc(0px + env(safe-area-inset-bottom,0px));}
+.detail-note{
+font-size:13px;color:#A89580;line-height:1.7;
+padding:12px;background:#EDE5D8;border-radius:10px;margin-bottom:14px;
+/* [FIX] 完整保留換行與空格 */
+white-space:pre-wrap;
+word-break:break-word;
+}
+.link-btn{
+display:flex;align-items:center;gap:10px;padding:12px 14px;
+border-radius:10px;background:#EDE5D8;border:1px solid #E2D5C3;
+text-decoration:none;color:#3A2E24;font-size:14px;margin-bottom:8px;
+}
+.detail-actions{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #EDE5D8}
 .btn-edit{flex:1;padding:12px;border-radius:10px;background:#EDE5D8;border:1px solid #E2D5C3;font-family:inherit;font-size:14px;color:#3A2E24;cursor:pointer}
 .btn-del{flex:1;padding:12px;border-radius:10px;background:#F5EDEC;border:1px solid #C4776A;font-family:inherit;font-size:14px;color:#C4776A;cursor:pointer}
 .created-by{font-size:11px;color:#C8BAA8;margin-top:14px;text-align:center}
 
 /* ── SETTINGS ── */
 .sec-title{font-size:11px;font-weight:600;color:#A89580;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.srow{display:flex;align-items:center;gap:12px;padding:12px;background:#EDE5D8;border-radius:10px;margin-bottom:6px;cursor:pointer;border:1px solid #E2D5C3;}
+.srow{
+display:flex;align-items:center;gap:12px;padding:12px;
+background:#EDE5D8;border-radius:10px;margin-bottom:6px;cursor:pointer;border:1px solid #E2D5C3;
+}
 .srow-icon{font-size:18px;width:24px;text-align:center}
 .srow-text{flex:1}
 .srow-label{font-size:14px}
@@ -235,10 +394,18 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
 .stat-l{font-size:11px;color:#A89580;margin-top:2px}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) translateY(10px);background:#3A2E24;color:white;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;}
+.toast{
+position:fixed;
+bottom:calc(80px + env(safe-area-inset-bottom, 0px));
+left:50%;transform:translateX(-50%) translateY(10px);
+background:#3A2E24;color:white;padding:10px 20px;
+border-radius:20px;font-size:13px;
+opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;
+}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.err{background:#C4776A}
 .toast.ok{background:#7A9E7E}
+
 .ss{margin-bottom:20px}
 </style>
 
@@ -271,11 +438,9 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
       </div>
       <button class="icon-btn" id="btnSettings">⚙️</button>
     </div>
-    <!-- 任務6: 搜尋欄修復 - 加入清除按鈕，調整 placeholder 字體大小 -->
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="search" class="search-input" id="searchInput" placeholder="搜尋店名、備註、#標籤…">
-      <button class="search-clear" id="searchClearBtn" onclick="clearSearch()">✕</button>
+      <input type="search" class="search-input" id="searchInput" placeholder="搜尋店名、備註...">
     </div>
   </header>
 
@@ -299,7 +464,7 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
     </div>
     <div class="filter-row" id="tagRow">
       <div class="chip tag-chip" data-v="不限時">不限時</div>
-      <div class="chip tag-chip" data-v="有貓咪">有貓咪 🐱</div>
+      <div class="chip tag-chip" data-v="有貓咪">有貓咪</div>
       <div class="chip tag-chip" data-v="有插座">有插座</div>
       <div class="chip tag-chip" data-v="親子友善">親子友善</div>
       <div class="chip tag-chip" data-v="停車方便">停車方便</div>
@@ -315,7 +480,7 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
   <div class="toolbar">
     <div class="results-info" id="resultsInfo"></div>
     <div class="toolbar-right">
-      <button class="clear-btn" id="clearFilters" style="display:none">清除篩選</button>
+      <button class="clear-btn" id="clearFilters" style="display:none">清除</button>
       <select class="sort-select" id="sortSelect">
         <option value="newest">最新新增</option>
         <option value="oldest">最早新增</option>
@@ -348,13 +513,30 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
     </div>
     <div class="sheet-body" style="padding-bottom:0">
       <form id="placeForm" autocomplete="off">
-        <div class="fg"><label class="fl">店名 *</label><input type="text" class="fi" id="fName" placeholder="例：Slow Morning" required></div>
+        <div class="fg">
+          <label class="fl">店名 *</label>
+          <input type="text" class="fi" id="fName" placeholder="例：Slow Morning" required>
+        </div>
         <div class="form-row">
-          <div class="fg"><label class="fl">地區 *</label>
-            <select class="fs" id="fRegion"><option value="">選擇地區</option><option>雙北</option><option>桃園</option><option>宜蘭</option><option>台中</option><option>其他縣市</option></select>
+          <div class="fg">
+            <label class="fl">地區 *</label>
+            <select class="fs" id="fRegion">
+              <option value="">選擇地區</option>
+              <option>雙北</option><option>桃園</option>
+              <option>宜蘭</option><option>台中</option><option>其他縣市</option>
+            </select>
           </div>
-          <div class="fg"><label class="fl">主分類 *</label>
-            <select class="fs" id="fCat"><option value="">選擇分類</option><option value="日常外帶">🛍️ 日常外帶</option><option value="聚會正餐">🍽️ 聚會正餐</option><option value="甜點咖啡">☕ 甜點咖啡</option><option value="親子放電">🎡 親子放電</option><option value="藝文選物">✏️ 藝文選物</option><option value="飲品手搖">🧋 飲品手搖</option></select>
+          <div class="fg">
+            <label class="fl">主分類 *</label>
+            <select class="fs" id="fCat">
+              <option value="">選擇分類</option>
+              <option value="日常外帶">🛍️ 日常外帶</option>
+              <option value="聚會正餐">🍽️ 聚會正餐</option>
+              <option value="甜點咖啡">☕ 甜點咖啡</option>
+              <option value="親子放電">🎡 親子放電</option>
+              <option value="藝文選物">✏️ 藝文選物</option>
+              <option value="飲品手搖">🧋 飲品手搖</option>
+            </select>
           </div>
         </div>
         <div class="cat-hint" id="catHint"></div>
@@ -362,27 +544,44 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
           <label class="fl">特色標籤（可多選）</label>
           <div class="tags-wrap">
             <button type="button" class="ttag" data-t="不限時">不限時</button>
-            <button type="button" class="ttag" data-t="有貓咪">有貓咪 🐱</button>
-            <button type="button" class="ttag" data-t="有插座">有插座 🔌</button>
-            <button type="button" class="ttag" data-t="親子友善">親子友善 👶</button>
-            <button type="button" class="ttag" data-t="停車方便">停車方便 🚗</button>
+            <button type="button" class="ttag" data-t="有貓咪">有貓咪</button>
+            <button type="button" class="ttag" data-t="有插座">有插座</button>
+            <button type="button" class="ttag" data-t="親子友善">親子友善</button>
+            <button type="button" class="ttag" data-t="停車方便">停車方便</button>
             <button type="button" class="ttag" data-t="預約制">預約制</button>
-            <button type="button" class="ttag" data-t="可線上訂位">可線上訂位 📱</button>
-            <button type="button" class="ttag" data-t="免費wifi">免費 WiFi 📶</button>
-            <button type="button" class="ttag" data-t="外帶首選">外帶首選 🛍️</button>
+            <button type="button" class="ttag" data-t="可線上訂位">可線上訂位</button>
+            <button type="button" class="ttag" data-t="免費wifi">免費 WiFi</button>
+            <button type="button" class="ttag" data-t="外帶首選">外帶首選</button>
           </div>
         </div>
         <div class="fg">
-          <label class="fl">自訂標籤 <span style="font-size:11px;font-weight:400">空格分隔，# 開頭</span></label>
+          <label class="fl">自訂標籤 <span style="font-size:11px;font-weight:400">空格分隔</span></label>
           <input type="text" class="fi" id="fCustom" placeholder="#火鍋 #牛排 #中山 #市政府">
         </div>
-        <div class="fg"><label class="fl">Google Map 連結</label><input type="url" class="fi" id="fMap" placeholder="貼上 Google Maps 連結"></div>
-        <div class="fg"><label class="fl">照片網址</label><input type="url" class="fi" id="fPhoto" placeholder="貼上圖片連結（選填）"></div>
-        <div class="fg"><label class="fl">營業時間</label><input type="text" class="fi" id="fHours" placeholder="例：週一至週五 11:00-20:00，週六日公休"></div>
-        <div class="fg"><label class="fl">備註 / 推薦菜色</label><textarea class="fta" id="fNote" placeholder="隨手記錄心得、推薦菜色、注意事項..."></textarea></div>
+        <div class="fg">
+          <label class="fl">Google Map 連結</label>
+          <input type="url" class="fi" id="fMap" placeholder="貼上 Google Maps 連結">
+        </div>
+        <div class="fg">
+          <label class="fl">照片網址</label>
+          <input type="url" class="fi" id="fPhoto" placeholder="貼上圖片連結（選填）">
+        </div>
+        <div class="fg">
+          <!-- [FIX] 營業時間改為 textarea，支援 Enter 換行 -->
+          <label class="fl">營業時間 <span style="font-size:11px;font-weight:400;color:#A89580">可多行輸入，每行一天</span></label>
+          <textarea class="fta" id="fHours" placeholder="例：週一至週五 11:00-20:00&#10;週六日 10:00-21:00&#10;週二公休" rows="3"></textarea>
+        </div>
+        <div class="fg">
+          <label class="fl">備註 / 推薦菜色</label>
+          <!-- [FIX] 備註 textarea 已含 white-space:pre-wrap -->
+          <textarea class="fta" id="fNote" placeholder="隨手記錄心得、推薦菜色、注意事項..."></textarea>
+        </div>
         <div class="fg">
           <div class="vtoggle" id="visitedToggle">
-            <div><div class="vtoggle-label">已經去過了 ✅</div><div style="font-size:11px;color:#A89580;margin-top:2px">標記為已造訪</div></div>
+            <div>
+              <div class="vtoggle-label">已經去過了 ✅</div>
+              <div style="font-size:11px;color:#A89580;margin-top:2px">標記為已造訪</div>
+            </div>
             <div class="vswitch"></div>
           </div>
         </div>
@@ -414,8 +613,6 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
       <div class="sheet-handle" id="handleDetail"></div>
       <button class="sheet-close" id="closeDetail" style="position:absolute;top:10px;right:16px">✕</button>
     </div>
-    <!-- 任務6: 詳情彈窗 - 分為照片區(固定) + 內容區(可滾動) -->
-    <div class="detail-photo" id="detailPhoto"></div>
     <div class="sheet-body" style="padding-top:0" id="detailContent"></div>
   </div>
 </div>
@@ -434,8 +631,18 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
     <div class="sheet-body">
       <div class="ss">
         <div class="sec-title">帳號</div>
-        <div class="srow" style="cursor:default"><div class="srow-icon">🗝️</div><div class="srow-text"><div class="srow-label" id="sUsername">—</div><div class="srow-sub">家庭代號登入</div></div></div>
-        <div class="srow" id="btnLogout"><div class="srow-icon">🔄</div><div class="srow-text"><div class="srow-label" style="color:#C4776A">切換代號</div></div><div class="srow-arr">›</div></div>
+        <div class="srow" style="cursor:default">
+          <div class="srow-icon">🗝️</div>
+          <div class="srow-text">
+            <div class="srow-label" id="sUsername">—</div>
+            <div class="srow-sub">家庭代號登入</div>
+          </div>
+        </div>
+        <div class="srow" id="btnLogout">
+          <div class="srow-icon">🔄</div>
+          <div class="srow-text"><div class="srow-label" style="color:#C4776A">切換代號</div></div>
+          <div class="srow-arr">›</div>
+        </div>
       </div>
       <div class="ss">
         <div class="sec-title">家庭共用</div>
@@ -445,10 +652,26 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
       </div>
       <div class="ss">
         <div class="sec-title">資料</div>
-        <div class="srow" id="btnExport"><div class="srow-icon">📤</div><div class="srow-text"><div class="srow-label">匯出備份</div><div class="srow-sub">下載 JSON 檔案</div></div><div class="srow-arr">›</div></div>
-        <div class="srow" id="btnImport"><div class="srow-icon">📥</div><div class="srow-text"><div class="srow-label">匯入 JSON</div><div class="srow-sub">從備份還原</div></div><div class="srow-arr">›</div></div>
-        <div class="srow" id="btnCsvTpl"><div class="srow-icon">⬇️</div><div class="srow-text"><div class="srow-label">下載 CSV 範本</div><div class="srow-sub">填好後批量匯入</div></div><div class="srow-arr">›</div></div>
-        <div class="srow" id="btnCsvImport"><div class="srow-icon">📋</div><div class="srow-text"><div class="srow-label">批量匯入 CSV</div><div class="srow-sub">上傳填好的範本</div></div><div class="srow-arr">›</div></div>
+        <div class="srow" id="btnExport">
+          <div class="srow-icon">📤</div>
+          <div class="srow-text"><div class="srow-label">匯出備份</div><div class="srow-sub">下載 JSON 檔案</div></div>
+          <div class="srow-arr">›</div>
+        </div>
+        <div class="srow" id="btnImport">
+          <div class="srow-icon">📥</div>
+          <div class="srow-text"><div class="srow-label">匯入 JSON</div><div class="srow-sub">從備份還原</div></div>
+          <div class="srow-arr">›</div>
+        </div>
+        <div class="srow" id="btnCsvTpl">
+          <div class="srow-icon">⬇️</div>
+          <div class="srow-text"><div class="srow-label">下載 CSV 範本</div><div class="srow-sub">填好後批量匯入</div></div>
+          <div class="srow-arr">›</div>
+        </div>
+        <div class="srow" id="btnCsvImport">
+          <div class="srow-icon">📋</div>
+          <div class="srow-text"><div class="srow-label">批量匯入 CSV</div><div class="srow-sub">上傳填好的範本</div></div>
+          <div class="srow-arr">›</div>
+        </div>
         <input type="file" id="fileJson" accept=".json" style="display:none">
         <input type="file" id="fileCsv" accept=".csv" style="display:none">
       </div>
@@ -472,15 +695,21 @@ min-height:0;   /* 修正 flex 子元素溢出問題 */
 (function(){
   var p = new URLSearchParams(window.location.search);
   var code = p.get('code');
-  if(code && code.length >= 3){ localStorage.setItem('pocketRoom', code.toLowerCase().trim()); }
+  if(code && code.length >= 3){
+    localStorage.setItem('pocketRoom', code.toLowerCase().trim());
+  }
   var saved = localStorage.getItem('pocketRoom');
   if(saved && saved.length >= 3){
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
   }
 })();
-document.getElementById('codeInput').addEventListener('keypress', function(e){ if(e.key === 'Enter') doLogin(); });
+
+document.getElementById('codeInput').addEventListener('keypress', function(e){
+  if(e.key === 'Enter') doLogin();
+});
 document.getElementById('enterBtn').addEventListener('click', doLogin);
+
 function doLogin(){
   var v = document.getElementById('codeInput').value.trim().toLowerCase().replace(/\s+/g,'');
   var e = document.getElementById('errMsg');
@@ -491,12 +720,6 @@ function doLogin(){
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   if(window._boot) window._boot();
-}
-// 任務6: 搜尋清除功能
-function clearSearch(){
-  document.getElementById('searchInput').value = '';
-  document.getElementById('searchClearBtn').classList.remove('visible');
-  if(window._render) window._render();
 }
 </script>
 
@@ -533,6 +756,7 @@ var CAT_HINT = {
   藝文選物:'逛街、買文具、安靜閱讀、找美感物件',
   飲品手搖:'想喝一杯解饞、外送下午茶、尋找好喝的茶或咖啡'
 };
+
 function emoji(cat){ return CAT_EMOJI[cat] || '📍'; }
 
 function toast(msg, type){
@@ -551,8 +775,13 @@ function initSwipe(handleId, modalId){
   var sheet = handle.closest('.modal-sheet');
   if(!sheet) return;
   var y0 = 0, active = false;
-  handle.addEventListener('touchstart', function(e){ y0 = e.touches[0].clientY; active = true; }, {passive:true});
-  sheet.addEventListener('touchend', function(e){ if(!active) return; active = false; if(e.changedTouches[0].clientY - y0 > 60) closeModal(modalId); }, {passive:true});
+  handle.addEventListener('touchstart', function(e){
+    y0 = e.touches[0].clientY; active = true;
+  }, {passive:true});
+  sheet.addEventListener('touchend', function(e){
+    if(!active) return; active = false;
+    if(e.changedTouches[0].clientY - y0 > 60) closeModal(modalId);
+  }, {passive:true});
 }
 
 function boot(){
@@ -570,7 +799,9 @@ function listenPlaces(){
   if(unsub) unsub();
   var q = query(collection(db,'pocketlist',room,'places'), orderBy('createdAt','desc'));
   unsub = onSnapshot(q, function(snap){
-    places = snap.docs.map(function(d){ var o = d.data(); o.id = d.id; return o; });
+    places = snap.docs.map(function(d){
+      var o = d.data(); o.id = d.id; return o;
+    });
     render();
     updateStats();
     var s = document.getElementById('syncStatus');
@@ -581,13 +812,9 @@ function listenPlaces(){
   });
 }
 
-/* ── 任務6: 修復搜尋 #標籤 功能 ── */
 function render(){
-  var q = document.getElementById('searchInput').value.toLowerCase().trim();
+  var q = document.getElementById('searchInput').value.toLowerCase();
   var sort = document.getElementById('sortSelect').value;
-
-  // 更新搜尋清除按鈕顯示
-  document.getElementById('searchClearBtn').classList.toggle('visible', q.length > 0);
 
   var list = places.filter(function(p){
     if(fRegion && p.region !== fRegion) return false;
@@ -599,17 +826,9 @@ function render(){
       else { if(!(p.tags || []).includes(t)) return false; }
     }
     if(q){
-      // 任務6: 搜尋範圍包含 customTags（#標籤）和 tags 陣列
-      var searchIn = [
-        (p.name||''),
-        (p.note||''),
-        (p.region||''),
-        (p.category||''),
-        (p.customTags||''),          // 自訂 #標籤
-        (p.hours||''),
-        ...(p.tags||[])              // 特色標籤陣列
-      ].join(' ').toLowerCase();
-      if(!searchIn.includes(q)) return false;
+      if(!(p.name||'').toLowerCase().includes(q) &&
+         !(p.note||'').toLowerCase().includes(q) &&
+         !(p.region||'').toLowerCase().includes(q)) return false;
     }
     return true;
   });
@@ -629,6 +848,7 @@ function render(){
     : '共 <strong>'+places.length+'</strong> 個地點';
 
   var c = document.getElementById('placesContainer');
+
   if(!list.length){
     c.className = '';
     c.innerHTML = '<div class="empty"><div class="empty-icon">'+(hasF?'🔍':'🗺️')+'</div>'
@@ -644,10 +864,14 @@ function render(){
       var bc = p.visited ? 'badge-visited' : 'badge-want';
       var bt = p.visited ? '✅ 去過了' : '想去';
       var th = (p.tags||[]).slice(0,3).map(function(t){ return '<span class="card-tag">'+t+'</span>'; }).join('');
-      var img = p.photoUrl ? '<img src="'+p.photoUrl+'" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2" onload="this.nextElementSibling.style.display=\'none\'" onerror="this.style.display=\'none\'">' : '';
+      // [FIX] 卡片照片與 emoji：有照片時隱藏 emoji
+      var photoHtml = p.photoUrl
+        ? '<img src="'+p.photoUrl+'" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2" onerror="this.style.display=\'none\'">'
+        : '';
+      var emojiHtml = '<div class="card-emoji" style="'+(p.photoUrl?'display:none;':'')+'">'+emoji(p.category)+'</div>';
       h += '<div class="place-card" data-id="'+p.id+'">'
-        + '<div class="card-photo">'+img+'<div class="card-emoji">'+emoji(p.category)+'</div>'
-        + '<div class="card-badge '+bc+'">'+bt+'</div></div>'
+        + '<div class="card-photo">'+photoHtml+emojiHtml
+        + '<div class="card-badge '+bc+'" style="z-index:3">'+bt+'</div></div>'
         + '<div class="card-body">'
         + '<div class="card-name">'+(p.name||'未命名')+'</div>'
         + '<div class="card-region">'+(p.region||'')+'</div>'
@@ -660,11 +884,14 @@ function render(){
     c.className = 'card-grid list-view';
     var h = '';
     list.forEach(function(p){
-      var img = p.photoUrl ? '<img src="'+p.photoUrl+'" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2" onerror="this.style.display=\'none\'">' : '';
+      // [FIX] list view: 有照片時不顯示 emoji 文字
+      var listIconContent = p.photoUrl
+        ? '<img src="'+p.photoUrl+'" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2" onerror="this.style.display=\'none\'"><span class="list-icon-emoji">'+emoji(p.category)+'</span>'
+        : '<span class="list-icon-emoji">'+emoji(p.category)+'</span>';
       var vi = p.visited ? '<div class="list-visited">✅ 已造訪</div>' : '';
       var meta = [p.region, p.category].filter(Boolean).join(' · ');
       h += '<div class="list-row" data-id="'+p.id+'">'
-        + '<div class="list-icon">'+img+'<span class="list-icon-emoji">'+emoji(p.category)+'</span></div>'
+        + '<div class="list-icon">'+listIconContent+'</div>'
         + '<div class="list-info">'
         + '<div class="list-name">'+(p.name||'未命名')+'</div>'
         + '<div class="list-meta">'+meta+'</div>'
@@ -678,34 +905,37 @@ function render(){
     el.addEventListener('click', function(){ openDetail(el.dataset.id); });
   });
 }
-window._render = render;
 
-/* ── 任務6: 修復 Detail Modal 版面跑版 ── */
 function openDetail(id){
   var p = places.find(function(x){ return x.id === id; });
   if(!p) return;
+  var dc = document.getElementById('detailContent');
+  dc.innerHTML = '';
 
-  // 照片區（固定高度）
-  var ph = document.getElementById('detailPhoto');
-  ph.innerHTML = '';
+  // [FIX] 詳情頁照片區：照片和 emoji 不重疊
+  var ph = document.createElement('div');
+  ph.className = 'detail-photo';
   if(p.photoUrl){
+    ph.classList.add('has-photo');
     var img = document.createElement('img');
     img.src = p.photoUrl; img.alt = '';
-    img.onerror = function(){ this.style.display='none'; };
+    img.onerror = function(){
+      this.style.display='none';
+      ph.classList.remove('has-photo');
+      em.style.display = 'flex';
+    };
     ph.appendChild(img);
   }
   var em = document.createElement('span');
   em.className = 'detail-emoji';
   em.textContent = emoji(p.category);
+  if(p.photoUrl) em.style.display = 'none';
   ph.appendChild(em);
+  dc.appendChild(ph);
 
-  // 內容區（可滾動）
-  var dc = document.getElementById('detailContent');
-  dc.innerHTML = '';
   var body = document.createElement('div');
-  body.style.cssText = 'padding-top:4px;';
+  body.className = 'detail-body';
 
-  // Top row
   var tr = document.createElement('div'); tr.className = 'detail-top';
   var nm = document.createElement('div'); nm.className = 'detail-name'; nm.textContent = p.name||'未命名';
   var bd = document.createElement('div'); bd.className = 'detail-badge';
@@ -713,21 +943,26 @@ function openDetail(id){
   else { bd.style.background='#EDE5D8'; bd.style.color='#A89580'; bd.textContent='📌 想去'; }
   tr.appendChild(nm); tr.appendChild(bd); body.appendChild(tr);
 
-  // Meta
   var mt = document.createElement('div'); mt.className = 'detail-meta';
   if(p.region){ var mp=document.createElement('span'); mp.className='mpill'; mp.textContent=p.region; mt.appendChild(mp); }
   if(p.category){ var mc=document.createElement('span'); mc.className='mpill cat'; mc.textContent=emoji(p.category)+' '+p.category; mt.appendChild(mc); }
   body.appendChild(mt);
 
-  // Tags
   if(p.tags && p.tags.length){
     var tg = document.createElement('div'); tg.className = 'detail-tags';
     p.tags.forEach(function(t){ var s=document.createElement('span'); s.className='dtag'; s.textContent=t; tg.appendChild(s); });
     body.appendChild(tg);
   }
 
-  // Custom tags (任務6: 正確顯示 #標籤)
-  if(p.customTags && p.customTags.trim()){
+  if(p.revisit){
+    var rv = document.createElement('div'); rv.className = 'detail-revisit';
+    var re = {必回:'⭐',還不錯:'👍',普通:'😐',雷店避開:'💀'};
+    rv.textContent = (re[p.revisit]||'')+' '+p.revisit;
+    rv.style.color = p.revisit==='雷店避開'?'#C4776A': p.revisit==='必回'?'#C4956A':'#A89580';
+    body.appendChild(rv);
+  }
+
+  if(p.customTags){
     var ct = document.createElement('div'); ct.className = 'custom-tags';
     p.customTags.trim().split(/\s+/).filter(Boolean).forEach(function(t){
       var s=document.createElement('span'); s.className='ctag';
@@ -737,28 +972,45 @@ function openDetail(id){
     body.appendChild(ct);
   }
 
-  // Revisit
-  if(p.revisit){
-    var rv = document.createElement('div'); rv.className = 'detail-revisit';
-    var re = {必回:'⭐',還不錯:'👍',普通:'😐',雷店避開:'💀'};
-    rv.textContent = (re[p.revisit]||'')+' '+p.revisit;
-    rv.style.color = p.revisit==='雷店避開'?'#C4776A': p.revisit==='必回'?'#C4956A':'#A89580';
-    body.appendChild(rv);
-  }
-
-  // Hours
   if(p.hours){
     var hoursDiv=document.createElement('div'); hoursDiv.className='detail-hours';
-    var raw=document.createElement('div'); raw.className='detail-hours-raw';
-    raw.textContent='🕐  '+p.hours;
-    hoursDiv.appendChild(raw);
+    var hLines=p.hours.trim().split(/\n/).map(function(l){ return l.trim(); }).filter(Boolean);
+    var dayKeys=['星期一','星期二','星期三','星期四','星期五','星期六','星期日','週一','週二','週三','週四','週五','週六','週日'];
+    var structured=false;
+    for(var hi=0;hi<hLines.length;hi++){
+      for(var dk=0;dk<dayKeys.length;dk++){
+        if(hLines[hi].indexOf(dayKeys[dk])===0){ structured=true; break; }
+      }
+      if(structured) break;
+    }
+    if(structured){
+      hLines.forEach(function(line){
+        var row=document.createElement('div'); row.className='detail-hours-row';
+        var m=line.match(/^(星期[一二三四五六日]|週[一二三四五六日])(.*)/);
+        if(m){
+          var day=document.createElement('span'); day.className='detail-hours-day'; day.textContent=m[1];
+          var time=document.createElement('span'); time.className='detail-hours-time'; time.textContent=m[2].trim()||'—';
+          row.appendChild(day); row.appendChild(time);
+        } else {
+          row.textContent=line;
+        }
+        hoursDiv.appendChild(row);
+      });
+    } else {
+      var raw=document.createElement('div'); raw.className='detail-hours-raw';
+      raw.textContent=p.hours;  // white-space:pre-wrap in CSS handles newlines
+      hoursDiv.appendChild(raw);
+    }
     body.appendChild(hoursDiv);
   }
 
-  // Note
-  if(p.note){ var no=document.createElement('div'); no.className='detail-note'; no.textContent=p.note; body.appendChild(no); }
+  // [FIX] 備註：用 textContent 確保換行由 CSS pre-wrap 處理
+  if(p.note){
+    var no=document.createElement('div'); no.className='detail-note';
+    no.textContent=p.note;  // textContent + white-space:pre-wrap = 完整保留格式
+    body.appendChild(no);
+  }
 
-  // Map link
   if(p.mapLink){
     var a=document.createElement('a'); a.className='link-btn';
     a.href=p.mapLink; a.target='_blank'; a.rel='noopener';
@@ -766,11 +1018,10 @@ function openDetail(id){
     body.appendChild(a);
   }
 
-  // Actions
   var ac=document.createElement('div'); ac.className='detail-actions';
   var eb=document.createElement('button'); eb.className='btn-edit'; eb.textContent='✏️ 編輯';
   eb.addEventListener('click', function(){ openEdit(p.id); });
-  var db2=document.createElement('button'); db2.className='btn-del'; db2.textContent='🗑 刪除';
+  var db2=document.createElement('button'); db2.className='btn-del'; db2.textContent='刪除';
   db2.addEventListener('click', function(){ doDelete(p.id, p.name||''); });
   ac.appendChild(eb); ac.appendChild(db2); body.appendChild(ac);
 
@@ -822,8 +1073,12 @@ function openEdit(id){
   document.getElementById('fCustom').value=p.customTags||'';
   document.getElementById('fNote').value=p.note||'';
   document.getElementById('catHint').textContent=CAT_HINT[p.category]||'';
-  document.querySelectorAll('.ttag').forEach(function(t){ t.classList.toggle('on',(p.tags||[]).includes(t.dataset.t)); });
-  document.querySelectorAll('.rtag').forEach(function(t){ t.classList.toggle('on', t.dataset.r===revisit); });
+  document.querySelectorAll('.ttag').forEach(function(t){
+    t.classList.toggle('on',(p.tags||[]).includes(t.dataset.t));
+  });
+  document.querySelectorAll('.rtag').forEach(function(t){
+    t.classList.toggle('on', t.dataset.r===revisit);
+  });
   document.getElementById('visitedToggle').classList.toggle('on',isVisited);
   document.getElementById('revisitGroup').style.display=isVisited?'block':'none';
   closeModal('modalDetail');
@@ -843,11 +1098,11 @@ document.getElementById('placeForm').addEventListener('submit', async function(e
   var data={
     name:document.getElementById('fName').value.trim(),
     region:region, category:cat,
-    hours:document.getElementById('fHours').value.trim(),
+    hours:document.getElementById('fHours').value,  // 保留原始換行
     mapLink:document.getElementById('fMap').value.trim(),
     photoUrl:document.getElementById('fPhoto').value.trim(),
     customTags:document.getElementById('fCustom').value.trim(),
-    note:document.getElementById('fNote').value.trim(),
+    note:document.getElementById('fNote').value,  // 保留原始換行與空格
     tags:tags, visited:isVisited, revisit:revisit
   };
   try{
@@ -866,7 +1121,10 @@ document.getElementById('placeForm').addEventListener('submit', async function(e
   btn.disabled=false; btn.textContent='儲存地點';
 });
 
-document.querySelectorAll('.ttag').forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('on'); }); });
+document.querySelectorAll('.ttag').forEach(function(b){
+  b.addEventListener('click', function(){ b.classList.toggle('on'); });
+});
+
 document.querySelectorAll('.rtag').forEach(function(b){
   b.addEventListener('click', function(){
     revisit=b.dataset.r;
@@ -874,17 +1132,18 @@ document.querySelectorAll('.rtag').forEach(function(b){
     b.classList.add('on');
   });
 });
+
 document.getElementById('visitedToggle').addEventListener('click', function(){
   isVisited=!isVisited;
   this.classList.toggle('on',isVisited);
   document.getElementById('revisitGroup').style.display=isVisited?'block':'none';
   if(!isVisited){ revisit=''; document.querySelectorAll('.rtag').forEach(function(x){ x.classList.remove('on'); }); }
 });
+
 document.getElementById('fCat').addEventListener('change', function(){
   document.getElementById('catHint').textContent=CAT_HINT[this.value]||'';
 });
 
-// Filters
 document.querySelectorAll('#regionRow .chip').forEach(function(c){
   c.addEventListener('click', function(){
     document.querySelectorAll('#regionRow .chip').forEach(function(x){ x.classList.remove('active'); });
@@ -905,8 +1164,6 @@ document.querySelectorAll('#tagRow .chip').forEach(function(c){
     render();
   });
 });
-
-// 任務6: 搜尋輸入時即時更新
 document.getElementById('searchInput').addEventListener('input', render);
 document.getElementById('sortSelect').addEventListener('change', render);
 document.getElementById('clearFilters').addEventListener('click', function(){
@@ -915,7 +1172,6 @@ document.getElementById('clearFilters').addEventListener('click', function(){
   document.querySelector('#regionRow .chip').classList.add('active');
   document.querySelector('#catRow .chip').classList.add('active');
   document.getElementById('searchInput').value='';
-  document.getElementById('searchClearBtn').classList.remove('visible');
   render();
 });
 
@@ -939,7 +1195,9 @@ document.getElementById('btnCancelForm').addEventListener('click', function(){ c
 document.getElementById('closeSettings').addEventListener('click', function(){ closeModal('modalSettings'); });
 document.getElementById('btnSettings').addEventListener('click', function(){ setupSettings(); openModal('modalSettings'); });
 ['modalForm','modalDetail','modalSettings'].forEach(function(id){
-  document.getElementById(id).addEventListener('click', function(e){ if(e.target===this) closeModal(id); });
+  document.getElementById(id).addEventListener('click', function(e){
+    if(e.target===this) closeModal(id);
+  });
 });
 
 function setupSettings(){
@@ -949,8 +1207,9 @@ function setupSettings(){
 }
 
 document.getElementById('btnCopyCode').addEventListener('click', function(){
-  if(navigator.clipboard){ navigator.clipboard.writeText(room.toUpperCase()).then(function(){ toast('代號已複製！','ok'); }); }
-  else { toast('代號：'+room.toUpperCase()); }
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(room.toUpperCase()).then(function(){ toast('代號已複製！','ok'); });
+  } else { toast('代號：'+room.toUpperCase()); }
 });
 
 document.getElementById('btnLogout').addEventListener('click', function(){
@@ -963,7 +1222,9 @@ document.getElementById('btnLogout').addEventListener('click', function(){
 });
 
 document.getElementById('btnExport').addEventListener('click', function(){
-  var data={exportedAt:new Date().toISOString(),places:places.map(function(p){ var o=Object.assign({},p); delete o.id; return o; })};
+  var data={exportedAt:new Date().toISOString(),places:places.map(function(p){
+    var o=Object.assign({},p); delete o.id; return o;
+  })};
   var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a'); a.href=url;
@@ -972,7 +1233,9 @@ document.getElementById('btnExport').addEventListener('click', function(){
   toast('已匯出 '+places.length+' 個地點','ok');
 });
 
-document.getElementById('btnImport').addEventListener('click', function(){ document.getElementById('fileJson').click(); });
+document.getElementById('btnImport').addEventListener('click', function(){
+  document.getElementById('fileJson').click();
+});
 document.getElementById('fileJson').addEventListener('change', async function(e){
   var file=e.target.files[0]; if(!file) return;
   try{
@@ -995,15 +1258,18 @@ document.getElementById('fileJson').addEventListener('change', async function(e)
 
 document.getElementById('btnCsvTpl').addEventListener('click', function(){
   var h='店名,地區,主分類,特色標籤(用|分隔),Google Map連結,照片網址,備註,自訂標籤,已造訪(是/否),回訪意願';
-  var r1='Slow Morning,宜蘭,甜點咖啡,不限時|有貓咪,https://maps.google.com,,超好喝的拿鐵,#咖啡 #宜蘭,否,';
-  var blob=new Blob(['\uFEFF'+[h,r1].join('\n')],{type:'text/csv;charset=utf-8'});
+  var r1='Slow Morning,宜蘭,甜點咖啡,不限時|有貓咪,https://maps.google.com,,超好喝的拿鐵,,否,';
+  var r2='丸山咖哩,雙北,聚會正餐,停車方便,https://maps.google.com,,咖哩飯必點,#日式 #咖哩,是,必回';
+  var blob=new Blob(['\uFEFF'+[h,r1,r2].join('\n')],{type:'text/csv;charset=utf-8'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a'); a.href=url; a.download='口袋名單匯入範本.csv';
   a.click(); URL.revokeObjectURL(url);
   toast('範本已下載！','ok');
 });
 
-document.getElementById('btnCsvImport').addEventListener('click', function(){ document.getElementById('fileCsv').click(); });
+document.getElementById('btnCsvImport').addEventListener('click', function(){
+  document.getElementById('fileCsv').click();
+});
 document.getElementById('fileCsv').addEventListener('change', async function(e){
   var file=e.target.files[0]; if(!file) return;
   var text=await file.text();
