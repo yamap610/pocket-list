@@ -11,7 +11,8 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;-webkit-text-size-adjust:100%}
-body{font-family:'Noto Sans TC','Helvetica Neue',sans-serif;background:#F7F3EE;color:#3A2E24;-webkit-font-smoothing:antialiased}
+body{font-family:'Noto Sans TC','Helvetica Neue',sans-serif;background:#F7F3EE;color:#3A2E24;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(68px + env(safe-area-inset-bottom,0px));}
 
 :root{
 –cream:#F7F3EE;–warm:#EDE5D8;–card:#FFFDF9;
@@ -60,10 +61,7 @@ cursor:pointer;margin-bottom:16px;
 .hint b{color:var(–brown)}
 
 /* ── APP ── */
-#app{display:none;flex-direction:column;min-height:100vh;max-width:480px;margin:0 auto;background:#F7F3EE;
-/* [FIX] 底部預留空間給 FAB */
-padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
-}
+#app{display:none;flex-direction:column;min-height:100vh;max-width:480px;margin:0 auto;background:#F7F3EE;}
 
 /* ── HEADER ── */
 .app-header{
@@ -81,13 +79,80 @@ cursor:pointer;font-size:16px;flex-shrink:0;
 }
 .search-wrap{position:relative}
 .search-input{
-width:100%;padding:10px 16px 10px 38px;
+width:100%;padding:10px 36px 10px 38px;
 border:1px solid #E2D5C3;border-radius:20px;
 background:#EDE5D8;font-family:inherit;font-size:14px;color:#3A2E24;outline:none;
 }
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+.search-clear-btn{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  background:#C8BAA8;border:none;border-radius:50%;
+  width:18px;height:18px;display:none;align-items:center;justify-content:center;
+  font-size:0.6rem;color:#3A2E24;cursor:pointer;line-height:1;
+}
+.search-clear-btn.visible{display:flex;}
 
-/* ── FILTERS ── */
+/* FAB 在 tab bar 上方 */
+.fab{
+position:fixed;
+bottom:calc(76px + env(safe-area-inset-bottom,0px));
+right:18px;width:56px;height:56px;
+background:linear-gradient(135deg,#C4956A,#8B6B4A);
+color:white;border:none;border-radius:18px;font-size:28px;
+cursor:pointer;display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 20px rgba(139,99,67,.4);z-index:200;
+}
+.fab:active{transform:scale(.92)}
+
+/* Modal 詳情：max-height + flex 置中 */
+.modal-overlay{
+position:fixed;inset:0;
+background:rgba(30,20,10,.5);
+z-index:300;
+display:flex;align-items:flex-end;justify-content:center;
+opacity:0;pointer-events:none;
+transition:opacity .25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+/* 詳情 modal 置中 */
+.modal-overlay.detail-center{align-items:center;}
+.modal-sheet{
+background:#FFFDF9;
+border-radius:20px 20px 0 0;
+width:100%;max-width:480px;
+max-height:90vh;
+display:flex;flex-direction:column;
+transform:translateY(100%);
+transition:transform .3s cubic-bezier(.32,.72,0,1);
+position:relative;z-index:1;
+overflow:hidden;
+}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+/* 詳情 modal 置中時無 translateY */
+.modal-overlay.detail-center .modal-sheet{
+  border-radius:20px;transform:scale(.92);
+}
+.modal-overlay.detail-center.open .modal-sheet{transform:scale(1);}
+
+/* Bottom Nav */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:#FFFDF9;border-top:1.5px solid #E2D5C3;
+  display:none;z-index:500;
+  box-shadow:0 -2px 16px rgba(90,60,30,.1);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.bottom-nav.show{display:flex;}
+.bn-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:8px 2px 6px;gap:3px;cursor:pointer;color:#A89580;
+  font-family:'Noto Sans TC',sans-serif;border:none;background:none;
+  -webkit-tap-highlight-color:transparent;transition:color .15s;
+}
+.bn-item.active{color:#A67C52;}
+.bn-item:active{opacity:.7;}
+.bn-icon{font-size:20px;line-height:1;}
+.bn-label{font-size:9.5px;font-weight:600;letter-spacing:.2px;line-height:1;}
 .filter-bar{background:#FFFDF9;border-bottom:1px solid #E2D5C3;padding:8px 0}
 .filter-row{display:flex;gap:6px;overflow-x:auto;padding:0 14px 4px;scrollbar-width:none}
 .filter-row::-webkit-scrollbar{display:none}
@@ -176,41 +241,7 @@ font-size:22px;flex-shrink:0;overflow:hidden;position:relative;
 .empty-sub{font-size:13px;line-height:1.6}
 
 /* ── FAB ── */
-.fab{
-position:fixed;
-bottom:calc(22px + env(safe-area-inset-bottom, 0px));
-right:18px;width:56px;height:56px;
-background:linear-gradient(135deg,#C4956A,#8B6B4A);
-color:white;border:none;border-radius:18px;font-size:28px;
-cursor:pointer;display:flex;align-items:center;justify-content:center;
-box-shadow:0 4px 20px rgba(139,99,67,.4);z-index:200;
-}
-.fab:active{transform:scale(.92)}
-
 /* ── MODAL ── */
-.modal-overlay{
-position:fixed;inset:0;
-background:rgba(30,20,10,.5);
-z-index:300;
-display:flex;align-items:flex-end;justify-content:center;
-opacity:0;pointer-events:none;
-transition:opacity .25s;
-}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal-sheet{
-background:#FFFDF9;
-border-radius:20px 20px 0 0;
-width:100%;max-width:480px;
-height:90vh;
-display:flex;flex-direction:column;
-transform:translateY(100%);
-transition:transform .3s cubic-bezier(.32,.72,0,1);
-position:relative;
-z-index:1;
-overflow:hidden;
-}
-.modal-overlay.open .modal-sheet{transform:translateY(0)}
-
 .sheet-header{
 background:#FFFDF9;
 border-radius:20px 20px 0 0;
@@ -236,7 +267,7 @@ overflow-y:scroll;
 -webkit-overflow-scrolling:touch;
 flex:1;
 padding:20px;
-padding-bottom:16px;
+padding-bottom:24px;
 overscroll-behavior:contain;
 }
 
@@ -441,6 +472,7 @@ opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input type="search" class="search-input" id="searchInput" placeholder="搜尋店名、備註...">
+      <button class="search-clear-btn" id="searchClearBtn" title="清除">✕</button>
     </div>
   </header>
 
@@ -611,7 +643,7 @@ opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;
   <div class="modal-sheet">
     <div class="sheet-header" style="border-bottom:none;padding-bottom:4px">
       <div class="sheet-handle" id="handleDetail"></div>
-      <button class="sheet-close" id="closeDetail" style="position:absolute;top:10px;right:16px">✕</button>
+      <button class="sheet-close" id="closeDetail" style="position:absolute;top:10px;right:16px;z-index:10;width:34px;height:34px;font-size:16px;font-weight:600;">✕</button>
     </div>
     <div class="sheet-body" style="padding-top:0" id="detailContent"></div>
   </div>
@@ -689,6 +721,16 @@ opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;
 
 <div class="toast" id="toast"></div>
 
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bn-item" onclick="pocketGoApp('home')"><span class="bn-icon">🏠</span><span class="bn-label">首頁</span></button>
+  <button class="bn-item" onclick="pocketGoApp('sec')"><span class="bn-icon">🐧</span><span class="bn-label">家務</span></button>
+  <button class="bn-item" onclick="pocketGoApp('inv')"><span class="bn-icon">🐰</span><span class="bn-label">庫存</span></button>
+  <button class="bn-item" onclick="pocketGoApp('ward')"><span class="bn-icon">👗</span><span class="bn-label">衣櫃</span></button>
+  <button class="bn-item" onclick="pocketGoApp('wiki')"><span class="bn-icon">📖</span><span class="bn-label">百科</span></button>
+  <button class="bn-item active"><span class="bn-icon">🗺️</span><span class="bn-label">地圖</span></button>
+</nav>
+
 <!-- ═══ LOGIN JS ═══ -->
 
 <script>
@@ -702,6 +744,7 @@ opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap;
   if(saved && saved.length >= 3){
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
+    document.getElementById('bottomNav').classList.add('show');
   }
 })();
 
@@ -719,6 +762,7 @@ function doLogin(){
   localStorage.setItem('pocketRoom', v);
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
+  document.getElementById('bottomNav').classList.add('show');
   if(window._boot) window._boot();
 }
 </script>
@@ -1164,7 +1208,16 @@ document.querySelectorAll('#tagRow .chip').forEach(function(c){
     render();
   });
 });
-document.getElementById('searchInput').addEventListener('input', render);
+document.getElementById('searchInput').addEventListener('input', function(){
+  var btn = document.getElementById('searchClearBtn');
+  if(btn) btn.classList.toggle('visible', this.value.length > 0);
+  render();
+});
+document.getElementById('searchClearBtn').addEventListener('click', function(){
+  document.getElementById('searchInput').value = '';
+  this.classList.remove('visible');
+  render();
+});
 document.getElementById('sortSelect').addEventListener('change', render);
 document.getElementById('clearFilters').addEventListener('click', function(){
   fRegion=''; fCat=''; fTags=[];
@@ -1172,6 +1225,8 @@ document.getElementById('clearFilters').addEventListener('click', function(){
   document.querySelector('#regionRow .chip').classList.add('active');
   document.querySelector('#catRow .chip').classList.add('active');
   document.getElementById('searchInput').value='';
+  var cb = document.getElementById('searchClearBtn');
+  if(cb) cb.classList.remove('visible');
   render();
 });
 
@@ -1217,9 +1272,24 @@ document.getElementById('btnLogout').addEventListener('click', function(){
   localStorage.removeItem('pocketRoom');
   if(unsub) unsub();
   document.getElementById('app').style.display='none';
+  document.getElementById('bottomNav').classList.remove('show');
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('codeInput').value='';
 });
+
+// ── 嘟嘟一家導覽 ──
+var POCKET_URLS={
+  home:'https://yui0151.github.io/home/',
+  sec:'https://yui0151.github.io/secretary/',
+  inv:'https://yui0151.github.io/inventory/',
+  ward:'https://yui0151.github.io/wardrobe/',
+  wiki:'https://yamap610.github.io/mywiki/'
+};
+function pocketGoApp(key){
+  var base=POCKET_URLS[key]; if(!base) return;
+  var rc=localStorage.getItem('pocketRoom')||room||'';
+  window.location.href=base+(rc?'?code='+rc:'');
+}
 
 document.getElementById('btnExport').addEventListener('click', function(){
   var data={exportedAt:new Date().toISOString(),places:places.map(function(p){
@@ -1308,6 +1378,19 @@ function updateStats(){
   document.getElementById('stVisited').textContent=v;
   document.getElementById('stUnvisited').textContent=places.length-v;
 }
+
+// ── 底部導覽 ──
+var POCKET_URLS={
+  home:'https://yui0151.github.io/home/',
+  sec:'https://yui0151.github.io/secretary/',
+  inv:'https://yui0151.github.io/inventory/',
+  ward:'https://yui0151.github.io/wardrobe/',
+  wiki:'https://yamap610.github.io/mywiki/'
+};
+window.pocketGoApp=function(key){
+  var base=POCKET_URLS[key]; if(!base) return;
+  window.location.href=base+(room?'?code='+room:'');
+};
 </script>
 
 </body>
